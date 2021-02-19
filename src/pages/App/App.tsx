@@ -1,9 +1,10 @@
 import React from 'react';
+import Navbar from '../../components/Navbar'
 
 function App() {
   return (
-    <div className="w-screen h-screen bg-indigo-600">
-      Hello World RPIV!!
+    <div className="App w-screen h-screen">
+      <Navbar></Navbar>
     </div>
   );
 }
