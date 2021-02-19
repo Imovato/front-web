@@ -9,7 +9,7 @@ export default function Navbar() {
       <div className="flex-auto flex-col">
         <div className="h-1/2 flex items-center justify-center ">
           <p className="text-xl">
-            Imobiliária Estrela
+            Imobiliária
           </p>
         </div>
         <div className="h-1/2 grid grid-flow-col grid-cols-5 gap-4 border-t-2 border-red-500">
