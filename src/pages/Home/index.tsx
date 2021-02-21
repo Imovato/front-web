@@ -6,7 +6,7 @@ import {faGreaterThan, faWindowMinimize} from '@fortawesome/free-solid-svg-icons
 
 library.add(faGreaterThan, faWindowMinimize);
 
-function App() {
+function Home() {
   return (
     <div className="App w-screen h-screen">
       <Navbar></Navbar>
@@ -15,4 +15,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
