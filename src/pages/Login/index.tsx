@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '../../components/Button';
+import { Input } from '../../components/Input';
+import { Label } from '../../components/Label';
 
 export default function Login () {
     return (
@@ -25,17 +28,17 @@ export default function Login () {
                             <h1 className="text-3xl font-bold mb-8">Acesse sua conta</h1>
                             <form action="" method="post">
                                 <fieldset>
-                                    <label className="font-bold" htmlFor="userEmail">Endereço de Email</label>
-                                    <input className="focus:ring focus:ring-red-200 w-full h-10 px-3 rounded-lg bg-gray-200 mt-2" type="email" name="userEmail" id="userEmail"/>
+                                    <Label for="userEmail">Endereço de Email</Label>
+                                    <Input name="userEmail" type="email"/>
                                 </fieldset>
                                 <fieldset className="my-6">
                                     <div className="flex justify-between">
-                                        <label className="font-bold" htmlFor="userPassword">Senha</label>
+                                        <Label for="userPassword">Senha</Label>
                                         <Link className="text-red-700" to="/passwords_reset/new">Esqueceu a senha?</Link>
                                     </div>
-                                    <input className="focus:ring ring-red-200 w-full h-10 px-3 rounded-lg bg-gray-200 mt-2" type="password" name="userPassword" id="userPassword"/>
+                                    <Input name="userPassword" type="password"/>
                                 </fieldset>
-                                <button className="w-1/2 transition duration-150 ease-in-out hover:bg-opacity-60 bg-red-500 rounded-lg h-10 text-white" type="submit">Enviar</button>
+                                <Button type="submit">Enviar</Button>
                             </form>
                         </div>
                     </div>
