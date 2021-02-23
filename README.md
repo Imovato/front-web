@@ -5,7 +5,7 @@ Front-End|Back-End
 Aqui | [GitHub](https://github.com/RP-IV-GP2/backend)
 
 # 🎨 Branch de Front-End
-Está branch é designada para o desenvolvimento do front-end para o sistema de imobiliária.
+Esta branch é designada para o desenvolvimento do front-end para o sistema de imobiliária.
 
 # ⚙ Tecnologias Utilizadas
 
