@@ -1,11 +1,10 @@
 @tailwind base;
 
 @layer base {
-    input {
+    input, button:focus {
         @apply outline-none;
     }
 }
-
 @tailwind components;
 @tailwind utilities;
 

@@ -1,7 +1,16 @@
-# Branch de Frontend
+# 🏠 Sistema de Imobiliária
 
-Está branch é designada para o desenvolvimento do frontend para o sistema de imobiliária.
+Front-End|Back-End
+--|--
+Aqui | [GitHub](https://github.com/RP-IV-GP2/backend)
 
-As tecnologias utilizadas para a produção das telas foram o React.js e Typescript.
+# 🎨 Branch de Front-End
+Está branch é designada para o desenvolvimento do front-end para o sistema de imobiliária.
 
-Em um primeiro momento os integrantes do grupo Igor e Lucas, estão designados para esta função, com possíveis mudanças no decorrer do trabalho.
+# ⚙ Tecnologias Utilizadas
+
+Tecnologia|Versão 
+----|----
+🌟 React Web|17.0.1
+🖊 TypeScript|4.1.5
+🌊 Tailwind CSS|2.0.3
