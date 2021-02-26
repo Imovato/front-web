@@ -17,14 +17,14 @@ export default function Login () {
                     </h1>
                 </div>
             </div>
-            <div className="flex-none w-3/5 h-full">
+            <div className="flex-none w-3/4 h-full">
                 <div className="flex flex-col w-auto h-full">
                     <div className="flex w-full justify-end p-8">
                         <p>Ainda não é membro?&nbsp;</p>
                         <Link className="text-red-700" to="/signup/new">Criar conta</Link>
                     </div>
                     <div className="flex justify-center items-center w-full h-full">
-                        <div className="flex flex-col px-8 w-3/5">
+                        <div className="flex flex-col px-48 w-3/5">
                             <h1 className="text-3xl font-bold mb-8">Acesse sua conta</h1>
                             <form action="" method="post">
                                 <fieldset>
