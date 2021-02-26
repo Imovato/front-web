@@ -1,7 +1,7 @@
 @tailwind base;
 
 @layer base {
-    input, button:focus {
+    input {
         @apply outline-none;
     }
 }
