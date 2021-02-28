@@ -66,6 +66,7 @@ export default function Signup () {
             <form onSubmit={handleSubmit}>
               <fieldset>
                 <Label for="userName">Nome</Label>
+                <span className="text-blue-700 font-bold"> *</span>
                 <Input
                   value={userName}
                   onChange={e => setUserName(e.target.value)}
@@ -76,6 +77,7 @@ export default function Signup () {
               </fieldset>
               <fieldset className="my-4">
                 <Label for="userEmail">Endereço de Email</Label>
+                <span className="text-blue-700 font-bold"> *</span>
                 <Input
                   value={userEmail}
                   onChange={e => setUserEmail(e.target.value)}
@@ -88,6 +90,7 @@ export default function Signup () {
                 <div className="flex justify-between gap-6">
                   <div className="w-1/2">
                     <Label for="userCpf">CPF</Label>
+                    <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={userCpf}
                       onChange={e => setUserCpf(e.target.value)}
@@ -98,6 +101,7 @@ export default function Signup () {
                   </div>
                   <div className="w-1/2">
                     <Label for="userPhone">Telefone</Label>
+                    <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={userPhone}
                       onChange={e => setUserPhone(e.target.value)}
@@ -110,6 +114,7 @@ export default function Signup () {
               </fieldset>
               <fieldset className="my-4">
                 <Label for="userAddress">Endereço</Label>
+                <span className="text-blue-700 font-bold"> *</span>
                 <Input
                   value={userAddress}
                   onChange={e => setUserAddress(e.target.value)}
@@ -122,6 +127,7 @@ export default function Signup () {
                 <div className="flex justify-between gap-6">
                   <div className="w-1/2">
                     <Label for="userPassword">Senha</Label>
+                    <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={userPassword}
                       onChange={e => setUserPassword(e.target.value)}
@@ -132,6 +138,7 @@ export default function Signup () {
                   </div>
                   <div className="w-1/2">
                     <Label for="userPasswordRepeat">Repita a senha</Label>
+                    <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={userPasswordRepeat}
                       onChange={e => setUserPasswordRepeat(e.target.value)}
