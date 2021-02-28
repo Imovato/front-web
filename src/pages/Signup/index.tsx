@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
@@ -15,12 +15,15 @@ export default function Signup () {
   const [userPassword, setUserPassword] = useState('')
   const [userPasswordRepeat, setUserPasswordRepeat] = useState('')
 
-  useEffect(() => {
-    console.log(userName)
-  }, [userName])
+  const history = useHistory()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
+    if(userPassword !== userPasswordRepeat) {
+      alert('Erro: As senhas não são iguais.')
+      return
+    }
 
     const data = {
       "email": userEmail,
@@ -28,19 +31,16 @@ export default function Signup () {
       "cpf": userCpf,
       "phone": userPhone,
       "address": userAddress,
+      "password": userPassword
     }
 
-    const response = await apiCrud.post('user/customer/add', data)
-
-    console.log(response)
-
-    setUserName('')
-    setUserEmail('')
-    setUserCpf('')
-    setUserPhone('')
-    setUserAddress('')
-    setUserPassword('')
-    setUserPasswordRepeat('')
+    try {
+      await apiCrud.post('user/customer/add', data)
+      alert('Usuário cadastrado com sucesso.')
+      history.push('/session/new')
+    } catch (error) {
+      alert('Algo deu errado, tente novamente.')
+    }
   }
 
   return (
