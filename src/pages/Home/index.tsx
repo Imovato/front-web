@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -10,12 +10,11 @@ import {
 import Search from "../../components/Search";
 import { PropertySample } from "../../components/PropertySample";
 import { apiProperty } from "../../services/api";
-import { useState } from "react";
-import { useEffect } from "react";
 
 library.add(faGreaterThan, faWindowMinimize, faPlus);
 
 interface Property {
+  id: string;
   name: string;
   place: string;
   value: string;
@@ -38,6 +37,7 @@ function Home() {
       <div className="flex w-screen h-full items-center justify-start space-y-2 pt-5 font-qsand flex-col">
         {properties.map((property: Property) => (
           <PropertySample
+            id={property.id}
             name={property.name}
             value={property.value}
             description={property.description}

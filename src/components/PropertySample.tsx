@@ -1,7 +1,8 @@
 import React, { Suspense } from "react";
-import { Img } from "react-image";
+import { Link } from "react-router-dom";
 import imovel from "../assets/imovel.png";
 interface SampleProps {
+  id: string;
   name: string;
   place: string;
   value: string;
@@ -10,6 +11,7 @@ interface SampleProps {
 }
 
 export function PropertySample({
+  id,
   name,
   place,
   value,
@@ -17,7 +19,11 @@ export function PropertySample({
   image,
 }: SampleProps) {
   return (
-    <div className="flex w-8/12 h-48 shadow-xl border-gray-200 border-2 rounded-xl">
+    // <div className="flex w-8/12 h-48 shadow-xl border-gray-200 border-2 rounded-xl">
+    <Link
+      to={"/property/".concat(id)}
+      className="flex w-8/12 h-48 shadow-xl border-gray-200 border-2 rounded-xl"
+    >
       <div className="flex w-1/3">
         <img src={imovel} className="w-full h-full"></img>
       </div>
@@ -35,6 +41,7 @@ export function PropertySample({
           <p>{description}</p>
         </div>
       </div>
-    </div>
+    </Link>
+    // </div>
   );
 }
