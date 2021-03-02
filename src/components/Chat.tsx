@@ -24,7 +24,7 @@ export default function Chat() {
   return (
     <div
       id="chatBox"
-      className="flex w-80 h-80 duration-75 fixed bottom-0 right-5 mb-1 border-2 font-qsand rounded-lg flex-col overflow-hidden"
+      className="flex w-80 h-80 duration-75 fixed bottom-0 right-5 mb-1 border-2 bg-white font-qsand rounded-lg flex-col overflow-hidden"
     >
       <div className="flex flex-none h-1/6 items-center border-b-2 pl-2">
         <div className="flex-auto">
