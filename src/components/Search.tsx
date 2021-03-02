@@ -9,27 +9,27 @@ export default function Search() {
       <div className="flex h-1/3 w-full items-center justify-center">
         <p className="mt-3 text-black">Pesquise seu imóvel</p>
       </div>
-      <form className="flex h-full w-full items-center justify-center space-x-1">
+      <form className="flex h-full w-full items-center justify-center space-x-2">
         <Select divClass="w-1/12">
           <option>Finalidade</option>
           <option>Venda</option>
           <option>Aluguel</option>
         </Select>
 
-        <Select divClass="w-2/12">
+        <Select divClass="w-1/6">
           <option>Tipo</option>
           <option>Apartamentos</option>
           <option>Casa</option>
           <option>Terrenos</option>
         </Select>
 
-        <Select divClass="w-1/12">
+        <Select divClass="w-1/6">
           <option>Cidade</option>
           <option>Alegrete</option>
           <option>Uruguaiana</option>
         </Select>
 
-        <Select divClass="w-1/12">
+        <Select divClass="w-1/6">
           <option>Bairro</option>
           <option>Ibirapuitã</option>
           <option>Centro</option>

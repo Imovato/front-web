@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <div className="flex w-screen h-32 bg-red-400 font-qsand text-white font-semibold">
+    <div className="flex w-screen h-24 bg-red-400 font-qsand text-white font-semibold">
       <div className="flex-none w-1/6 flex items-center justify-center border-r-2 border-red-500">
         LOGO
       </div>
