@@ -15,16 +15,23 @@ library.add(faGreaterThan, faWindowMinimize, faPlus);
 
 interface Property {
   id: string;
-  name: string;
-  place: string;
-  value: string;
+  dtype: string;
+  adress: string;
+  area_property: number;
+  city: string;
+  cod_address: string;
   description: string;
+  neighborhood: string;
+  number: number;
+  price: number;
+  state: string;
+  block: string;
 }
 
 function Home() {
   const [properties, setProperties] = useState([]);
   useEffect(() => {
-    apiProperty.get("properties", {}).then((response) => {
+    apiProperty.get("property/all", {}).then((response) => {
       setProperties(response.data);
     });
   }, []);
@@ -38,10 +45,10 @@ function Home() {
         {properties.map((property: Property) => (
           <PropertySample
             id={property.id}
-            name={property.name}
-            value={property.value}
+            name={property.city}
+            adress={property.adress}
             description={property.description}
-            place={property.place}
+            value={property.price}
             image="imovel.png"
           ></PropertySample>
         ))}

@@ -5,5 +5,5 @@ export const apiCrud = axios.create({
 });
 
 export const apiProperty = axios.create({
-  baseURL: "http://localhost:3003/",
+  baseURL: "http://localhost:8081/crudService/api/property/",
 });

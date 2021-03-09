@@ -4,8 +4,8 @@ import imovel from "../assets/imovel.png";
 interface SampleProps {
   id: string;
   name: string;
-  place: string;
-  value: string;
+  adress: string;
+  value: number;
   description: string;
   image: string;
 }
@@ -13,7 +13,7 @@ interface SampleProps {
 export function PropertySample({
   id,
   name,
-  place,
+  adress,
   value,
   description,
   image,
@@ -22,7 +22,7 @@ export function PropertySample({
     // <div className="flex w-8/12 h-48 shadow-xl border-gray-200 border-2 rounded-xl">
     <Link
       to={"/property/".concat(id)}
-      className="flex w-8/12 h-48 shadow-xl border-gray-200 border-2 rounded-xl"
+      className="flex w-8/12 h-56 shadow-xl border-gray-200 border-2 rounded-xl"
     >
       <div className="flex w-1/3">
         <img src={imovel} className="w-full h-full"></img>
@@ -32,10 +32,10 @@ export function PropertySample({
           <p>{name}</p>
         </div>
         <div className="lugar">
-          <p>{place}</p>
+          <p>{adress}</p>
         </div>
         <div className="valor">
-          <p>{value}</p>
+          <p>R$ {value}</p>
         </div>
         <div className="descricao">
           <p>{description}</p>
