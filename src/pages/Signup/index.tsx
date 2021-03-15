@@ -29,28 +29,33 @@ const translation = {
 
 setLocale(translation)
 
+interface UserData {
+  name: string
+  email: string
+  cpf: string
+  phone: string
+  address: string
+  password: string
+  passwordRepeat: string
+}
+
+let timeout: NodeJS.Timeout
+
 export default function Signup () {
-  const [userName, setUserName] = useState('')
-  const [nameErrors, setNameErrors] = useState([])
+  const [generalErrors, setGeneralErrors] = useState<string[]>([])
+  const [successMsg, setSuccessMsg] = useState('')
+  const [successTimeout, setSucessTimeout] = useState(3500)
+  const [cooldownWidth, setCooldownWidth] = useState(0)
 
-  const [userEmail, setUserEmail] = useState('')
-  const [emailErrors, setEmailErrors] = useState([])
-
-  const [userCpf, setUserCpf] = useState('')
-  const [cpfErrors, setCpfErrors] = useState([])
-
-  const [userPhone, setUserPhone] = useState('')
-  const [phoneErrors, setPhoneErrors] = useState([])
-
-  const [userAddress, setUserAddress] = useState('')
-  const [addressErrors, setAddressErrors] = useState([])
-
-  const [userPassword, setUserPassword] = useState('')
-  const [pwErrors, setPwErrors] = useState([])
-  const [userPasswordRepeat, setUserPasswordRepeat] = useState('')
-  const [repeatPwErrors, setRepeatPwErrors] = useState([])
-
-  const [generalErrors, setGeneralErrors] = useState([])
+  const [data, setData] = useState({
+    name: '',
+    email: '',
+    cpf: '',
+    phone: '',
+    address: '',
+    password: '',
+    passwordRepeat: ''
+  } as UserData)
 
   const history = useHistory()
 
@@ -63,48 +68,37 @@ export default function Signup () {
     phone: yup.string().required().matches(new RegExp('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')),
     address: yup.string().required(),
     password: yup.string().required().min(8).max(30),
+    passwordRepeat: yup.string().test('passwordRepeat', 'as senhas devem ser iguais', function(value) {
+      return this.parent.password === value
+    })
   });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    if(userPassword !== userPasswordRepeat) {
-      alert('Erro: As senhas não são iguais.')
-      return
-    }
+    if (await validate())
+      try {
+        await apiUser.post('/customer/add', data)
+        setSuccessMsg('Usuário cadastrado com sucesso.\n\nRedirecionando para o login...')
+        setTimeout(() => {
+          setCooldownWidth(100)
+        }, 10)
+        timeout = setTimeout(() => {
+          history.push('/session/new')
+        }, successTimeout)
+      } catch (error) {
+        alert('Algo deu errado, tente novamente.')
+      }
+  }
 
-    const data = {
-      name: userName,
-      email: userEmail,
-      cpf: userCpf,
-      phone: userPhone,
-      address: userAddress,
-      password: userPassword
-    }
-
+  async function validate() {
     try {
       await schema.validate(data, {abortEarly: false})
       setGeneralErrors([])
+      return true
     } catch (error) {
       setGeneralErrors(error.errors)
-      return
-    }
-
-    try {
-      await apiUser.post('/customer/add', data)
-      alert('Usuário cadastrado com sucesso.')
-      history.push('/session/new')
-    } catch (error) {
-      alert('Algo deu errado, tente novamente.')
-    }
-  }
-
-  async function validateField(obj: string, field: string, setFunction: React.Dispatch<React.SetStateAction<never[]>>) {
-    try {
-      await schema.validateAt(obj, {[obj]: field})
-      setFunction([])
-    } catch (err) {
-      setFunction(err.errors)
+      return false
     }
   }
 
@@ -127,8 +121,24 @@ export default function Signup () {
         </div>
         <div className="flex justify-center items-center h-full">
           <div className="flex flex-col w-2/5">
+            {successMsg &&
+            (<>
+              <div style={{
+                transition: 'opacity 0.5s',
+                opacity: `${cooldownWidth / 100}`
+              }} className="bg-green-100 rounded-t-none rounded-lg mb-5">
+                <div style={{
+                  transition: `width linear ${successTimeout / 1000}s`,
+                  width: `${cooldownWidth}%`
+                }}
+                className="h-1 bg-green-500"></div>
+                <div className="p-5">
+                  <p className="text-green-700 font-bold">{successMsg}</p>
+                </div>
+              </div>
+            </>)}
             <h1 className="text-3xl font-bold mb-8">Crie sua conta</h1>
-            { generalErrors ?
+            { generalErrors[0] &&
             (<>
               <div className="bg-red-100 p-3 rounded-lg mb-3">
                 <h3 className="text-red-800 font-bold">Campos inválidos:</h3>
@@ -136,38 +146,29 @@ export default function Signup () {
                   <FormError key={Math.random()}>{e}</FormError>
                 ))}
               </div>
-            </>)
-            : null }
+            </>)}
             <form onSubmit={handleSubmit}>
               <fieldset>
                 <Label for="userName">Nome</Label>
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
-                  value={userName}
-                  onChange={e => setUserName(e.target.value)}
-                  onBlur={async () => validateField('name', userName, setNameErrors)}
+                  value={data.name}
+                  onChange={e => setData({...data, name: e.target.value})}
                   color="blue"
                   name="userName"
                   type="text"
                 />
-                { nameErrors ? nameErrors.map((e) => (
-                  <FormError key={Math.random()}>{e}</FormError>
-                )) : null}
               </fieldset>
               <fieldset className="my-4">
                 <Label for="userEmail">Endereço de Email</Label>
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
-                  value={userEmail}
-                  onChange={e => setUserEmail(e.target.value)}
-                  onBlur={async () => validateField('email', userEmail, setEmailErrors)}
+                  value={data.email}
+                  onChange={e => setData({...data, email: e.target.value})}
                   color="blue"
                   name="userEmail"
                   type="email"
                 />
-                { emailErrors ? emailErrors.map((e) => (
-                  <FormError key={Math.random()}>{e}</FormError>
-                )) : null}
               </fieldset>
               <fieldset className="my-4">
                 <div className="flex justify-between gap-6">
@@ -175,31 +176,23 @@ export default function Signup () {
                     <Label for="userCpf">CPF</Label>
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
-                      value={userCpf}
-                      onChange={e => setUserCpf(e.target.value)}
-                      onBlur={async () => validateField('cpf', userCpf, setCpfErrors)}
+                      value={data.cpf}
+                      onChange={e => setData({...data, cpf: e.target.value})}
                       color="blue"
                       name="userCpf"
                       type="text"
                     />
-                    { cpfErrors ? cpfErrors.map((e) => (
-                      <FormError key={Math.random()}>{e}</FormError>
-                    )) : null}
                   </div>
                   <div className="w-1/2">
                     <Label for="userPhone">Telefone</Label>
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
-                      value={userPhone}
-                      onChange={e => setUserPhone(e.target.value)}
-                      onBlur={async () => validateField('phone', userPhone, setPhoneErrors)}
+                      value={data.phone}
+                      onChange={e => setData({...data, phone: e.target.value})}
                       color="blue"
                       name="userPhone"
                       type="text"
                     />
-                    { phoneErrors ? phoneErrors.map((e) => (
-                      <FormError key={Math.random()}>{e}</FormError>
-                    )) : null}
                   </div>
                 </div>
               </fieldset>
@@ -207,16 +200,12 @@ export default function Signup () {
                 <Label for="userAddress">Endereço</Label>
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
-                  value={userAddress}
-                  onChange={e => setUserAddress(e.target.value)}
-                  onBlur={async () => validateField('address', userAddress, setAddressErrors)}
+                  value={data.address}
+                  onChange={e => setData({...data, address: e.target.value})}
                   color="blue"
                   name="userAddress"
                   type="text"
                 />
-                { addressErrors ? addressErrors.map((e) => (
-                  <FormError key={Math.random()}>{e}</FormError>
-                )) : null}
               </fieldset>
               <fieldset className="my-4">
                 <div className="flex justify-between gap-6">
@@ -224,31 +213,23 @@ export default function Signup () {
                     <Label for="userPassword">Senha</Label>
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
-                      value={userPassword}
-                      onChange={e => setUserPassword(e.target.value)}
-                      onBlur={async () => validateField('password', userPassword, setPwErrors)}
+                      value={data.password}
+                      onChange={e => setData({...data, password: e.target.value})}
                       color="blue"
                       name="userPassword"
                       type="password"
                     />
-                    { pwErrors ? pwErrors.map((e) => (
-                      <FormError key={Math.random()}>{e}</FormError>
-                    )) : null}
                   </div>
                   <div className="w-1/2">
                     <Label for="userPasswordRepeat">Repita a senha</Label>
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
-                      value={userPasswordRepeat}
-                      onChange={e => setUserPasswordRepeat(e.target.value)}
-                      onBlur={async () => validateField('password', userPasswordRepeat, setRepeatPwErrors)}
+                      value={data.passwordRepeat}
+                      onChange={e => setData({...data, passwordRepeat: e.target.value})}
                       color="blue"
                       name="userPasswordRepeat"
                       type="password"
                   />
-                  { repeatPwErrors ? repeatPwErrors.map((e) => (
-                    <FormError key={Math.random()}>{e}</FormError>
-                  )) : null}
                   </div>
                 </div>
               </fieldset>
