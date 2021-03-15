@@ -31,7 +31,7 @@ interface Property {
 function Home() {
   const [properties, setProperties] = useState([]);
   useEffect(() => {
-    apiProperty.get("property/all", {}).then((response) => {
+    apiProperty.get("/all", {}).then((response) => {
       setProperties(response.data);
     });
   }, []);

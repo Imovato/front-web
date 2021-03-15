@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
-import { apiCrud } from '../../services/api';
+import { apiUser } from '../../services/api';
 
 export default function Login () {
   const [userEmail, setUserEmail] = useState('')
@@ -16,7 +16,7 @@ export default function Login () {
 
     try {
         // const response = await apiAuth.post('/session', { userEmail, userPassword })
-        const response = await apiCrud.get('/user/customer/find/1')
+        const response = await apiUser.get('/customer/find/1')
 
         localStorage.setItem('userId', response.data.id)
         localStorage.setItem('userName', response.data.name)
@@ -29,7 +29,7 @@ export default function Login () {
     } catch (err) {
         alert('Erro ao logar, tente novamente.')
     }
-}
+  }
 
   return (
     <div className="flex w-auto h-screen">
@@ -64,7 +64,9 @@ export default function Login () {
                 <fieldset className="my-6">
                     <div className="flex justify-between">
                         <Label for="userPassword">Senha</Label>
-                        <Link className="text-red-700" to="/passwords_reset/new">Esqueceu a senha?</Link>
+                        <Link
+                          className="text-red-700"
+                          to="/passwords_reset/new">Esqueceu a senha?</Link>
                     </div>
                     <Input
                       name="userPassword"

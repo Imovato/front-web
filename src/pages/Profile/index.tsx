@@ -4,7 +4,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiCrud } from "../../services/api";
+import { apiUser } from "../../services/api";
 
 export function Profile() {
   const [userName, setUserName] = useState(localStorage.getItem('userName') ?? '')
@@ -34,14 +34,14 @@ export function Profile() {
 
     // could've saved the user password locally, but not the best idea
     try {
-      const response = await apiCrud.get(`/user/customer/find/${userId}`)
+      const response = await apiUser.get(`/user/customer/find/${userId}`)
       data.password = response.data.password
     } catch (error) {
       alert('Erro ao recuperar dados vitais do usuário.')
     }
 
     try {
-      const response = await apiCrud.put('/user/customer/update', data)
+      const response = await apiUser.put('/customer/update', data)
 
       localStorage.setItem('userId', response.data.id)
       localStorage.setItem('userName', response.data.name)
@@ -145,7 +145,7 @@ export function ChangePw() {
     let actualPassword = ''
 
     try {
-      const response = await apiCrud.get(`/user/customer/find/${userId}`)
+      const response = await apiUser.get(`/user/customer/find/${userId}`)
       actualPassword = response.data.password
     } catch (error) {
       alert('Erro ao recuperar dados vitais do usuário.')
@@ -179,7 +179,7 @@ export function ChangePw() {
 
 
     try {
-      await apiCrud.put('/user/customer/update', data)
+      await apiUser.put('/customer/update', data)
       alert('Senha atualizada com sucesso.')
     } catch (error) {
       alert('Erro ao atualizar a senha.')
