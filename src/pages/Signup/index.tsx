@@ -1,33 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import * as yup from 'yup'
-import { setLocale } from 'yup'
 
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
-import { validarCPF } from '../../utils/validarCpf'
 import { FormError } from '../../components/FormError';
 
 import { apiUser } from '../../services/api';
-
-const translation = {
-  mixed: {
-    required: '${path} é um campo obrigatório',
-  },
-  string: {
-    min: '${path} deve ter pelo menos ${min} caracteres',
-    max: '${path} deve ter no máximo ${max} caracteres',
-    email: '${path} tem o formato de e-mail inválido',
-    matches: '${path} está no formato inválido'
-  },
-  number: {
-    min: '${path} deve ser no mínimo ${min}',
-    max: '${path} deve ser no máximo ${max}',
-  },
-}
-
-setLocale(translation)
+import { TimedDialog } from '../../components/TimedDialog';
+import { schema } from './schema';
 
 interface UserData {
   name: string
@@ -44,8 +25,8 @@ let timeout: NodeJS.Timeout
 export default function Signup () {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
   const [successMsg, setSuccessMsg] = useState('')
-  const [successTimeout, setSucessTimeout] = useState(3500)
-  const [cooldownWidth, setCooldownWidth] = useState(0)
+  const [msgStart, setMsgStart] = useState(false)
+  const msgTimeout = 2500
 
   const [data, setData] = useState({
     name: '',
@@ -59,20 +40,6 @@ export default function Signup () {
 
   const history = useHistory()
 
-  const schema = yup.object().shape({
-    name: yup.string().required().max(100),
-    email: yup.string().email().required().max(100).min(2),
-    cpf: yup.string().required().test('cpf', 'cpf não é válido', function (val) {
-      return validarCPF(val ?? '00000000000') // always returns false if undefined
-    }),
-    phone: yup.string().required().matches(new RegExp('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')),
-    address: yup.string().required(),
-    password: yup.string().required().min(8).max(30),
-    passwordRepeat: yup.string().test('passwordRepeat', 'as senhas devem ser iguais', function(value) {
-      return this.parent.password === value
-    })
-  });
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
@@ -80,12 +47,10 @@ export default function Signup () {
       try {
         await apiUser.post('/customer/add', data)
         setSuccessMsg('Usuário cadastrado com sucesso.\n\nRedirecionando para o login...')
-        setTimeout(() => {
-          setCooldownWidth(100)
-        }, 10)
+        setMsgStart(true)
         timeout = setTimeout(() => {
           history.push('/session/new')
-        }, successTimeout)
+        }, msgTimeout)
       } catch (error) {
         alert('Algo deu errado, tente novamente.')
       }
@@ -121,22 +86,7 @@ export default function Signup () {
         </div>
         <div className="flex justify-center items-center h-full">
           <div className="flex flex-col w-2/5">
-            {successMsg &&
-            (<>
-              <div style={{
-                transition: 'opacity 0.5s',
-                opacity: `${cooldownWidth / 100}`
-              }} className="bg-green-100 rounded-t-none rounded-lg mb-5">
-                <div style={{
-                  transition: `width linear ${successTimeout / 1000}s`,
-                  width: `${cooldownWidth}%`
-                }}
-                className="h-1 bg-green-500"></div>
-                <div className="p-5">
-                  <p className="text-green-700 font-bold">{successMsg}</p>
-                </div>
-              </div>
-            </>)}
+            {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
             <h1 className="text-3xl font-bold mb-8">Crie sua conta</h1>
             { generalErrors[0] &&
             (<>
