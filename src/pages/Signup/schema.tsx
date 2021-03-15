@@ -1,5 +1,7 @@
+import axios from 'axios';
 import * as yup from 'yup'
 import { setLocale } from 'yup';
+import { apiUser } from '../../services/api';
 
 import { validarCPF } from '../../utils/validarCpf';
 
@@ -22,7 +24,16 @@ setLocale({
 
 export const schema = yup.object().shape({
   name: yup.string().required().max(100),
-  email: yup.string().email().required().max(100).min(2),
+  email: yup.string().email().required().max(100).min(2).test('email', 'email já cadastrado', async function (val) {
+    try {
+      const res = await apiUser.post('/checkEmail', {
+        email: val
+      })
+      return res.data
+    } catch(err) {
+      console.log("something went wrong with the api...", err)
+    }
+  }),
   cpf: yup.string().required().test('cpf', 'cpf não é válido', function (val) {
     return validarCPF(val ?? '00000000000') // always returns false if undefined
   }),
