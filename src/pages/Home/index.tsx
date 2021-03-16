@@ -38,7 +38,7 @@ function Home() {
   }, []);
 
   return (
-    <div className="App w-full h-full">
+    <div className="App w-full h-full pb-10">
       <Navbar></Navbar>
       <Chat></Chat>
       <Search></Search>

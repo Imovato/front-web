@@ -24,11 +24,8 @@ export function PropertySample({
       to={"/property/".concat(id)}
       className="flex w-8/12 h-56 shadow-xl border-gray-200 border-2 rounded-xl hover:border-red-400"
     >
-      <div className="flex w-1/3">
-        <img
-          src={process.env.PUBLIC_URL + "/imovel.png"}
-          className="w-full h-full"
-        ></img>
+      <div className="flex w-1/3 justify-center">
+        <img src={process.env.PUBLIC_URL + "/imovel.png"} height="2xl"></img>
       </div>
       <div className="flex w-2/3 flex-col justify-between ml-2 py-3">
         <div className="flex w-full h-full">
