@@ -23,8 +23,8 @@ setLocale({
 })
 
 export const schema = yup.object().shape({
-  name: yup.string().required().max(100),
-  email: yup.string().email().required().max(100).min(2).test('email', 'email já cadastrado', async function (val) {
+  Nome: yup.string().required().max(100),
+  Email: yup.string().email().required().max(100).min(2).test('Email', 'Email já cadastrado', async function (val) {
     try {
       const res = await apiUser.post('/checkEmail', {
         email: val
@@ -34,13 +34,13 @@ export const schema = yup.object().shape({
       console.log("something went wrong with the api...", err)
     }
   }),
-  cpf: yup.string().required().test('cpf', 'cpf não é válido', function (val) {
+  CPF: yup.string().required().test('CPF', 'CPF não é válido', function (val) {
     return validarCPF(val ?? '00000000000') // always returns false if undefined
   }),
-  phone: yup.string().required().matches(new RegExp('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')),
-  address: yup.string().required(),
-  password: yup.string().required().min(8).max(30),
-  passwordRepeat: yup.string().test('passwordRepeat', 'as senhas devem ser iguais', function(value) {
-    return this.parent.password === value
+  Telefone: yup.string().required().matches(new RegExp('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')),
+  Endereço: yup.string().required(),
+  Senha: yup.string().required().min(8).max(30),
+  'Repita a senha': yup.string().test('Repita a senha', 'As senhas devem ser iguais', function(value) {
+    return this.parent['Senha'] === value
   })
 })

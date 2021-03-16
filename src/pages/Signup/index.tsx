@@ -11,13 +11,13 @@ import { TimedDialog } from '../../components/TimedDialog';
 import { schema } from './schema';
 
 interface UserData {
-  name: string
-  email: string
-  cpf: string
-  phone: string
-  address: string
-  password: string
-  passwordRepeat: string
+  Nome: string
+  Email: string
+  CPF: string
+  Telefone: string
+  Endereço: string
+  Senha: string
+  'Repita a senha': string
 }
 
 let timeout: NodeJS.Timeout
@@ -29,14 +29,14 @@ export default function Signup () {
   const msgTimeout = 2500
 
   const [data, setData] = useState({
-    name: '',
-    email: '',
-    cpf: '',
-    phone: '',
-    address: '',
-    password: '',
-    passwordRepeat: ''
-  } as UserData)
+    Nome: '',
+    Email: '',
+    CPF: '',
+    Telefone: '',
+    Endereço: '',
+    Senha: '',
+    'Repita a senha': ''
+  })
 
   const history = useHistory()
 
@@ -102,8 +102,8 @@ export default function Signup () {
                 <Label for="userName">Nome</Label>
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
-                  value={data.name}
-                  onChange={e => setData({...data, name: e.target.value})}
+                  value={data['Nome']}
+                  onChange={e => setData({...data, 'Nome': e.target.value})}
                   color="blue"
                   name="userName"
                   type="text"
@@ -113,8 +113,8 @@ export default function Signup () {
                 <Label for="userEmail">Endereço de Email</Label>
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
-                  value={data.email}
-                  onChange={e => setData({...data, email: e.target.value})}
+                  value={data['Email']}
+                  onChange={e => setData({...data, 'Email': e.target.value})}
                   color="blue"
                   name="userEmail"
                   type="email"
@@ -126,8 +126,8 @@ export default function Signup () {
                     <Label for="userCpf">CPF</Label>
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
-                      value={data.cpf}
-                      onChange={e => setData({...data, cpf: e.target.value})}
+                      value={data['CPF']}
+                      onChange={e => setData({...data, ['CPF']: e.target.value})}
                       color="blue"
                       name="userCpf"
                       type="text"
@@ -137,8 +137,8 @@ export default function Signup () {
                     <Label for="userPhone">Telefone</Label>
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
-                      value={data.phone}
-                      onChange={e => setData({...data, phone: e.target.value})}
+                      value={data['Telefone']}
+                      onChange={e => setData({...data, ['Telefone']: e.target.value})}
                       color="blue"
                       name="userPhone"
                       type="text"
@@ -150,8 +150,8 @@ export default function Signup () {
                 <Label for="userAddress">Endereço</Label>
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
-                  value={data.address}
-                  onChange={e => setData({...data, address: e.target.value})}
+                  value={data['Endereço']}
+                  onChange={e => setData({...data, ['Endereço']: e.target.value})}
                   color="blue"
                   name="userAddress"
                   type="text"
@@ -163,8 +163,8 @@ export default function Signup () {
                     <Label for="userPassword">Senha</Label>
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
-                      value={data.password}
-                      onChange={e => setData({...data, password: e.target.value})}
+                      value={data['Senha']}
+                      onChange={e => setData({...data, ['Senha']: e.target.value})}
                       color="blue"
                       name="userPassword"
                       type="password"
@@ -174,8 +174,8 @@ export default function Signup () {
                     <Label for="userPasswordRepeat">Repita a senha</Label>
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
-                      value={data.passwordRepeat}
-                      onChange={e => setData({...data, passwordRepeat: e.target.value})}
+                      value={data['Repita a senha']}
+                      onChange={e => setData({...data, ['Repita a senha']: e.target.value})}
                       color="blue"
                       name="userPasswordRepeat"
                       type="password"
