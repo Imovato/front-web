@@ -5,26 +5,14 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
 import { FormError } from '../../components/FormError';
+import { TimedDialog } from '../../components/TimedDialog';
 
 import { apiUser } from '../../services/api';
-import { TimedDialog } from '../../components/TimedDialog';
 import { schema } from './schema';
-
-interface UserData {
-  Nome: string
-  Email: string
-  CPF: string
-  Telefone: string
-  Endereço: string
-  Senha: string
-  'Repita a senha': string
-}
-
-let timeout: NodeJS.Timeout
 
 export default function Signup () {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const [successMsg, setSuccessMsg] = useState('')
+  const [successMsg, setSuccessMsg] = useState<string[]>([])
   const [msgStart, setMsgStart] = useState(false)
   const msgTimeout = 2500
 
@@ -46,9 +34,9 @@ export default function Signup () {
     if (await validate())
       try {
         await apiUser.post('/customer/add', data)
-        setSuccessMsg('Usuário cadastrado com sucesso.\n\nRedirecionando para o login...')
+        setSuccessMsg(['Usuário cadastrado com sucesso.', 'Redirecionando para o login...'])
         setMsgStart(true)
-        timeout = setTimeout(() => {
+        setTimeout(() => {
           history.push('/session/new')
         }, msgTimeout)
       } catch (error) {

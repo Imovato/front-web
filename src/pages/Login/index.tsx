@@ -1,33 +1,66 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { ValidationError } from 'yup';
+
 import { Button } from '../../components/Button';
+import { FormError } from '../../components/FormError';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
+import { TimedDialog } from '../../components/TimedDialog';
+
 import { apiUser } from '../../services/api';
+import { schema } from './schema';
 
 export default function Login () {
-  const [userEmail, setUserEmail] = useState('')
-  const [userPassword, setUserPassword] = useState('')
+  const [generalErrors, setGeneralErrors] = useState<string[]>([])
+  const [successMsg, setSuccessMsg] = useState([''])
+  const [msgStart, setMsgStart] = useState(false)
+  const msgTimeout = 2500
+
+  const [data, setData] = useState({
+    Email: '',
+    Senha: '',
+  })
 
   const history = useHistory()
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
+    if(await validate())
+      try {
+          // const response = await apiAuth.post('/session', { userEmail, userPassword })
+          const {data: user} = await apiUser.get('/customer/find/1')
+
+          localStorage.setItem('userId', user.id)
+          localStorage.setItem('userName', user.name)
+          localStorage.setItem('userEmail', user.email)
+          localStorage.setItem('userCpf', user.cpf)
+          localStorage.setItem('userPhone', user.phone)
+          localStorage.setItem('userAddress', user.address)
+          setSuccessMsg(['Login efetuado com sucesso.', 'Redirecionando para a página inicial...'])
+          setMsgStart(true)
+          setTimeout(() => {
+            history.push('/')
+          }, msgTimeout)
+      } catch (err) {
+        alert('Algo deu errado, tente novamente.')
+      }
+  }
+
+  async function validate() {
     try {
-        // const response = await apiAuth.post('/session', { userEmail, userPassword })
-        const response = await apiUser.get('/customer/find/1')
-
-        localStorage.setItem('userId', response.data.id)
-        localStorage.setItem('userName', response.data.name)
-        localStorage.setItem('userEmail', response.data.email)
-        localStorage.setItem('userCpf', response.data.cpf)
-        localStorage.setItem('userPhone', response.data.phone)
-        localStorage.setItem('userAddress', response.data.address)
-
-        history.push('/')
-    } catch (err) {
-        alert('Erro ao logar, tente novamente.')
+      await schema.validate(data, {abortEarly: false})
+      const {data: emailExists} = await apiUser.post('/checkEmail', {
+        email: data['Email']
+      })
+      if(!emailExists)
+        throw new ValidationError('Login não encontrado')
+      setGeneralErrors([])
+      return true
+    } catch (error) {
+      setGeneralErrors(error.errors)
+      return false
     }
   }
 
@@ -50,15 +83,25 @@ export default function Login () {
         </div>
         <div className="flex justify-center items-center h-full">
           <div className="flex flex-col w-2/5">
+            {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
             <h1 className="text-3xl font-bold mb-8">Acesse sua conta</h1>
+            { generalErrors[0] &&
+            (<>
+              <div className="bg-red-100 p-3 rounded-lg mb-3">
+                <h3 className="text-red-800 font-bold">Campos inválidos:</h3>
+                {generalErrors.map((e) => (
+                  <FormError key={Math.random()}>{e}</FormError>
+                ))}
+              </div>
+            </>)}
             <form onSubmit={handleLogin}>
                 <fieldset>
                     <Label for="userEmail">Endereço de Email</Label>
                     <Input
                       name="userEmail"
                       type="email"
-                      value={userEmail}
-                      onChange={e => setUserEmail(e.target.value)}
+                      value={data['Email']}
+                      onChange={e => setData({...data, 'Email': e.target.value})}
                     />
                 </fieldset>
                 <fieldset className="my-6">
@@ -71,8 +114,8 @@ export default function Login () {
                     <Input
                       name="userPassword"
                       type="password"
-                      value={userPassword}
-                      onChange={e => setUserPassword(e.target.value)}
+                      value={data['Senha']}
+                      onChange={e => setData({...data, 'Senha': e.target.value})}
                     />
                 </fieldset>
                 <Button type="submit">Enviar</Button>

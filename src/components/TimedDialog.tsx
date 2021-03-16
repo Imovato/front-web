@@ -2,7 +2,7 @@ import { useState } from "react"
 
 interface TimedDialogProps {
   timeout: number
-  msg: string
+  msg: string[]
   start: boolean
 }
 
@@ -13,6 +13,7 @@ export function TimedDialog({timeout, msg, start}: TimedDialogProps) {
     run()
 
   function run() {
+    console.log(msg)
     setTimeout(() => {
       setCooldownWidth(100)
     }, 10)
@@ -28,7 +29,7 @@ export function TimedDialog({timeout, msg, start}: TimedDialogProps) {
     }}
     className="h-1 bg-green-500"></div>
     <div className="p-5">
-      <p className="text-green-700 font-bold">{msg}</p>
+      {msg.map((e: string) => (<p className="text-green-700 font-bold">{e}</p>))}
     </div>
   </div>
 }
