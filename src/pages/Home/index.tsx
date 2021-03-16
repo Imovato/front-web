@@ -15,6 +15,7 @@ library.add(faGreaterThan, faWindowMinimize, faPlus);
 
 interface Property {
   id: string;
+  name: string;
   dtype: string;
   adress: string;
   area_property: number;
@@ -31,21 +32,21 @@ interface Property {
 function Home() {
   const [properties, setProperties] = useState([]);
   useEffect(() => {
-    apiProperty.get("/all", {}).then((response) => {
+    apiProperty.get("/property/all", {}).then((response) => {
       setProperties(response.data);
     });
   }, []);
 
   return (
-    <div className="App w-screen h-screen">
+    <div className="App w-full h-full">
       <Navbar></Navbar>
       <Chat></Chat>
       <Search></Search>
-      <div className="flex w-screen h-full items-center justify-start space-y-2 pt-5 font-qsand flex-col">
+      <div className="flex w-full h-full items-center justify-start space-y-2 pt-5 font-qsand flex-col">
         {properties.map((property: Property) => (
           <PropertySample
             id={property.id}
-            name={property.city}
+            name={property.name}
             adress={property.adress}
             description={property.description}
             value={property.price}

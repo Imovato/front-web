@@ -5,7 +5,7 @@ import Select from "./Select";
 
 export default function Search() {
   return (
-    <div className="flex w-screen h-24 bg-red-200 font-qsand text-white font-semibold flex-col">
+    <div className="flex w-full h-24 bg-red-200 font-qsand text-white font-semibold flex-col">
       <div className="flex h-1/3 w-full items-center justify-center">
         <p className="mt-3 text-black">Pesquise seu imóvel</p>
       </div>
