@@ -4,9 +4,9 @@ import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import Search from "../../components/Search";
 import { apiProperty } from "../../services/api";
 
+import ContactUsSvg from '../../assets/phone-call.svg'
 interface Property {
   id: string;
   name: string;
@@ -81,119 +81,111 @@ function Property() {
   return (
     <>
       <Chat></Chat>
-      <div className="pb-10 max-w-6xl m-auto h-screen">
+      <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
           <section
-            className="flex max-h-176 gap-16
+            className="flex flex-col items-center max-h-176 gap-6 max-w-6xl
             overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-red-200"
           >
-            <div className="flex w-full h-full items-center justify-start pt-5 font-qsand flex-col space-y-2 mr-8">
-              <div className="flex w-full shadow-md border-gray-200 border-2 rounded-xl bg-white">
-                <div className="flex w-1/2 justify-center p-2 bg-white">
-                  <img
-                    src={process.env.PUBLIC_URL + "/imovel.png"}
-                    height="5xl"
-                  ></img>
-                </div>
-                <div className="flex flex-col w-1/2 h-full justify-between gap-8 ">
-                  <p className="ml-5 mt-3 text-xl">{property?.name}</p>
+            <div className="flex items-center justify-around font-qsand">
+              <img
+                className="rounded-lg max-w-max shadow-lg"
+                src={process.env.PUBLIC_URL + "/imovel.png"}
+              />
+              <div className="flex flex-col w-1/2">
+                <div className="flex flex-col justify-between gap-4 p-4 bg-white rounded-t-xl shadow-lg">
+                  <p className="text-xl font-medium">{property?.name}</p>
                   <div className="flex flex-col justify-between gap-10">
-                    <p className="ml-5 mt-3 text-lg">{property?.description}</p>
-                    <p className="ml-5 mt-3 text-xl text-green-800">R$ {property?.price}</p>
-                  </div>
-                  <div className="flex w-full justify-between bg-white">
-                    <Button color="green-500" onClick={() => handleBuy} roundedProp="none" additionalClasses="text-xl w-1/2 h-12 justify-center">
-                      Comprar
-                    </Button>
-                    <Button color="yellow-500" onClick={() => handleHire} roundedProp="none" additionalClasses="text-xl w-1/2 h-12 justify-center">
-                      Alugar
-                    </Button>
+                    <p className="text-lg">{property?.description}</p>
+                    <p className="text-xl text-green-800">R$ {property?.price}</p>
                   </div>
                 </div>
-      
-              </div>
-              <div className="flex w-full shadow-md border-gray-200 border-2 rounded-xl flex-col bg-white">
-                <div className="flex flex-col mt-3">
-                  <p className="ml-3 mt-3 text-2xl">Localização</p>
-                  <hr className="border-2 border-gray-600 mx-3" />
-                  <p className="ml-5 mt-3 text-xl">{property?.adress}</p>
-                </div>
-                <div className="flex flex-col mt-3">
-                  <p className="ml-3 mt-3 text-2xl">Bairro</p>
-                  <hr className="border-2 border-gray-600 mx-3" />
-                  <p className="ml-5 mt-3 text-xl">{property?.neighborhood}</p>
-                </div>
-                <div className="flex flex-col mt-3">
-                  <p className="ml-3 mt-3 text-2xl">Número</p>
-                  <hr className="border-2 border-gray-600 mx-3" />
-                  <p className="ml-5 mt-3 text-xl">{property?.number}</p>
-                </div>
-                <div className="flex flex-col mt-3">
-                  <p className="ml-3 mt-3 text-2xl">Bloco</p>
-                  <hr className="border-2 border-gray-600 mx-3" />
-                  <p className="ml-5 mt-3 text-xl">{property?.block}</p>
-                </div>
-                <div className="flex flex-col mt-3">
-                  <p className="ml-3 mt-3 text-2xl">Número de quartos</p>
-                  <hr className="border-2 border-gray-600 mx-3" />
-                  <p className="ml-5 mt-3 text-xl">{property?.rooms}</p>
+                <div className="flex justify-between bg-white">
+                  <Button color="green-500" onClick={() => handleBuy} roundedProp="bl-lg" additionalClasses="text-xl w-full h-12 justify-center">
+                    Comprar
+                  </Button>
+                  <Button color="yellow-500" onClick={() => handleHire} roundedProp="br-lg" additionalClasses="text-xl w-full h-12 justify-center">
+                    Alugar
+                  </Button>
                 </div>
               </div>
-              <div className="flex w-full shadow-xl border-gray-200 border-2 rounded-xl flex-col bg-white">
-                <div className="flex w-full justify-center items-center space-y-2 flex-col pb-5">
-                  <p className="ml-5 mt-3 text-xl">Entre em contato</p>
-                  <form
-                    onSubmit={handleSubmit}
-                    className="flex w-8/12 flex-col space-y-4"
-                  >
-                    <fieldset>
-                      <Label for="customerName">Nome</Label>
-                      <input
-                        value={data.name}
-                        onChange={(e) =>
-                          setData({ ...data, name: e.target.value })
-                        }
-                        className="focus:ring focus:ring-blue-200 w-full h-10 px-3 rounded-lg bg-gray-200"
-                        color="blue"
-                        name="customerName"
-                        type="text"
-                      />
-                    </fieldset>
-                    <fieldset>
-                      <Label for="customerEmail">Endereço de Email</Label>
-                      <input
-                        value={data.email}
-                        onChange={(e) =>
-                          setData({ ...data, email: e.target.value })
-                        }
-                        className="focus:ring focus:ring-blue-200 w-full h-10 px-3 rounded-lg bg-gray-200"
-                        color="blue"
-                        name="customerEmail"
-                        type="email"
-                      />
-                    </fieldset>
-                    <fieldset>
-                      <Label for="customerPhone">Telefone</Label>
-                      <input
-                        value={data.phone}
-                        onChange={(e) =>
-                          setData({ ...data, phone: e.target.value })
-                        }
-                        className="focus:ring focus:ring-blue-200 w-full h-10 px-3 rounded-lg bg-gray-200"
-                        color="blue"
-                        name="customerPhone"
-                        type="text"
-                      />
-                    </fieldset>
-                    <div className="flex w-full justify-center items-center">
-                      <Button color="green-500" type="submit">
-                        Enviar
-                      </Button>
-                    </div>
-                  </form>
-                </div>
+            </div>
+            <div className="flex max-w-5xl w-full justify-around shadow-md rounded-xl bg-white p-4 gap-16">
+              <div>
+                <p className="text-xl">Localização</p>
+                <p className="text-lg font-light">{property?.adress}</p>
+              </div>
+              <div>
+                <p className="text-xl">Bairro</p>
+                <p className="text-lg font-light">{property?.neighborhood}</p>
+              </div>
+              <div>
+                <p className="text-xl">Número</p>
+                <p className="text-lg font-light">{property?.number}</p>
+              </div>
+              <div>
+                <p className="text-xl">Bloco</p>
+                <p className="text-lg font-light">{property?.block}</p>
+              </div>
+              <div>
+                <p className="text-xl">Quartos</p>
+                <p className="text-lg font-light">{property?.rooms}</p>
+              </div>
+            </div>
+            <div className="flex max-w-3xl w-full shadow-md rounded-xl justify-around items-center gap-12 bg-white p-5 mb-8">
+              <div>
+                <p className="text-xl text-center mb-5">Entre em contato</p>
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-3"
+                >
+                  <fieldset className="flex gap-3 justify-end items-center">
+                    <Label font="light" for="customerName">Nome</Label>
+                    <input
+                      value={data.name}
+                      onChange={(e) =>
+                        setData({ ...data, name: e.target.value })
+                      }
+                      className="focus:ring focus:ring-pink-200 h-10 px-3 rounded-lg bg-gray-200"
+                      name="customerName"
+                      type="text"
+                    />
+                  </fieldset>
+                  <fieldset className="flex gap-3 justify-end items-center">
+                    <Label font="light" for="customerEmail">Endereço de Email</Label>
+                    <input
+                      value={data.email}
+                      onChange={(e) =>
+                        setData({ ...data, email: e.target.value })
+                      }
+                      className="focus:ring focus:ring-pink-200 h-10 px-3 rounded-lg bg-gray-200"
+                      name="customerEmail"
+                      type="email"
+                    />
+                  </fieldset>
+                  <fieldset className="flex gap-3 justify-end items-center">
+                    <Label font="light" for="customerPhone">Telefone</Label>
+                    <input
+                      value={data.phone}
+                      onChange={(e) =>
+                        setData({ ...data, phone: e.target.value })
+                      }
+                      className="focus:ring focus:ring-pink-200 h-10 px-3 rounded-lg bg-gray-200"
+                      name="customerPhone"
+                      type="text"
+                    />
+                  </fieldset>
+                  <div className="flex w-full justify-end">
+                    <Button color="pink-600" type="submit">
+                      Enviar
+                    </Button>
+                  </div>
+                </form>
+              </div>
+              <div className="flex flex-1 p-8">
+                <img src={ContactUsSvg} alt="Entre em contato"/>
               </div>
             </div>
           </section>
