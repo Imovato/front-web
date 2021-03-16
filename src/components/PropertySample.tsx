@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { Suspense } from "react";
 import { Link } from "react-router-dom";
 interface SampleProps {
   id: string;
@@ -22,22 +21,22 @@ export function PropertySample({
     // <div className="flex w-8/12 h-48 shadow-xl border-gray-200 border-2 rounded-xl">
     <Link
       to={"/property/".concat(id)}
-      className="flex w-8/12 h-56 shadow-xl border-gray-200 border-2 rounded-xl hover:border-red-400"
+      className="flex max-w-3xl shadow-md rounded-md bg-white border-2 hover:border-red-400 p-2 justify-start gap-4 mr-8"
     >
-      <div className="flex w-1/3 justify-center">
-        <img src={process.env.PUBLIC_URL + "/imovel.png"} height="2xl"></img>
+      <div className="rounded-sm">
+        <img className="w-36 rounded-md" src={process.env.PUBLIC_URL + "/imovel.png"} alt={name}></img>
       </div>
       <div className="flex w-2/3 flex-col justify-between ml-2 py-3">
         <div className="flex w-full h-full">
           <div className="flex w-2/3 flex-col justify-between pb-5">
-            <div className="text-lg">
+            <div className="text-2xl">
               <p>{name}</p>
             </div>
             <div className="lugar">
               <p>{adress}</p>
             </div>
             <div className="valor">
-              <p>R$ {value}</p>
+              <p className="font-bold text-green-800">R$ {value}</p>
             </div>
           </div>
           <div className="flex w-1/3 mr-5">

@@ -38,23 +38,34 @@ function Home() {
   }, []);
 
   return (
-    <div className="App w-full h-full pb-10">
-      <Navbar></Navbar>
+    <>
       <Chat></Chat>
-      <Search></Search>
-      <div className="flex w-full h-full items-center justify-start space-y-2 pt-5 font-qsand flex-col">
-        {properties.map((property: Property) => (
-          <PropertySample
-            id={property.id}
-            name={property.name}
-            adress={property.adress}
-            description={property.description}
-            value={property.price}
-            image="imovel.png"
-          ></PropertySample>
-        ))}
+      <div className="pb-10 max-w-7xl m-auto h-screen">
+        <div className="flex flex-col gap-12 items-center">
+          <Navbar></Navbar>
+          <section className="flex max-h-176 gap-16
+            overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
+            scrollbar-thumb-red-400 scrollbar-track-red-200"
+          >
+            <div className="sticky top-0">
+              <Search></Search>
+            </div>
+            <div className="flex font-qsand flex-col gap-6">
+              {properties.map((property: Property) => (
+                <PropertySample
+                  id={property.id}
+                  name={property.name}
+                  adress={property.adress}
+                  description={property.description}
+                  value={property.price}
+                  image="imovel.png"
+                ></PropertySample>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

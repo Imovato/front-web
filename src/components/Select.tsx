@@ -3,13 +3,13 @@ import React from "react";
 
 interface SelectProps {
   children: Object;
-  divClass: string;
+  divClass?: string;
 }
 
 export default function Select({ children, divClass }: SelectProps) {
   return (
-    <div className={divClass.concat(" flex h-10")}>
-      <select className="w-full h-full rounded-xl text-black appearance-none bg-arrow bg-no-repeat bg-right-top">
+    <div className={'w-max min-w-full'}>
+      <select className="w-full h-full bg-white p-2 pr-8 rounded-md text-black appearance-none bg-arrow bg-no-repeat bg-right">
         {children}
       </select>
     </div>

@@ -7,5 +7,30 @@
 }
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+  .max-h-112 {
+    max-height: 28rem;
+  }
+  .max-h-128 {
+    max-height: 32rem;
+  }
+  .max-h-144 {
+    max-height: 36rem;
+  }
+  .max-h-160 {
+    max-height: 40rem;
+  }
+  .max-h-176 {
+    max-height: 44rem;
+  }
+  .max-h-192 {
+    max-height: 48rem;
+  }
+}
 
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+#root {
+  background: rgba(253, 242, 248);
+}
+
