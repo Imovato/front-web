@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -10,6 +10,7 @@ import {
 import Search from "../../components/Search";
 import { PropertySample } from "../../components/PropertySample";
 import { apiProperty } from "../../services/api";
+import { SearchContext } from "../../contexts/Search";
 
 library.add(faGreaterThan, faWindowMinimize, faPlus);
 
@@ -27,15 +28,19 @@ interface Property {
   price: number;
   state: string;
   block: string;
+  rooms: number;
 }
 
 function Home() {
-  const [properties, setProperties] = useState([]);
+  const {search, properties, propertiesUpdate, propertiesSetBackup} = useContext(SearchContext)
+
+  
   useEffect(() => {
-    apiProperty.get("/property/all", {}).then((response) => {
-      setProperties(response.data);
+    apiProperty.get(`/${search}/all`, {}).then((response) => {
+      propertiesUpdate(response.data);
+      propertiesSetBackup(response.data);
     });
-  }, []);
+  }, [search]);
 
   return (
     <>
