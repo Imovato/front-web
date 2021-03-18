@@ -69,7 +69,6 @@ export default function Search() {
       }
     });
     propertiesUpdate(newProperties)
-    console.log(currentFilter)
   }, [currentFilter]);
 
   return (
