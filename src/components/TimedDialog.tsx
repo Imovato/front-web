@@ -29,7 +29,7 @@ export function TimedDialog({timeout, msg, start}: TimedDialogProps) {
     }}
     className="h-1 bg-green-500"></div>
     <div className="p-5">
-      {msg.map((e: string) => (<p className="text-green-700 font-bold">{e}</p>))}
+      {msg.map((e: string, index) => (<p key={index} className="text-green-700 font-bold">{e}</p>))}
     </div>
   </div>
 }

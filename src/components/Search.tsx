@@ -28,13 +28,16 @@ export default function Search() {
   const [currentFilter, setCurrentFilter] = useState({
     city:"",
     neighborhood:"",
+    priceRange: "",
     minPrice:0,
     maxPrice:0,
     rooms:0
   })
+
   useEffect(() => {
     const newProperties:Property[] = []
     propertiesBackup.forEach(element => {
+      const formattedPrice = Number(element.price.toString().replace('.', ''))
       let allMatches = 1
       if(currentFilter.city!=""){
         if(element.city != currentFilter.city){
@@ -53,20 +56,20 @@ export default function Search() {
       }
       if(currentFilter.maxPrice!=0){
         if(currentFilter.maxPrice==-1){
-          if(element.price < currentFilter.minPrice){
+          if (formattedPrice < currentFilter.minPrice) {
             allMatches=0
           }
-        }else if(element.price > currentFilter.maxPrice || element.price < currentFilter.minPrice){
+        } else if (formattedPrice > currentFilter.maxPrice || formattedPrice < currentFilter.minPrice) {
           allMatches=0
         }
-        
+
       }
-      //@ts-ignore
       if (allMatches==1) {
         newProperties.push(element)
       }
     });
     propertiesUpdate(newProperties)
+    console.log(currentFilter)
   }, [currentFilter]);
 
   return (
@@ -83,50 +86,66 @@ export default function Search() {
           </div>
           <div className="flex flex-col w-full">
             <Label color="red-700">Tipo</Label>
-            <Select>
-              <option onClick={()=>searchUpdate("property")}>Todos</option>
-              <option onClick={()=>searchUpdate("apartment")}>Apartamentos</option>
-              <option onClick={()=>searchUpdate("house")}>Casa</option>
-              <option onClick={()=>searchUpdate("ground")}>Terrenos</option>
+            <Select value={search} onChange={(e) => searchUpdate(e.target.value)}>
+              <option value="property">Todos</option>
+              <option value="apartment">Apartamentos</option>
+              <option value="house">Casa</option>
+              <option value="ground">Terrenos</option>
             </Select>
           </div>
           <div className="flex flex-col w-full">
             <Label color="red-700">Cidade</Label>
-            <Select>
-            <option onClick={()=>setCurrentFilter({...currentFilter, city:""})}>Todos</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, city:"Alegrete"})}>Alegrete</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, city:"Uruguaiana"})}>Uruguaiana</option>
+            <Select
+              value={currentFilter.city}
+              onChange={(e) => setCurrentFilter({ ...currentFilter, city: e.target.value })}
+            >
+              <option value="">Todos</option>
+              <option value="Alegrete">Alegrete</option>
+              <option value="Uruguaiana">Uruguaiana</option>
             </Select>
           </div>
           <div className="flex flex-col w-full">
             <Label color="red-700">Bairro</Label>
-            <Select>
-            <option onClick={()=>setCurrentFilter({...currentFilter, neighborhood:""})}>Todos</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, neighborhood:"Ibirapuitã"})}>Ibirapuitã</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, neighborhood:"Botafogo"})}>Botafogo</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, neighborhood:"Cidade Alta"})}>Cidade Alta</option>
-
+            <Select
+              value={currentFilter.neighborhood}
+              onChange={(e) => setCurrentFilter({ ...currentFilter, neighborhood: e.target.value })}
+            >
+              <option value="">Todos</option>
+              <option value="Ibirapuitã">Ibirapuitã</option>
+              <option value="Botafogo">Botafogo</option>
+              <option value="Cidade Alta">Cidade Alta</option>
             </Select>
           </div>
           <div className="flex flex-col w-full">
             <Label color="red-700">Quartos</Label>
-            <Select>
-              <option onClick={()=>setCurrentFilter({...currentFilter, rooms:0})}>Todos</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, rooms:1})}>1</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, rooms:2})}>2</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, rooms:3})}>3</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, rooms:4})}>4</option>
+            <Select
+              value={currentFilter.rooms}
+              onChange={(e) => setCurrentFilter({ ...currentFilter, rooms: Number(e.target.value) })}
+            >
+              <option value="0">Todos</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
             </Select>
           </div>
           <div className="flex flex-col w-full">
             <Label color="red-700">Valor</Label>
-            <Select>
-            <option onClick={()=>setCurrentFilter({...currentFilter, minPrice:0, maxPrice:0})}>Todos</option>
-            <option onClick={()=>setCurrentFilter({...currentFilter, minPrice:0, maxPrice:50000})}>R$ 0 a R$ 50 mil</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, minPrice:50001, maxPrice:150000})}>R$ 50 a R$ 150 mil</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, minPrice:150001, maxPrice:300000})}>R$ 150 a R$ 300 mil</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, minPrice:300001, maxPrice:600000})}>R$ 300 a R$ 600 mil</option>
-              <option onClick={()=>setCurrentFilter({...currentFilter, minPrice:600001, maxPrice:-1})}>Acima de R$ 600 mil</option>
+            <Select
+              value={currentFilter.priceRange}
+              onChange={(e) => setCurrentFilter({
+                ...currentFilter,
+                priceRange: e.target.value,
+                minPrice: Number(e.target.value.split(':')[0]),
+                maxPrice: Number(e.target.value.split(':')[1])
+              })}
+            >
+              <option value="0:0">Todos</option>
+              <option value="0:50000">R$ 0 a R$ 50 mil</option>
+              <option value="50001:150000">R$ 50 a R$ 150 mil</option>
+              <option value="150001:300000">R$ 150 a R$ 300 mil</option>
+              <option value="300001:600000">R$ 300 a R$ 600 mil</option>
+              <option value="600001:-1">Acima de R$ 600 mil</option>
             </Select>
           </div>
         </form>

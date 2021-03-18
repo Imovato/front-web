@@ -6,13 +6,14 @@ import {
   faGreaterThan,
   faWindowMinimize,
   faPlus,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import Search from "../../components/Search";
 import { PropertySample } from "../../components/PropertySample";
 import { apiProperty } from "../../services/api";
 import { SearchContext } from "../../contexts/Search";
 
-library.add(faGreaterThan, faWindowMinimize, faPlus);
+library.add(faGreaterThan, faWindowMinimize, faPlus, faTimes);
 
 interface Property {
   id: string;
@@ -34,7 +35,7 @@ interface Property {
 function Home() {
   const {search, properties, propertiesUpdate, propertiesSetBackup} = useContext(SearchContext)
 
-  
+
   useEffect(() => {
     apiProperty.get(`/${search}/all`, {}).then((response) => {
       propertiesUpdate(response.data);
@@ -55,9 +56,10 @@ function Home() {
             <div className="sticky top-0">
               <Search></Search>
             </div>
-            <div className="flex font-qsand flex-col gap-6">
-              {properties.map((property: Property) => (
+            <div className={`flex font-qsand flex-col gap-6 justify-${properties[0] ? 'start' : 'center'}`}>
+              {properties[0] ? properties.map((property: Property) => (
                 <PropertySample
+                  key={property.id}
                   id={property.id}
                   name={property.name}
                   adress={property.adress}
@@ -65,7 +67,13 @@ function Home() {
                   value={property.price}
                   image="imovel.png"
                 ></PropertySample>
-              ))}
+              )) : (
+                <div className="max-w-3xl bg-red-400 p-5 rounded-lg shadow-md">
+                  <p className="text-lg font-medium text-white">
+                    Ops! Não encontramos nenhum imóvel com esses filtros.
+                  </p>
+                </div>
+              )}
             </div>
           </section>
         </div>
