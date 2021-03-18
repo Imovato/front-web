@@ -58,76 +58,76 @@ export function Profile() {
 
   return (
     <>
-      <Navbar />
-      <div className="flex gap-32 justify-center mt-32 w-full">
-        <section className=" max-w-md mt-16">
-          <div className="flex flex-col text-lg h-full text-gray-500">
-            <Link className="font-bold text-red-700 mb-2" to="/account/profile">Editar perfil</Link>
-            <Link className="hover:text-black" to="/account/password">Alterar senha</Link>
-          </div>
-        </section>
-        <section className="max-w-lg mt-16">
-          <div className="flex flex-col justify-center">
-            <h1 className="text-3xl font-bold mb-8">Editar perfil</h1>
-            <form onSubmit={handleSubmit}>
-              <fieldset>
-                <Label for="userName">Nome</Label>
-                <span className="text-red-700 font-bold"> *</span>
-                <Input
-                  value={userName}
-                  onChange={e => setUserName(e.target.value)}
-                  name="userName"
-                  type="text"
-                />
-              </fieldset>
-              <fieldset className="my-4">
-                <Label for="userEmail">Endereço de Email</Label>
-                <span className="text-red-700 font-bold"> *</span>
-                <Input
-                  value={userEmail}
-                  onChange={e => setUserEmail(e.target.value)}
-                  name="userEmail"
-                  type="email"
-                />
-              </fieldset>
-              <fieldset className="my-4">
-                <div className="flex justify-between gap-6">
-                  <div className="w-1/2">
-                    <Label for="userCpf">CPF</Label>
-                    <span className="text-red-700 font-bold"> *</span>
-                    <Input
-                      value={userCpf}
-                      onChange={e => setUserCpf(e.target.value)}
-                      name="userCpf"
-                      type="text"
-                    />
+      <div className="max-w-7xl m-auto h-screen">
+        <div className="flex flex-col gap-12 items-center">
+          <Navbar />
+          <div className="flex gap-16 justify-start max-w-2xl w-full">
+            <div className="flex flex-col min-w-max text-lg h-full text-gray-500">
+              <Link className="font-bold text-red-700 mb-2" to="/account/profile">Editar perfil</Link>
+              <Link className="hover:text-black" to="/account/password">Alterar senha</Link>
+            </div>
+            <div className="flex flex-col justify-start">
+              <h1 className="text-3xl font-bold mb-8">Editar perfil</h1>
+              <form onSubmit={handleSubmit}>
+                <fieldset>
+                  <Label for="userName">Nome</Label>
+                  <span className="text-red-700 font-bold"> *</span>
+                  <Input
+                    value={userName}
+                    onChange={e => setUserName(e.target.value)}
+                    name="userName"
+                    type="text"
+                  />
+                </fieldset>
+                <fieldset className="my-4">
+                  <Label for="userEmail">Endereço de Email</Label>
+                  <span className="text-red-700 font-bold"> *</span>
+                  <Input
+                    value={userEmail}
+                    onChange={e => setUserEmail(e.target.value)}
+                    name="userEmail"
+                    type="email"
+                  />
+                </fieldset>
+                <fieldset className="my-4">
+                  <div className="flex justify-between gap-6">
+                    <div className="w-1/2">
+                      <Label for="userCpf">CPF</Label>
+                      <span className="text-red-700 font-bold"> *</span>
+                      <Input
+                        value={userCpf}
+                        onChange={e => setUserCpf(e.target.value)}
+                        name="userCpf"
+                        type="text"
+                      />
+                    </div>
+                    <div className="w-1/2">
+                      <Label for="userPhone">Telefone</Label>
+                      <span className="text-red-700 font-bold"> *</span>
+                      <Input
+                        value={userPhone}
+                        onChange={e => setUserPhone(e.target.value)}
+                        name="userPhone"
+                        type="text"
+                      />
+                    </div>
                   </div>
-                  <div className="w-1/2">
-                    <Label for="userPhone">Telefone</Label>
-                    <span className="text-red-700 font-bold"> *</span>
-                    <Input
-                      value={userPhone}
-                      onChange={e => setUserPhone(e.target.value)}
-                      name="userPhone"
-                      type="text"
-                    />
-                  </div>
-                </div>
-              </fieldset>
-              <fieldset className="my-4">
-                <Label for="userAddress">Endereço</Label>
-                <span className="text-red-700 font-bold"> *</span>
-                <Input
-                  value={userAddress}
-                  onChange={e => setUserAddress(e.target.value)}
-                  name="userAddress"
-                  type="text"
-                />
-              </fieldset>
-              <Button type="submit">Salvar mudanças</Button>
-            </form>
+                </fieldset>
+                <fieldset className="my-4">
+                  <Label for="userAddress">Endereço</Label>
+                  <span className="text-red-700 font-bold"> *</span>
+                  <Input
+                    value={userAddress}
+                    onChange={e => setUserAddress(e.target.value)}
+                    name="userAddress"
+                    type="text"
+                  />
+                </fieldset>
+                <Button type="submit">Salvar mudanças</Button>
+              </form>
+            </div>
           </div>
-        </section>
+        </div>
       </div>
     </>
   )
@@ -188,52 +188,52 @@ export function ChangePw() {
 
   return (
     <>
-      <Navbar />
-      <div className="flex gap-32 justify-center mt-32 w-full">
-        <section className=" max-w-md mt-16">
-          <div className="flex flex-col text-lg h-full text-gray-500">
-            <Link className="hover:text-black mb-2" to="/account/profile">Editar perfil</Link>
-            <Link className="font-bold text-red-700" to="/account/password">Alterar senha</Link>
+      <div className="max-w-7xl m-auto h-screen">
+        <div className="flex flex-col gap-12 items-center">
+          <Navbar />
+          <div className="flex gap-16 justify-start max-w-2xl w-full">
+            <div className="flex flex-col min-w-max text-lg h-full text-gray-500">
+              <Link className="hover:text-black mb-2" to="/account/profile">Editar perfil</Link>
+              <Link className="font-bold text-red-700" to="/account/password">Alterar senha</Link>
+            </div>
+            <div className="flex flex-col justify-start">
+              <h1 className="text-3xl font-bold mb-8">Alterar senha</h1>
+              <form onSubmit={handleSubmit}>
+                <fieldset>
+                  <Label for="password">Senha atual</Label>
+                  <span className="text-red-700 font-bold"> *</span>
+                  <Input
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    name="password"
+                    type="password"
+                  />
+                </fieldset>
+                <fieldset className="my-4">
+                  <Label for="newPassword">Nova senha</Label>
+                  <span className="text-red-700 font-bold"> *</span>
+                  <Input
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    name="newPassword"
+                    type="password"
+                  />
+                </fieldset>
+                <fieldset className="my-4">
+                  <Label for="newPasswordRepeat">Repita a nova senha</Label>
+                  <span className="text-red-700 font-bold"> *</span>
+                  <Input
+                    value={newPasswordRepeat}
+                    onChange={e => setNewPasswordRepeat(e.target.value)}
+                    name="newPasswordRepeat"
+                    type="password"
+                  />
+                </fieldset>
+                <Button type="submit">Salvar mudanças</Button>
+              </form>
+            </div>
           </div>
-        </section>
-        <section className="max-w-3xl mt-16">
-          <div className="flex flex-col justify-center">
-            <h1 className="text-3xl font-bold mb-8">Alterar senha</h1>
-            <form onSubmit={handleSubmit}>
-              <fieldset>
-                <Label for="password">Senha atual</Label>
-                <span className="text-red-700 font-bold"> *</span>
-                <Input
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  name="password"
-                  type="password"
-                />
-              </fieldset>
-              <fieldset className="my-4">
-                <Label for="newPassword">Nova senha</Label>
-                <span className="text-red-700 font-bold"> *</span>
-                <Input
-                  value={newPassword}
-                  onChange={e => setNewPassword(e.target.value)}
-                  name="newPassword"
-                  type="password"
-                />
-              </fieldset>
-              <fieldset className="my-4">
-                <Label for="newPasswordRepeat">Repita a nova senha</Label>
-                <span className="text-red-700 font-bold"> *</span>
-                <Input
-                  value={newPasswordRepeat}
-                  onChange={e => setNewPasswordRepeat(e.target.value)}
-                  name="newPasswordRepeat"
-                  type="password"
-                />
-              </fieldset>
-              <Button type="submit">Salvar mudanças</Button>
-            </form>
-          </div>
-        </section>
+        </div>
       </div>
     </>
   )
