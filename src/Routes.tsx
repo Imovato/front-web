@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Home from "./pages/Home";
@@ -8,6 +9,16 @@ import Property from "./pages/Property";
 import Signup from "./pages/Signup";
 
 export default function Routes() {
+
+  useEffect(() => {
+    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+    if (localStorage.theme === 'light' || (!('theme' in localStorage))) {
+      document.documentElement.classList.remove('dark')
+    } else {
+      document.documentElement.classList.add('dark')
+    }
+  }, [])
+
   return (
     <Router>
       <Switch>
