@@ -85,7 +85,7 @@ function Property() {
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
           <section
-            className="flex flex-col items-center max-h-176 gap-6 max-w-6xl
+            className="flex flex-col items-center max-h-192 gap-6 max-w-6xl
             overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-red-200"
           >

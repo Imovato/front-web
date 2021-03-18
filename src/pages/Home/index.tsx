@@ -43,7 +43,7 @@ function Home() {
       <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
-          <section className="flex max-h-176 gap-16
+          <section className="flex max-h-192 gap-16
             overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-red-200"
           >

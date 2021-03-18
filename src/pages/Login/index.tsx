@@ -65,7 +65,7 @@ export default function Login () {
   }
 
   return (
-    <div className="flex w-auto h-screen">
+    <div className="flex w-auto h-screen bg-white">
       <div className="flex-initial h-full bg-red-200">
         <div className="flex-auto m-16">
           <h1 className="text-5xl mb-8 text-left font-bold text-red-700">
