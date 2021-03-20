@@ -51,7 +51,7 @@ function Home() {
           <Navbar></Navbar>
           <section className="flex max-h-192 gap-16
             overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
-            scrollbar-thumb-red-400 scrollbar-track-red-200"
+            scrollbar-thumb-red-400 scrollbar-track-red-200 max-w-5xl"
           >
             <div className="sticky top-0">
               <Search></Search>
@@ -67,13 +67,12 @@ function Home() {
                   value={property.price}
                   image="imovel.png"
                 ></PropertySample>
-              )) : (
-                <div className="max-w-3xl bg-red-400 p-5 rounded-lg shadow-md">
+              )) :
+                (<div className="bg-red-400 p-5 rounded-lg shadow-md mx-32">
                   <p className="text-lg font-medium text-white">
                     Ops! Não encontramos nenhum imóvel com esses filtros.
                   </p>
-                </div>
-              )}
+                </div>)}
             </div>
           </section>
         </div>
