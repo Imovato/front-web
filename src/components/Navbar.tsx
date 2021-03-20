@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUserAstronaut,
   faSignOutAlt,
   faSignInAlt,
   faHome,
@@ -12,7 +11,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-library.add(faUserAstronaut, faSignOutAlt, faSignInAlt, faHome, faCog, faSun, faMoon);
+library.add(faSignOutAlt, faSignInAlt, faHome, faCog, faSun, faMoon);
 
 export default function Navbar() {
   const [isDark, setIsDark] = useState(localStorage.getItem('theme') ? true : false);
@@ -70,19 +69,20 @@ export default function Navbar() {
           <FontAwesomeIcon className="text-lg" icon="moon" />
         </div>
       </div>
-      <div className="flex gap-1 flex-col items-center justify-evenly p-3">
+      <div className="flex gap-1 flex-col items-start justify-evenly p-3">
         <Link className="flex items-center gap-1" to="/">
           <FontAwesomeIcon icon="home" />
           <p>Início</p>
         </Link>
         <div className="flex gap-6 justify-between">
-          {localStorage.getItem("userId") ? (
+          {localStorage.getItem("userId") && (
             <Link className="flex items-center gap-1" to="/account/profile">
-              <FontAwesomeIcon icon="user-astronaut" />
-              <p>Perfil</p>
+              <FontAwesomeIcon icon="cog" />
+              <p>Configurações</p>
             </Link>
-          ) : (
-            <p>Bem vindo!</p>)}
+          )}
+        </div>
+        <div className="flex gap-6 justify-between">
           {localStorage.getItem("userId") ? (
             <Link className="flex items-center gap-1" to="/session">
               <FontAwesomeIcon icon="sign-out-alt" />
@@ -92,14 +92,6 @@ export default function Navbar() {
             <Link className="flex items-center gap-1" to="/session/new">
               <FontAwesomeIcon icon="sign-in-alt" />
               <p>Log in</p>
-            </Link>
-          )}
-        </div>
-        <div className="flex gap-6 justify-between">
-          {localStorage.getItem("userId") && (
-            <Link className="flex items-center gap-1" to="/account/profile">
-              <FontAwesomeIcon icon="cog" />
-              <p>Configurações</p>
             </Link>
           )}
         </div>

@@ -8,8 +8,8 @@ export default function Select({ children, ...rest }: SelectProps) {
   return (
     <div className={'w-max min-w-full'}>
       <select {...rest}
-        className="w-full h-full bg-white dark:bg-red-300 p-2 pr-8 rounded-md text-black
-        appearance-none bg-arrow bg-no-repeat bg-right"
+        className="w-full h-full bg-white dark:bg-gray-600 dark:text-white
+        p-2 pr-8 rounded-md text-black appearance-none bg-arrow bg-no-repeat bg-right"
       >
         {children}
       </select>

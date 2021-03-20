@@ -63,10 +63,12 @@ export function Profile() {
           <Navbar />
           <div className="flex gap-16 justify-start max-w-2xl w-full">
             <div className="flex flex-col min-w-max text-lg h-full text-gray-500">
-              <Link className="font-bold text-red-700 mb-2" to="/account/profile">Editar perfil</Link>
-              <Link className="hover:text-black" to="/account/password">Alterar senha</Link>
+              <Link className="font-bold text-red-700 dark:text-red-300 mb-2" to="/account/profile">Editar perfil</Link>
+              <Link className="hover:text-black dark:hover:text-white" to="/account/password">Alterar senha</Link>
             </div>
-            <div className="flex flex-col justify-start">
+            <div className="flex flex-col justify-start bg-white p-5
+              rounded-lg shadow-md dark:bg-gray-800 dark:text-white"
+            >
               <h1 className="text-3xl font-bold mb-8">Editar perfil</h1>
               <form onSubmit={handleSubmit}>
                 <fieldset>
@@ -80,7 +82,7 @@ export function Profile() {
                   />
                 </fieldset>
                 <fieldset className="my-4">
-                  <Label for="userEmail">Endereço de Email</Label>
+                  <Label color="black dark:text-red-300" for="userEmail">Endereço de Email</Label>
                   <span className="text-red-700 font-bold"> *</span>
                   <Input
                     value={userEmail}
@@ -92,7 +94,7 @@ export function Profile() {
                 <fieldset className="my-4">
                   <div className="flex justify-between gap-6">
                     <div className="w-1/2">
-                      <Label for="userCpf">CPF</Label>
+                      <Label color="black dark:text-red-300" for="userCpf">CPF</Label>
                       <span className="text-red-700 font-bold"> *</span>
                       <Input
                         value={userCpf}
@@ -102,7 +104,7 @@ export function Profile() {
                       />
                     </div>
                     <div className="w-1/2">
-                      <Label for="userPhone">Telefone</Label>
+                      <Label color="black dark:text-red-300" for="userPhone">Telefone</Label>
                       <span className="text-red-700 font-bold"> *</span>
                       <Input
                         value={userPhone}
@@ -114,7 +116,7 @@ export function Profile() {
                   </div>
                 </fieldset>
                 <fieldset className="my-4">
-                  <Label for="userAddress">Endereço</Label>
+                  <Label color="black dark:text-red-300" for="userAddress">Endereço</Label>
                   <span className="text-red-700 font-bold"> *</span>
                   <Input
                     value={userAddress}
@@ -123,7 +125,7 @@ export function Profile() {
                     type="text"
                   />
                 </fieldset>
-                <Button type="submit">Salvar mudanças</Button>
+                <Button className="dark:bg-red-300 dark:text-black" type="submit">Salvar mudanças</Button>
               </form>
             </div>
           </div>
@@ -193,10 +195,12 @@ export function ChangePw() {
           <Navbar />
           <div className="flex gap-16 justify-start max-w-2xl w-full">
             <div className="flex flex-col min-w-max text-lg h-full text-gray-500">
-              <Link className="hover:text-black mb-2" to="/account/profile">Editar perfil</Link>
-              <Link className="font-bold text-red-700" to="/account/password">Alterar senha</Link>
+              <Link className="hover:text-black mb-2 dark:hover:text-white" to="/account/profile">Editar perfil</Link>
+              <Link className="font-bold text-red-700 dark:text-red-300" to="/account/password">Alterar senha</Link>
             </div>
-            <div className="flex flex-col justify-start">
+            <div className="flex flex-col justify-start bg-white p-5 rounded-lg shadow-md
+              dark:bg-gray-800 dark:text-white"
+            >
               <h1 className="text-3xl font-bold mb-8">Alterar senha</h1>
               <form onSubmit={handleSubmit}>
                 <fieldset>
@@ -229,7 +233,7 @@ export function ChangePw() {
                     type="password"
                   />
                 </fieldset>
-                <Button type="submit">Salvar mudanças</Button>
+                <Button className="dark:bg-red-300 dark:text-black" type="submit">Salvar mudanças</Button>
               </form>
             </div>
           </div>

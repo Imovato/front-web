@@ -109,7 +109,7 @@ function Property() {
                     color="green-500"
                     onClick={() => handleBuy}
                     roundedProp="bl-lg"
-                    additionalClasses="text-xl w-full h-12 justify-center"
+                    className="text-xl w-full h-12 justify-center"
                   >
                     Comprar
                   </Button>
@@ -117,7 +117,7 @@ function Property() {
                     color="yellow-500"
                     onClick={() => handleHire}
                     roundedProp="br-lg"
-                    additionalClasses="text-xl w-full h-12 justify-center"
+                    className="text-xl w-full h-12 justify-center"
                   >
                     Alugar
                   </Button>
@@ -166,7 +166,7 @@ function Property() {
                         setData({ ...data, name: e.target.value })
                       }
                       className="focus:ring focus:ring-red-200 h-10 px-3 rounded-lg
-                      bg-gray-200 dark:bg-gray-600 dark:focus:ring-red-400"
+                      bg-gray-200 dark:bg-gray-600"
                       name="customerName"
                       type="text"
                     />
@@ -179,7 +179,7 @@ function Property() {
                         setData({ ...data, email: e.target.value })
                       }
                       className="focus:ring focus:ring-red-200 h-10 px-3
-                      dark:bg-gray-600 rounded-lg bg-gray-200 dark:focus:ring-red-400"
+                      dark:bg-gray-600 rounded-lg bg-gray-200"
                       name="customerEmail"
                       type="email"
                     />
@@ -192,7 +192,7 @@ function Property() {
                         setData({ ...data, phone: e.target.value })
                       }
                       className="focus:ring focus:ring-red-200 h-10 px-3
-                      dark:bg-gray-600 rounded-lg bg-gray-200 dark:focus:ring-red-400"
+                      dark:bg-gray-600 rounded-lg bg-gray-200"
                       name="customerPhone"
                       type="text"
                     />
