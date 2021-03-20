@@ -46,7 +46,7 @@ export default function Chat() {
 
           <button
             id="max"
-            className="hidden h-full w-full focus:outline-none dark:hover:bg-red-600
+            className="hidden h-full w-full focus:outline-none dark:hover:bg-red-400
             hover:bg-red-400 rounded-lg"
             type="button"
             onClick={maximize}
