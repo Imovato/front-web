@@ -73,18 +73,18 @@ export default function Search() {
 
   return (
     <div>
-      <div className="flex flex-auto bg-red-200 font-qsand font-semibold flex-col p-4 gap-2 rounded-lg">
-        <p className="text-black text-center text-xl mb-5 font-bold">Pesquise seu imóvel</p>
+      <div className="flex flex-auto bg-red-200 dark:bg-red-400 font-qsand font-semibold flex-col p-4 gap-2 rounded-lg">
+        <p className="text-black dark:text-white text-center text-xl mb-5 font-bold">Pesquise seu imóvel</p>
         <form className="flex flex-col h-full items-center justify-between gap-4">
           <div className="flex flex-col w-full">
-            <Label color="red-700">Finalidade</Label>
+            <Label color="red-700 dark:text-white">Finalidade</Label>
             <Select>
               <option>Venda</option>
               <option>Aluguel</option>
             </Select>
           </div>
           <div className="flex flex-col w-full">
-            <Label color="red-700">Tipo</Label>
+            <Label color="red-700 dark:text-white">Tipo</Label>
             <Select value={search} onChange={(e) => searchUpdate(e.target.value)}>
               <option value="property">Todos</option>
               <option value="apartment">Apartamentos</option>
@@ -93,7 +93,7 @@ export default function Search() {
             </Select>
           </div>
           <div className="flex flex-col w-full">
-            <Label color="red-700">Cidade</Label>
+            <Label color="red-700 dark:text-white">Cidade</Label>
             <Select
               value={currentFilter.city}
               onChange={(e) => setCurrentFilter({ ...currentFilter, city: e.target.value })}
@@ -104,7 +104,7 @@ export default function Search() {
             </Select>
           </div>
           <div className="flex flex-col w-full">
-            <Label color="red-700">Bairro</Label>
+            <Label color="red-700 dark:text-white">Bairro</Label>
             <Select
               value={currentFilter.neighborhood}
               onChange={(e) => setCurrentFilter({ ...currentFilter, neighborhood: e.target.value })}
@@ -116,7 +116,7 @@ export default function Search() {
             </Select>
           </div>
           <div className="flex flex-col w-full">
-            <Label color="red-700">Quartos</Label>
+            <Label color="red-700 dark:text-white">Quartos</Label>
             <Select
               value={currentFilter.rooms}
               onChange={(e) => setCurrentFilter({ ...currentFilter, rooms: Number(e.target.value) })}
@@ -129,7 +129,7 @@ export default function Search() {
             </Select>
           </div>
           <div className="flex flex-col w-full">
-            <Label color="red-700">Valor</Label>
+            <Label color="red-700 dark:text-white">Valor</Label>
             <Select
               value={currentFilter.priceRange}
               onChange={(e) => setCurrentFilter({

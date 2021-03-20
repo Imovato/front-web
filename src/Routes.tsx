@@ -12,7 +12,7 @@ export default function Routes() {
 
   useEffect(() => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (localStorage.theme === 'light' || (!('theme' in localStorage))) {
+    if ((!('theme' in localStorage))) {
       document.documentElement.classList.remove('dark')
     } else {
       document.documentElement.classList.add('dark')
