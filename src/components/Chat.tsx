@@ -27,16 +27,16 @@ export default function Chat() {
     <div
       id="chatBox"
       className="flex w-80 h-80 fixed bottom-0 right-5 mb-1
-      bg-red-200 font-qsand rounded-lg flex-col overflow-hidden dark:bg-red-400"
+      bg-red-200 font-qsand rounded-lg flex-col overflow-hidden dark:bg-gray-800"
     >
-      <div className="flex flex-none h-1/6 items-center border-b-2 border-red-400 dark:border-red-200 pl-2">
+      <div className="flex flex-none h-1/6 items-center border-b-2 border-red-400 dark:border-white pl-2">
         <div className="flex-auto font-semibold text-lg dark:text-white">
           <p>Chat</p>
         </div>
         <div className="flex dark:text-white flex-none w-1/6 items-center justify-center h-full p-2">
           <button
             id="min"
-            className="h-full w-full focus:outline-none hover:bg-red-400 dark:hover:bg-red-600 rounded-lg"
+            className="h-full w-full focus:outline-none hover:bg-red-400 rounded-lg"
             type="button"
             onClick={minimize}
           >
@@ -61,14 +61,14 @@ export default function Chat() {
           <div className="flex-auto">
             <input
               id="chatInput"
-              className="w-full h-full pl-2 focus:outline-none rounded-lg dark:bg-gray-800 dark:placeholder-white"
+              className="w-full h-full pl-2 focus:outline-none rounded-lg dark:bg-gray-700 dark:placeholder-white"
               placeholder="Digite aqui..."
             ></input>
           </div>
 
           <div className="flex flex-none w-1/6 items-center justify-center">
             <button
-              className="h-full w-full focus:outline-none dark:hover:bg-red-600
+              className="h-full w-full focus:outline-none
               hover:bg-red-400 rounded-lg"
               type="submit"
             >

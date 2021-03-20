@@ -37,7 +37,7 @@ export default function Navbar() {
   }, [])
 
   return (
-    <div className="flex h-24 bg-red-300 dark:bg-red-400 dark:text-white font-qsand
+    <div className="flex h-24 bg-red-300 dark:bg-gray-800 dark:text-white font-qsand
     text-black font-semibold rounded-b-3xl shadow-xl w-full gap-2">
       <div className="flex-none w-1/6 flex items-center justify-center ">
         <Link to="/">
@@ -58,7 +58,7 @@ export default function Navbar() {
           <FontAwesomeIcon className="text-lg" icon="sun" />
           <div onClick={toggleDarkMode} className="cursor-pointer">
             <span className="relative">
-              <span className={`block w-12 h-6 ${isDark ? 'bg-red-600' : 'bg-red-100'} rounded-full shadow-inner`}></span>
+              <span className={`block w-12 h-6 ${isDark ? 'bg-red-400' : 'bg-red-100'} rounded-full shadow-inner`}></span>
               <span className={`absolute block w-5 h-5 mt-0.5 ml-0.5 rounded-full
                   shadow inset-y-0 left-0 focus-within:shadow-outline
                   transition-transform duration-300 bg-white ease-in-out ${isDark ? 'transform translate-x-6' : ''}`}
