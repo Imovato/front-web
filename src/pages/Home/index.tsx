@@ -68,8 +68,8 @@ function Home() {
                   image="imovel.png"
                 ></PropertySample>
               )) :
-                (<div className="bg-red-400 p-5 rounded-lg shadow-md mx-32">
-                  <p className="text-lg font-medium text-white">
+                (<div className="bg-red-200 dark:bg-red-400 p-5 rounded-lg shadow-md mx-32">
+                  <p className="text-lg font-medium dark:text-white">
                     Ops! Não encontramos nenhum imóvel com esses filtros.
                   </p>
                 </div>)}

@@ -69,7 +69,7 @@ export default function Navbar() {
           <FontAwesomeIcon className="text-lg" icon="moon" />
         </div>
       </div>
-      <div className="flex gap-1 flex-col items-start justify-evenly p-3">
+      <div className="flex gap-1 flex-col items-start justify-between p-3">
         <Link className="flex items-center gap-1" to="/">
           <FontAwesomeIcon icon="home" />
           <p>Início</p>
