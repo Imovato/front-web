@@ -159,7 +159,7 @@ function Property() {
                   className="flex flex-col gap-3"
                 >
                   <fieldset className="flex gap-3 justify-end items-center">
-                    <Label font="light dark:text-white" for="customerName">Nome</Label>
+                    <Label font="light" for="customerName">Nome</Label>
                     <input
                       value={data.name}
                       onChange={(e) =>
@@ -172,7 +172,7 @@ function Property() {
                     />
                   </fieldset>
                   <fieldset className="flex gap-3 justify-end items-center">
-                    <Label font="light dark:text-white" for="customerEmail">Endereço de Email</Label>
+                    <Label font="light" for="customerEmail">Endereço de Email</Label>
                     <input
                       value={data.email}
                       onChange={(e) =>
@@ -185,7 +185,7 @@ function Property() {
                     />
                   </fieldset>
                   <fieldset className="flex gap-3 justify-end items-center">
-                    <Label font="light dark:text-white" for="customerPhone">Telefone</Label>
+                    <Label font="light" for="customerPhone">Telefone</Label>
                     <input
                       value={data.phone}
                       onChange={(e) =>
@@ -198,7 +198,7 @@ function Property() {
                     />
                   </fieldset>
                   <div className="flex w-full justify-end">
-                    <Button color="pink-600" type="submit">
+                    <Button type="submit">
                       Enviar
                     </Button>
                   </div>

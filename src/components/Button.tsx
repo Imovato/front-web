@@ -13,7 +13,7 @@ export function Button({ children, color, className, ...rest }: ButtonProps) {
       rounded-lg h-10 dark:text-white ${className}`}
       {...rest}
     >
-      <p className="flex gap-2 items-center">{children}</p>
+      <p className="flex gap-2 items-center flex-1 justify-center">{children}</p>
     </button>
   );
 }

@@ -14,6 +14,7 @@ import { apiProperty } from "../../services/api";
 import { SearchContext } from "../../contexts/Search";
 import { Button } from "../../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 library.add(faGreaterThan, faWindowMinimize, faPlus, faTimes);
 
@@ -57,12 +58,14 @@ function Home() {
           >
             <div className="flex flex-col sticky top-0 items-center gap-3">
               <Search></Search>
-              <Button>
-                <>
-                  <FontAwesomeIcon icon="plus" />
-                  Imóvel
-                </>
-              </Button>
+              <Link to="/property/new">
+                <Button>
+                  <>
+                    <FontAwesomeIcon icon="plus" />
+                    Imóvel
+                  </>
+                </Button>
+              </Link>
             </div>
             <div className={`flex font-qsand flex-col gap-6 justify-${properties[0] ? 'start' : 'center'}`}>
               {properties[0] ? properties.map((property: Property) => (
