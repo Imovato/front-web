@@ -125,7 +125,7 @@ export function Profile() {
                     type="text"
                   />
                 </fieldset>
-                <Button className="dark:bg-red-300 dark:text-black" type="submit">Salvar mudanças</Button>
+                <Button type="submit">Salvar mudanças</Button>
               </form>
             </div>
           </div>
@@ -233,7 +233,7 @@ export function ChangePw() {
                     type="password"
                   />
                 </fieldset>
-                <Button className="dark:bg-red-300 dark:text-black" type="submit">Salvar mudanças</Button>
+                <Button type="submit">Salvar mudanças</Button>
               </form>
             </div>
           </div>

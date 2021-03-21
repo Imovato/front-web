@@ -105,22 +105,22 @@ function Property() {
                   </div>
                 </div>
                 <div className="flex justify-between bg-opacity-0">
-                  <Button
-                    color="green-500"
+                  <button
                     onClick={() => handleBuy}
-                    roundedProp="bl-lg"
-                    className="text-xl w-full h-12 justify-center"
+                    className="rounded-bl-lg text-white bg-green-400 text-xl
+                    w-full h-12 justify-center hover:bg-opacity-70 transition
+                    duration-150 ease-in-out dark:text-black"
                   >
                     Comprar
-                  </Button>
-                  <Button
-                    color="yellow-500"
+                  </button>
+                  <button
                     onClick={() => handleHire}
-                    roundedProp="br-lg"
-                    className="text-xl w-full h-12 justify-center"
+                    className="rounded-br-lg text-white bg-yellow-400 text-xl
+                    w-full h-12 justify-center hover:bg-opacity-70 transition
+                    duration-150 ease-in-out dark:text-black"
                   >
                     Alugar
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>

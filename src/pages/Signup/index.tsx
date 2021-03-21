@@ -211,7 +211,7 @@ export default function Signup () {
                   </div>
                 </div>
               </fieldset>
-              <Button color="blue-500" type="submit">Enviar</Button>
+              <Button color="blue" type="submit">Enviar</Button>
             </form>
           </div>
         </div>
