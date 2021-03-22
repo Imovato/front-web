@@ -1,7 +1,7 @@
 @tailwind base;
 
 @layer base {
-    input {
+    input, select{
         @apply outline-none;
     }
 }

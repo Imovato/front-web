@@ -1,0 +1,295 @@
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Button } from "../../components/Button";
+import Chat from "../../components/Chat";
+import { FormError } from "../../components/FormError";
+import { Input } from "../../components/Input";
+import { Label } from "../../components/Label";
+import Navbar from "../../components/Navbar";
+import Select from "../../components/Select";
+import { TimedDialog } from "../../components/TimedDialog";
+import { apiProperty } from "../../services/api";
+import { schema } from "./schema";
+
+interface Property {
+  Tipo: string
+  Área: number
+  Nome: string
+  Bairro: string
+  Endereço: string
+  Cidade: string
+  Descrição: string
+  Estado: string
+  Preço: number
+  Número: number
+  Bloco?: string
+  Quartos?: number
+}
+
+export function NewProperty() {
+  const [generalErrors, setGeneralErrors] = useState<string[]>([])
+  const [successMsg, setSuccessMsg] = useState<string[]>([])
+  const [msgStart, setMsgStart] = useState(false)
+  const msgTimeout = 2500
+
+  const history = useHistory()
+
+  const [data, setData] = useState({
+    Área: 0,
+    Nome: "",
+    Bairro: "",
+    Endereço: "",
+    Cidade: "",
+    Descrição: "",
+    Estado: "",
+    Preço: 0,
+    Número: 0,
+    Bloco: "",
+    Quartos: 0,
+    Tipo: ""
+  } as Property);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    // trimming data specific for each type
+    if (data.Tipo === 'house') {
+      const { Bloco, ...houseData } = data
+      setData(houseData)
+    } else if (data.Tipo === 'ground') {
+      const { Bloco, Quartos, ...groundData } = data
+      setData(groundData)
+    }
+
+    if (await validate()) {
+      try {
+        const dataBackend = {
+          area: data['Área'],
+          name: data['Nome'],
+          neighborhood: data['Bairro'],
+          adress: data['Endereço'],
+          codAddress: 0,
+          city: data['Cidade'],
+          description: data['Descrição'],
+          state: data['Estado'],
+          price: data['Preço'],
+          number: data['Número'],
+        }
+        let toSend = {}
+        if (data.Tipo === 'house') {
+          toSend = { ...dataBackend, rooms: data['Quartos'] }
+        } else if (data.Tipo === 'apartment') {
+          toSend = { ...dataBackend, rooms: data['Quartos'], block: data['Bloco'] }
+        } else {
+          toSend = { ...dataBackend }
+        }
+        await apiProperty.post(`/${data.Tipo}`, toSend);
+        setSuccessMsg(['Imóvel cadastrado com sucesso.'])
+        setMsgStart(true)
+        setTimeout(() => {
+          setSuccessMsg([])
+        }, msgTimeout)
+      } catch (error) {
+        alert('Algo deu errado, tente novamente.')
+      }
+    }
+
+    try {
+    } catch (error) {
+      alert("Algo deu errado, tente novamente.");
+    }
+  }
+
+  async function validate() {
+    try {
+      await schema.validate(data, { abortEarly: false })
+      setGeneralErrors([])
+      return true
+    } catch (error) {
+      setGeneralErrors(error.errors)
+      return false
+    }
+  }
+
+  return (
+    <>
+      <Chat></Chat>
+      <div className="pb-10 max-w-7xl m-auto h-screen">
+        <div className="flex flex-col gap-12 items-center">
+          <Navbar></Navbar>
+          <section
+            className="flex items-baseline gap-6 max-h-192 max-w-7xl
+            overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
+            scrollbar-thumb-red-400 scrollbar-track-transparent"
+          >
+            {generalErrors[0] &&
+              (<>
+                <div className="bg-red-100 dark:bg-gray-800 p-3 rounded-lg mb-3 max-h-112 overflow-y-auto
+                scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-red-400">
+                  <h3 className="text-red-800 dark:text-red-400 font-bold">Campos inválidos:</h3>
+                  {generalErrors.map((e) => (
+                    <FormError className="text-red-500 dark:text-red-200" key={Math.random()}>{e}</FormError>
+                  ))}
+                </div>
+              </>)}
+            <div>
+              {successMsg[0] && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
+              <div className="flex max-w-3xl shadow-md rounded-xl
+                justify-around items-center gap-12 bg-white dark:bg-gray-800
+                p-5 mb-8 dark:text-white"
+              >
+                <div className="flex flex-col">
+                  <p className="text-xl text-center mb-5">Novo imóvel</p>
+                  <form
+                    onSubmit={handleSubmit}
+                    className="grid grid-cols-6 items-start gap-3 px-5"
+                  >
+                    {/* Row 1 */}
+                    <div className="grid col-span-2">
+                      <Label font="light" for="Tipo">Tipo</Label>
+                      <Select id="Tipo" className="mt-1 bg-gray-200" value={data.Tipo} onChange={(e) => setData({ ...data, Tipo: e.target.value })}>
+                        <option value=""></option>
+                        <option value="apartment">Apartamento</option>
+                        <option value="house">Casa</option>
+                        <option value="ground">Terreno</option>
+                      </Select>
+                    </div>
+                    <div className="grid col-span-4">
+                      <Label font="light" for="name">Nome</Label>
+                      <Input
+                        value={data.Nome}
+                        onChange={(e) =>
+                          setData({ ...data, Nome: e.target.value })
+                        }
+                        id="name"
+                        type="text"
+                      />
+                    </div>
+                    {/* Row 2 */}
+                    <div className="grid col-span-1">
+                      <Label font="light" for="area">Área (m²)</Label>
+                      <Input
+                        value={data.Área}
+                        onChange={(e) =>
+                          setData({ ...data, Área: Number(e.target.value) })
+                        }
+                        id="area"
+                        type="number"
+                      />
+                    </div>
+                    {data.Tipo !== 'ground' && <div className="grid col-span-1">
+                      <Label font="light" for="rooms">Quartos</Label>
+                      <Input
+                        value={data.Quartos}
+                        onChange={(e) =>
+                          setData({ ...data, Quartos: Number(e.target.value) })
+                        }
+                        id="rooms"
+                        type="number"
+                      />
+                    </div>}
+                    <div className={`grid col-span-${data.Tipo === 'ground' ? '5' : '4'}`}>
+                      <Label font="light" for="address">Endereço</Label>
+                      <Input
+                        value={data.Endereço}
+                        onChange={(e) =>
+                          setData({ ...data, Endereço: e.target.value })
+                        }
+                        id="address"
+                        type="text"
+                      />
+                    </div>
+                    {/* Row 3 */}
+                    <div className="grid col-span-1">
+                      <Label font="light" for="number">Número</Label>
+                      <Input
+                        value={data.Número}
+                        onChange={(e) =>
+                          setData({ ...data, Número: Number(e.target.value) })
+                        }
+                        id="number"
+                        type="number"
+                      />
+                    </div>
+                    <div className="grid col-span-2">
+                      <Label font="light" for="neighborhood">Bairro</Label>
+                      <Input
+                        value={data.Bairro}
+                        onChange={(e) =>
+                          setData({ ...data, Bairro: e.target.value })
+                        }
+                        id="neighborhood"
+                        type="text"
+                      />
+                    </div>
+                    <div className="grid col-span-2">
+                      <Label font="light" for="city">Cidade</Label>
+                      <Input
+                        value={data.Cidade}
+                        onChange={(e) =>
+                          setData({ ...data, Cidade: e.target.value })
+                        }
+                        id="city"
+                        type="text"
+                      />
+                    </div>
+                    <div className="grid col-span-1">
+                      <Label font="light" for="state">Estado</Label>
+                      <Input
+                        value={data.Estado}
+                        onChange={(e) =>
+                          setData({ ...data, Estado: e.target.value })
+                        }
+                        id="state"
+                        type="text"
+                      />
+                    </div>
+                    {/* Row 4 */}
+                    {data.Tipo === 'apartment' && <div className="grid col-span-1">
+                      <Label font="light" for="block">Bloco</Label>
+                      <Input
+                        value={data.Bloco}
+                        onChange={(e) =>
+                          setData({ ...data, Bloco: e.target.value })
+                        }
+                        id="block"
+                        type="text"
+                      />
+                    </div>}
+                    <div className="grid col-span-1">
+                      <Label font="light" for="price">Preço</Label>
+                      <Input
+                        value={data.Preço}
+                        onChange={(e) =>
+                          setData({ ...data, Preço: Number(e.target.value) })
+                        }
+                        id="price"
+                        type="number"
+                      />
+                    </div>
+                    <div className={`grid col-span-${data.Tipo === 'apartment' ? '4' : '5'}`}>
+                      <Label font="light" for="description">Descrição</Label>
+                      <Input
+                        value={data.Descrição}
+                        onChange={(e) =>
+                          setData({ ...data, Descrição: e.target.value })
+                        }
+                        id="description"
+                        type="text"
+                      />
+                    </div>
+                    {/* Row 5 */}
+                    <div className="grid col-span-1">
+                      <Button type="submit">
+                        Enviar
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </>
+  );
+}

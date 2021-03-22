@@ -105,22 +105,22 @@ function Property() {
                   </div>
                 </div>
                 <div className="flex justify-between bg-opacity-0">
-                  <Button
-                    color="green-500"
+                  <button
                     onClick={() => handleBuy}
-                    roundedProp="bl-lg"
-                    className="text-xl w-full h-12 justify-center"
+                    className="rounded-bl-lg text-white bg-green-400 text-xl
+                    w-full h-12 justify-center hover:bg-opacity-70 transition
+                    duration-150 ease-in-out dark:text-black"
                   >
                     Comprar
-                  </Button>
-                  <Button
-                    color="yellow-500"
+                  </button>
+                  <button
                     onClick={() => handleHire}
-                    roundedProp="br-lg"
-                    className="text-xl w-full h-12 justify-center"
+                    className="rounded-br-lg text-white bg-yellow-400 text-xl
+                    w-full h-12 justify-center hover:bg-opacity-70 transition
+                    duration-150 ease-in-out dark:text-black"
                   >
                     Alugar
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
@@ -159,7 +159,7 @@ function Property() {
                   className="flex flex-col gap-3"
                 >
                   <fieldset className="flex gap-3 justify-end items-center">
-                    <Label font="light dark:text-white" for="customerName">Nome</Label>
+                    <Label font="light" for="customerName">Nome</Label>
                     <input
                       value={data.name}
                       onChange={(e) =>
@@ -172,7 +172,7 @@ function Property() {
                     />
                   </fieldset>
                   <fieldset className="flex gap-3 justify-end items-center">
-                    <Label font="light dark:text-white" for="customerEmail">Endereço de Email</Label>
+                    <Label font="light" for="customerEmail">Endereço de Email</Label>
                     <input
                       value={data.email}
                       onChange={(e) =>
@@ -185,7 +185,7 @@ function Property() {
                     />
                   </fieldset>
                   <fieldset className="flex gap-3 justify-end items-center">
-                    <Label font="light dark:text-white" for="customerPhone">Telefone</Label>
+                    <Label font="light" for="customerPhone">Telefone</Label>
                     <input
                       value={data.phone}
                       onChange={(e) =>
@@ -198,7 +198,7 @@ function Property() {
                     />
                   </fieldset>
                   <div className="flex w-full justify-end">
-                    <Button color="pink-600" type="submit">
+                    <Button type="submit">
                       Enviar
                     </Button>
                   </div>

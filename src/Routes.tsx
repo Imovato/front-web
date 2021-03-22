@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import { Logout } from "./pages/Logout";
 import { ChangePw, Profile } from "./pages/Profile";
 import Property from "./pages/Property";
+import { NewProperty } from "./pages/Property/new";
 import Signup from "./pages/Signup";
 
 export default function Routes() {
@@ -25,6 +26,7 @@ export default function Routes() {
         <Route path="/" exact component={Home} />
         <Route path="/session/new" component={Login} />
         <Route path="/signup/new" component={Signup} />
+        <Route path="/property/new" component={NewProperty} />
         <Route path="/property/:id" component={Property} />
         <Route path="/account/profile" component={Profile} />
         <Route path="/account/password" component={ChangePw} />

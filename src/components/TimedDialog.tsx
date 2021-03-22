@@ -13,7 +13,6 @@ export function TimedDialog({timeout, msg, start}: TimedDialogProps) {
     run()
 
   function run() {
-    console.log(msg)
     setTimeout(() => {
       setCooldownWidth(100)
     }, 10)

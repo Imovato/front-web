@@ -62,7 +62,7 @@ export function Profile() {
         <div className="flex flex-col gap-12 items-center">
           <Navbar />
           <div className="flex gap-16 justify-start max-w-2xl w-full">
-            <div className="flex flex-col min-w-max text-lg h-full text-gray-500">
+            <div className="flex flex-col min-w-max text-lg h-full text-gray-500 dark:text-gray-400">
               <Link className="font-bold text-red-700 dark:text-red-300 mb-2" to="/account/profile">Editar perfil</Link>
               <Link className="hover:text-black dark:hover:text-white" to="/account/password">Alterar senha</Link>
             </div>
@@ -125,7 +125,7 @@ export function Profile() {
                     type="text"
                   />
                 </fieldset>
-                <Button className="dark:bg-red-300 dark:text-black" type="submit">Salvar mudanças</Button>
+                <Button type="submit">Salvar mudanças</Button>
               </form>
             </div>
           </div>
@@ -194,7 +194,7 @@ export function ChangePw() {
         <div className="flex flex-col gap-12 items-center">
           <Navbar />
           <div className="flex gap-16 justify-start max-w-2xl w-full">
-            <div className="flex flex-col min-w-max text-lg h-full text-gray-500">
+            <div className="flex flex-col min-w-max text-lg h-full text-gray-500 dark:text-gray-400">
               <Link className="hover:text-black mb-2 dark:hover:text-white" to="/account/profile">Editar perfil</Link>
               <Link className="font-bold text-red-700 dark:text-red-300" to="/account/password">Alterar senha</Link>
             </div>
@@ -233,7 +233,7 @@ export function ChangePw() {
                     type="password"
                   />
                 </fieldset>
-                <Button className="dark:bg-red-300 dark:text-black" type="submit">Salvar mudanças</Button>
+                <Button type="submit">Salvar mudanças</Button>
               </form>
             </div>
           </div>
