@@ -34,7 +34,14 @@ export default function Signup () {
 
     if (await validate())
       try {
-        await apiUser.post('/customer/add', data)
+        await apiUser.post('/customer/add', {
+          name: data['Nome'],
+          email: data['Email'],
+          cpf: data['CPF'],
+          phone: data['Telefone'],
+          address: data['Endereço'],
+          password: data['Senha']
+        })
         setSuccessMsg(['Usuário cadastrado com sucesso.', 'Redirecionando para o login...'])
         setMsgStart(true)
         setTimeout(() => {
