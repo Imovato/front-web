@@ -4,27 +4,23 @@ import Chat from "../../components/Chat";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
+import Select from "../../components/Select";
 import { apiProperty } from "../../services/api";
 
 interface Property {
-  area: number;
-  name: string;
-  adress: string;
-  codAddress: string;
-  city: string;
-  description: string;
-  neighborhood: string;
-  number: number;
-  price: number;
-  state: string;
-  block: string;
-  rooms: number;
-}
-
-interface CustomerData {
-  name: string;
-  email: string;
-  phone: string;
+  dtype: string
+  area: number
+  name: string
+  adress: string
+  codAddress: string
+  city: string
+  description: string
+  neighborhood: string
+  number: number
+  price: number
+  state: string
+  block?: string
+  rooms?: number
 }
 
 export function NewProperty() {
@@ -41,13 +37,23 @@ export function NewProperty() {
     price: 0,
     number: 0,
     block: "",
-    rooms: 0
+    rooms: 0,
+    dtype: ""
   } as Property);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // trimming data specific for each type
+    if (data.dtype === 'house') {
+      const { block, ...houseData } = data
+      setData(houseData)
+    } else if (data.dtype === 'ground') {
+      const { block, rooms, ...groundData } = data
+      setData(groundData)
+    }
+
     try {
-      await apiProperty.post("/property/contact", data);
+      await apiProperty.post(`/property/${data.dtype}`, data);
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
     }
@@ -72,10 +78,19 @@ export function NewProperty() {
                 <p className="text-xl text-center mb-5">Novo imóvel</p>
                 <form
                   onSubmit={handleSubmit}
-                  className="grid grid-cols-6 grid-rows-4 items-start gap-3 px-5"
+                  className="grid grid-cols-6 items-start gap-3 px-5"
                 >
                   {/* Row 1 */}
-                  <div className="grid col-span-6">
+                  <div className="grid col-span-2">
+                    <Label font="light" for="dtype">Tipo</Label>
+                    <Select id="dtype" className="mt-1 bg-gray-200" value={data.dtype} onChange={(e) => setData({ ...data, dtype: e.target.value })}>
+                      <option value=""></option>
+                      <option value="apartment">Apartamento</option>
+                      <option value="house">Casa</option>
+                      <option value="ground">Terreno</option>
+                    </Select>
+                  </div>
+                  <div className="grid col-span-4">
                     <Label font="light" for="name">Nome</Label>
                     <Input
                       value={data.name}
@@ -98,7 +113,7 @@ export function NewProperty() {
                       type="number"
                     />
                   </div>
-                  <div className="grid col-span-1">
+                  {data.dtype !== 'ground' && <div className="grid col-span-1">
                     <Label font="light" for="rooms">Quartos</Label>
                     <Input
                       value={data.rooms}
@@ -108,8 +123,8 @@ export function NewProperty() {
                       id="rooms"
                       type="number"
                     />
-                  </div>
-                  <div className="grid col-span-4">
+                  </div>}
+                  <div className={`grid col-span-${data.dtype === 'ground' ? '5' : '4'}`}>
                     <Label font="light" for="address">Endereço</Label>
                     <Input
                       value={data.adress}
@@ -166,7 +181,7 @@ export function NewProperty() {
                     />
                   </div>
                   {/* Row 4 */}
-                  <div className="grid col-span-1">
+                  {data.dtype === 'apartment' && <div className="grid col-span-1">
                     <Label font="light" for="block">Bloco</Label>
                     <Input
                       value={data.block}
@@ -176,7 +191,7 @@ export function NewProperty() {
                       id="block"
                       type="text"
                     />
-                  </div>
+                  </div>}
                   <div className="grid col-span-1">
                     <Label font="light" for="price">Preço</Label>
                     <Input
@@ -188,7 +203,7 @@ export function NewProperty() {
                       type="number"
                     />
                   </div>
-                  <div className="grid col-span-4">
+                  <div className={`grid col-span-${data.dtype === 'apartment' ? '4' : '5'}`}>
                     <Label font="light" for="description">Descrição</Label>
                     <Input
                       value={data.description}
@@ -199,6 +214,7 @@ export function NewProperty() {
                       type="text"
                     />
                   </div>
+                  {/* Row 5 */}
                   <div className="grid col-span-1">
                     <Button type="submit">
                       Enviar
