@@ -5,13 +5,14 @@ import {
   faHome,
   faCog,
   faSun,
-  faMoon
+  faMoon,
+  faBuilding
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-library.add(faSignOutAlt, faSignInAlt, faHome, faCog, faSun, faMoon);
+library.add(faSignOutAlt, faSignInAlt, faHome, faCog, faSun, faMoon, faBuilding);
 
 export default function Navbar() {
   const [isDark, setIsDark] = useState(localStorage.getItem('theme') ? true : false);
@@ -94,6 +95,17 @@ export default function Navbar() {
               <p>Log in</p>
             </Link>
           )}
+        </div>
+      </div>
+      <div className="flex gap-1 flex-col items-center justify-between p-3">
+        <div className="flex gap-6 justify-between">
+          {localStorage.getItem("userId") ? (
+            
+            <Link className="flex flex-col items-center gap-1" to="/property/user">
+              <FontAwesomeIcon className="text-xl" icon="building" />
+              <p className="text-center">Meus<br/>Imóveis</p>
+            </Link>
+          ):(<div/>)}
         </div>
       </div>
     </div>

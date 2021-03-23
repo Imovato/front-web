@@ -11,3 +11,7 @@ export const apiProperty = axios.create({
 export const apiContact = axios.create({
   baseURL: "http://localhost:8081/crudService/api/contact",
 });
+
+export const apiMock= axios.create({
+  baseURL: "http://localhost:3003/",
+});

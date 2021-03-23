@@ -1,44 +1,28 @@
 {
-  "properties": [
+  "acquisition": [
     {
-      "id": 1,
-      "name": "Residencial Aspen",
-      "value": "R$ 395.959,76",
-      "description": "Apartamentos\n de 2 dormitórios com suite, sala cozinha integrada, banheiro social, área de serviço, churrasqueira e garagem.",
-      "place": "Bento Gonçalves - RS / Botafogo",
-      "rooms": "3"
+      "id":1,
+      "price":"123123",
+      "user_id":3,
+      "property_id":2
     },
     {
-      "id": 2,
-      "name": "MOINHOS DA CIDADE ALTA",
-      "value": "R$ 203.854,28",
-      "description": "Localização privilegiada com uma vista incrível para o Vale dos Vinhedos. 2 Torres de apartamentos, Torre Cosmopolitan",
-      "place": "Bento Gonçalves - RS / Cidade Alta",
-      "rooms": "2"
+      "id":2,
+      "price":"112222",
+      "user_id":3,
+      "property_id":12
     },
     {
-      "id": 3,
-      "name": "São Roque",
-      "value": "R$ 130.000,00",
-      "description": "Apartamento semi-mobiliado com 2 dormitórios, 01 banheiro, cozinha sob-medida em MDF, granito, área de serviço separada fechada em MDF, 01 vaga de garagem, prédio com elevador, salão de festas, playground",
-      "place": "Bento Gonçalves - RS / São Roque",
-      "rooms": "1"
+      "id":3,
+      "price":"564232",
+      "user_id":3,
+      "property_id":6
     },
     {
-      "id": 4,
-      "name": "Souza Imóveis",
-      "value": "R$ 410.000,00",
-      "description": "Apartamento para Venda, Alegrete / RS, bairro -, 3 dormitórios, 3 banheiros, área construída 180 m²",
-      "place": "Alegrete - RS / Ibirapuitã",
-      "rooms": "2"
-    },
-    {
-      "id": 5,
-      "name": "Apartamento a poucos metros da praça Getúlio Vargas",
-      "value": "R$ 330.000",
-      "description": "O imóvel conta com uma sala ampla, uma cozinha conjugada com área de serviço com pia, dois dormitórios e dois banheiros. Em ótimo estado.",
-      "place": "Alegrete - RS / Centro",
-      "rooms": "3"
+      "id":4,
+      "price":"83244",
+      "user_id":3,
+      "property_id":5
     }
   ]
 }
