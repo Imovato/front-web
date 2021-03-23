@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory} from "react-router-dom";
 import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiProperty } from "../../services/api";
+import { apiContact, apiProperty } from "../../services/api";
 
 import ContactUsSvg from '../../assets/phone-call.svg'
+import { TimedDialog } from "../../components/TimedDialog";
 interface Property {
   id: string;
   name: string;
@@ -29,6 +30,7 @@ interface RouteParams {
 }
 
 interface CustomerData {
+  message: string;
   name: string;
   email: string;
   phone: string;
@@ -36,14 +38,24 @@ interface CustomerData {
 
 function Property() {
   const [property, setProperty] = useState<Property>();
+  const [successMsg, setSuccessMsg] = useState([''])
+  const [msgStart, setMsgStart] = useState(false)
+  const msgTimeout = 2500
+
   let params = useParams<RouteParams>();
 
+  const history = useHistory()
+
   useEffect(() => {
+    
     apiProperty
       .get("apartment/find/".concat(params.id), {})
       .then((response) => {
         setProperty(response.data);
       });
+
+      setData({ ...data, message: `Olá, tenho interesse neste imóvel: ${property?.name}, ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`
+    })
   }, [params.id]);
 
   const [data, setData] = useState({
@@ -55,7 +67,12 @@ function Property() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await apiProperty.post("/property/contact", data);
+      await apiContact.post("/contact", data);
+      setSuccessMsg(['Mensagem enviada, entraremos em contato em breve.', 'Redirecionando...'])
+        setMsgStart(true)
+        setTimeout(() => {
+          history.push('/')
+        }, msgTimeout)
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
     }
@@ -152,14 +169,28 @@ function Property() {
               justify-around items-center gap-12 bg-white dark:bg-gray-800
               p-5 mb-8 dark:text-white"
             >
+              
               <div>
-                <p className="text-xl text-center mb-5">Entre em contato</p>
+                  {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
+                <p className="text-xl text-right mb-5"><span className="text-red-400 font-bold">FALE AGORA</span><br/> COM UM CORRETOR</p>
                 <form
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-3"
                 >
                   <fieldset className="flex gap-3 justify-end items-center">
-                    <Label font="light" for="customerName">Nome</Label>
+                    <Label font="light" for="customerName">Mensagem</Label>
+                    <textarea
+                      placeholder={`Olá, tenho interesse neste imóvel: ${property?.name}, ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`}
+                      onChange={(e) =>
+                        setData({ ...data, message: e.target.value!='' ? e.target.value : `Olá, tenho interesse neste imóvel: ${property?.name}, ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`})
+                      }
+                      className="focus:ring focus:ring-red-200 px-3 rounded-lg
+                      bg-gray-200 dark:bg-gray-600 resize-y max-h-44 h-36"
+                      name="customerName"
+                    />
+                  </fieldset>
+                  <fieldset className="flex gap-3 justify-end items-center">
+                    <Label font="light" for="customerName">Nome *</Label>
                     <input
                       value={data.name}
                       onChange={(e) =>
@@ -168,11 +199,12 @@ function Property() {
                       className="focus:ring focus:ring-red-200 h-10 px-3 rounded-lg
                       bg-gray-200 dark:bg-gray-600"
                       name="customerName"
+                      required
                       type="text"
                     />
                   </fieldset>
                   <fieldset className="flex gap-3 justify-end items-center">
-                    <Label font="light" for="customerEmail">Endereço de Email</Label>
+                    <Label font="light" for="customerEmail">Endereço de Email *</Label>
                     <input
                       value={data.email}
                       onChange={(e) =>
@@ -181,6 +213,7 @@ function Property() {
                       className="focus:ring focus:ring-red-200 h-10 px-3
                       dark:bg-gray-600 rounded-lg bg-gray-200"
                       name="customerEmail"
+                      required
                       type="email"
                     />
                   </fieldset>

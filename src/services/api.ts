@@ -7,3 +7,7 @@ export const apiUser = axios.create({
 export const apiProperty = axios.create({
   baseURL: "http://localhost:8081/crudService/api/property",
 });
+
+export const apiContact = axios.create({
+  baseURL: "http://localhost:8081/crudService/api/contact",
+});
