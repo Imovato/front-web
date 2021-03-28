@@ -24,6 +24,7 @@ interface Property {
   Número: number
   Bloco?: string
   Quartos?: number
+  Quantidade: number
 }
 
 export function NewProperty() {
@@ -45,8 +46,9 @@ export function NewProperty() {
     Preço: 0,
     Número: 0,
     Bloco: "",
-    Quartos: 0,
-    Tipo: ""
+    Quartos: 2,
+    Quantidade: 1,
+    Tipo: "",
   } as Property);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -73,6 +75,7 @@ export function NewProperty() {
           state: data['Estado'],
           price: data['Preço'],
           number: data['Número'],
+          amount: data['Quantidade'],
         }
         let toSend = {}
         if (data.Tipo === 'house') {
@@ -266,7 +269,7 @@ export function NewProperty() {
                         type="number"
                       />
                     </div>
-                    <div className={`grid col-span-${data.Tipo === 'apartment' ? '4' : '5'}`}>
+                    <div className={`grid col-span-${data.Tipo === 'apartment' ? '3' : '4'}`}>
                       <Label font="light" for="description">Descrição</Label>
                       <Input
                         value={data.Descrição}
@@ -275,6 +278,17 @@ export function NewProperty() {
                         }
                         id="description"
                         type="text"
+                      />
+                    </div>
+                    <div className={`grid col-span-1`}>
+                      <Label font="light" for="quantity">Quantidade</Label>
+                      <Input
+                        value={data.Quantidade}
+                        onChange={(e) =>
+                          setData({ ...data, Quantidade: Number(e.target.value) })
+                        }
+                        id="quantity"
+                        type="number"
                       />
                     </div>
                     {/* Row 5 */}

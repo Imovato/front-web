@@ -47,9 +47,9 @@ function Property() {
   const history = useHistory()
 
   useEffect(() => {
-    
+
     apiProperty
-      .get("apartment/find/".concat(params.id), {})
+      .get("property/find/".concat(params.id), {})
       .then((response) => {
         setProperty(response.data);
       });
@@ -169,7 +169,7 @@ function Property() {
               justify-around items-center gap-12 bg-white dark:bg-gray-800
               p-5 mb-8 dark:text-white"
             >
-              
+
               <div>
                   {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
                 <p className="text-xl text-right mb-5"><span className="text-red-400 font-bold">FALE AGORA</span><br/> COM UM CORRETOR</p>

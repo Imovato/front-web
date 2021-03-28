@@ -16,6 +16,7 @@ setLocale({
   number: {
     min: '${path} deve ser no mínimo ${min}',
     max: '${path} deve ser no máximo ${max}',
+    positive: '${path} precisa ser positivo',
   },
 })
 
@@ -30,6 +31,7 @@ export const schema = yup.object().shape({
   Estado: yup.string().required().length(2),
   Preço: yup.number().required().min(0),
   Número: yup.number().positive().required(),
+  Quantidade: yup.number().positive().required(),
   Bloco: yup.string().when('Tipo', {
     is: (val: string) => val === 'apartment',
     then: yup.string().required()
