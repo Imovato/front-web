@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@brainhubeu/react-carousel": "^1.19.26",
     "@craco/craco": "^6.1.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.3",
+    "@types/brainhubeu__react-carousel": "^2.0.2",
     "@types/react-router-dom": "^5.1.7",
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.35",
