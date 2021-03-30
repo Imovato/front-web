@@ -23,6 +23,12 @@
       "price":"83244",
       "user_id":3,
       "property_id":5
+    },
+    {
+      "id":5,
+      "price":"83244",
+      "user_id":3,
+      "property_id":8
     }
   ]
 }

@@ -4,12 +4,13 @@ import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiContact, apiProperty } from "../../services/api";
+import { apiContact, apiPayment, apiProperty, apiRent  } from "../../services/api";
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { TimedDialog } from "../../components/TimedDialog";
+import { PropertyData } from "../../components/PropertyData";
 interface Property {
   id: string;
   name: string;
@@ -93,16 +94,23 @@ function Property() {
   async function handleBuy(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await apiProperty.post("/property/buy/".concat(params.id));
+      await apiPayment.post("/save",{
+        data: new Date(),
+        property:property,
+        amountValue:property?.price
+      });
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
     }
   }
 
   async function handleHire(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
     try {
-      await apiProperty.post("/property/hire/".concat(params.id));
+      await apiRent.post("/save",{
+        data: new Date(),
+        property:property,
+        amountValue:property?.price
+      });
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
     }
@@ -175,26 +183,11 @@ function Property() {
             <div className="flex max-w-5xl w-full justify-around shadow-md
               rounded-xl bg-white dark:text-white dark:bg-gray-800 p-4 gap-16"
             >
-              <div>
-                <p className="text-xl">Localização</p>
-                <p className="text-lg font-light">{property?.adress}</p>
-              </div>
-              <div>
-                <p className="text-xl">Bairro</p>
-                <p className="text-lg font-light">{property?.neighborhood}</p>
-              </div>
-              <div>
-                <p className="text-xl">Número</p>
-                <p className="text-lg font-light">{property?.number}</p>
-              </div>
-              <div>
-                <p className="text-xl">Bloco</p>
-                <p className="text-lg font-light">{property?.block}</p>
-              </div>
-              <div>
-                <p className="text-xl">Quartos</p>
-                <p className="text-lg font-light">{property?.rooms}</p>
-              </div>
+              <PropertyData name="Localização" value={property?.adress}/>
+              <PropertyData name="Bairro" value={property?.neighborhood}/>
+              <PropertyData name="Número" value={property?.number}/>
+              <PropertyData name="Bloco" value={property?.block}/>
+              <PropertyData name="Quartos" value={property?.rooms}/>
             </div>
             <div className="flex max-w-3xl w-full shadow-md rounded-xl
               justify-around items-center gap-12 bg-white dark:bg-gray-800
