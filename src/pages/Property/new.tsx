@@ -316,7 +316,7 @@ export function NewProperty() {
                     </div>
                     <div className="grid col-span-3"></div>
                     <div className="grid col-span-2 cursor-pointer">
-                      <Button color="blue" className="relative cursor-pointer">
+                      <Button color="blue" className="relative cursor-pointer" type="button">
                         <>
                           <FontAwesomeIcon icon="plus" />
                           Fotos max: (3)

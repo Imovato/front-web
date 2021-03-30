@@ -32,21 +32,17 @@ interface Property {
 function UserProperty() {
   const [acquisitions, setAcquisitions] = useState<Acquisition[]>([])
   const [properties, setProperties] = useState<Property[]>([])
-
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
+  
   
   useEffect(() => {
-    
-    // ${localStorage.getItem("userId")}
-    apiMock.get(`/acquisition?user_id=3`, {}).then((response) => {
-        setAcquisitions(response.data)
-    });
-    
-    acquisitions.forEach(element => {
-        apiProperty.get(`/apartment/find/${element.property_id}`, {}).then((response) => {
-            setProperties(properties => [...properties, response.data])
-        })
+    apiProperty.get('/property/all', {}).then((response) => {
+      setProperties(response.data)
     })
-  }, [properties]);
+    apiMock.get('/acquisition?user_id=3', {}).then((response) => {
+      setAcquisitions(response.data)
+    });
+  }, []);
   return (
     <>
       <Chat></Chat>
@@ -54,12 +50,13 @@ function UserProperty() {
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
           <section className="flex max-h-192 gap-16
-            overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
-            scrollbar-thumb-red-400 scrollbar-track-red-200 max-w-5xl"
+            overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-thin
+            scrollbar-thumb-red-400 scrollbar-track-red-200 mix-w-6xl w-full content-start justify-center"
           >
-              <div className="flex font-qsand flex-col gap-6 justify-center">
-                {properties.map((property: Property) => (
-                    <PropertySample
+              <div className="flex font-qsand flex-col gap-6 justify-start h-full">
+                {properties.map((property: Property) => {
+                  if(acquisitions.find(x => x.property_id === Number(property.id))){
+                    return <PropertySample
                     key={property.id}
                     id={property.id}
                     name={property.name}
@@ -68,7 +65,8 @@ function UserProperty() {
                     value={property.price}
                     image="imovel.png"
                     ></PropertySample>
-                ))} 
+                  }
+              })} 
                 </div> 
           </section>
         </div>
