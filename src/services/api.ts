@@ -8,6 +8,10 @@ export const apiProperty = axios.create({
   baseURL: "http://localhost:8081/crudService/api/property",
 });
 
+export const apiPropertyImages = axios.create({
+  baseURL: "http://localhost:8081/crudService/images/property",
+});
+
 export const apiContact = axios.create({
   baseURL: "http://localhost:8081/crudService/api/contact",
 });

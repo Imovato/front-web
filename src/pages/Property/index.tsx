@@ -5,6 +5,8 @@ import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
 import { apiContact, apiProperty } from "../../services/api";
+import Carousel, { Dots } from '@brainhubeu/react-carousel';
+import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { TimedDialog } from "../../components/TimedDialog";
@@ -23,6 +25,7 @@ interface Property {
   state: string;
   block: string;
   rooms: number;
+  imageQuantity: number;
 }
 
 interface RouteParams {
@@ -38,6 +41,8 @@ interface CustomerData {
 
 function Property() {
   const [property, setProperty] = useState<Property>();
+  const [stateImages, setStateImages] = useState<string[]>([])
+  const [carousel, setCarousel] = useState(0)
   const [successMsg, setSuccessMsg] = useState([''])
   const [msgStart, setMsgStart] = useState(false)
   const msgTimeout = 2500
@@ -51,11 +56,18 @@ function Property() {
     apiProperty
       .get("property/find/".concat(params.id), {})
       .then((response) => {
+        let images: any[] = []
         setProperty(response.data);
+        for (let index = 1; index <= response.data.imageQuantity; index++) {
+          images.push(`http://localhost:8081/crudService/images/property/${params.id}/${index}.jpg`)
+        }
+        setStateImages(images)
       });
 
-      setData({ ...data, message: `Olá, tenho interesse neste imóvel: ${property?.name}, ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`
-    })
+    setData({
+      ...data, message: `Olá, tenho interesse neste imóvel: ${property?.name},
+        ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`
+      })
   }, [params.id]);
 
   const [data, setData] = useState({
@@ -95,6 +107,11 @@ function Property() {
       alert("Algo deu errado, tente novamente.");
     }
   }
+
+  const carouselOnChange = (value: any) => {
+    setCarousel(value);
+  }
+
   return (
     <>
       <Chat></Chat>
@@ -105,12 +122,25 @@ function Property() {
             className="flex flex-col items-center max-h-192 gap-6 max-w-6xl
             overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-transparent"
-          >
+
+            >
             <div className="flex items-center justify-around font-qsand w-full">
-              <img
-                className="rounded-lg max-w-max shadow-lg"
-                src={process.env.PUBLIC_URL + "/imovel.png"}
-              />
+              <div className="w-96">
+                <Carousel value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
+                  {stateImages.map((link) => (
+                    <img id={link.substring(50)}
+                      src={link} />
+                  ))}
+                </Carousel>
+                <Dots
+                  value={carousel}
+                  onChange={carouselOnChange}
+                  thumbnails={stateImages.map((link) => (
+                    <img id={link.substring(50).concat('thumb')}
+                      src={link} />
+                  ))}
+                />
+              </div>
               <div className="flex flex-col w-1/2">
                 <div className="flex flex-col justify-between gap-4 p-4
                    bg-white dark:bg-gray-800 dark:text-white rounded-t-xl shadow-lg"
