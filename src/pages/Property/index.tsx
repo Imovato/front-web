@@ -122,8 +122,9 @@ function Property() {
             className="flex flex-col items-center max-h-192 gap-6 max-w-6xl
             overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-transparent"
+
             >
-            <div className="flex items-center justify-around font-qsand">
+            <div className="flex items-center justify-around font-qsand w-full">
               <div className="w-96">
                 <Carousel value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
                   {stateImages.map((link) => (
@@ -145,8 +146,8 @@ function Property() {
                    bg-white dark:bg-gray-800 dark:text-white rounded-t-xl shadow-lg"
                 >
                   <p className="text-xl font-medium">{property?.name}</p>
-                  <div className="flex flex-col justify-between gap-10">
-                    <p className="text-lg">{property?.description}</p>
+                  <div className="flex flex-col justify-between gap-10 max-w-sm">
+                    <p className="text-lg ">{property?.description}</p>
                     <p className="text-xl text-green-800 dark:text-green-400">R$ {property?.price}</p>
                   </div>
                 </div>
