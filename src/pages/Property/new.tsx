@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
@@ -34,9 +34,7 @@ export function NewProperty() {
   const [msgStart, setMsgStart] = useState(false)
   const msgTimeout = 2500
 
-  const [files, setFiles] = useState()
-
-  const history = useHistory()
+  const [files, setFiles] = useState([])
 
   const [data, setData] = useState({
     Área: 0,
@@ -98,11 +96,11 @@ export function NewProperty() {
         //@ts-ignore
         formData.append("img3", files[2]);
 
-        console.log(files)
-
         await apiProperty.post(
           `/property/upload/${r.data.id}`,
-          formData)
+          formData, {
+          headers: { 'Content-Type': 'multipart/form-data;' }
+        })
 
         setSuccessMsg(['Imóvel cadastrado com sucesso.'])
         setMsgStart(true)
@@ -110,6 +108,7 @@ export function NewProperty() {
           setSuccessMsg([])
         }, msgTimeout)
       } catch (error) {
+        console.log(error)
         alert('Algo deu errado, tente novamente.')
       }
     }
@@ -129,12 +128,6 @@ export function NewProperty() {
       setGeneralErrors(error.errors)
       return false
     }
-  }
-
-  function handleFile(e: React.ChangeEvent<HTMLInputElement>): void {
-    let files = e.target.files;
-    // @ts-ignore
-    setFiles({ files });
   }
 
   return (
@@ -331,7 +324,8 @@ export function NewProperty() {
                             className="text-0 absolute z-10 cursor-pointer opacity-0 right-0 top-0 h-full w-full text-xs"
                             type="file"
                             multiple={true}
-                            onChange={(e) => handleFile(e)}
+                            // @ts-ignore
+                            onChange={(e) => setFiles(e.target.files)}
                           />
                         </>
                       </Button>

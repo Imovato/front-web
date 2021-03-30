@@ -58,7 +58,7 @@ function Property() {
       .then((response) => {
         let images: any[] = []
         setProperty(response.data);
-        for (let index = 1; index <= 5; index++) {
+        for (let index = 1; index <= response.data.imageQuantity; index++) {
           images.push(`http://localhost:8081/crudService/images/property/${params.id}/${index}.jpg`)
         }
         setStateImages(images)
