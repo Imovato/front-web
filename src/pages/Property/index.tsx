@@ -119,20 +119,21 @@ function Property() {
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
           <section
-            className="flex flex-col items-center max-h-192 gap-6 max-w-6xl
-            overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
+            className="flex flex-col items-center max-h-192 gap-6 w-full
+            max-w-6xl overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-transparent"
 
             >
             <div className="flex items-center justify-around font-qsand w-full">
-              <div className="w-96">
-                <Carousel value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
+              <div className="flex flex-col justify-center items-center">
+                <Carousel className="max-w-lg max-h-96" value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
                   {stateImages.map((link) => (
-                    <img id={link.substring(50)}
+                    <img className="overflow-y-scroll" id={link.substring(50)}
                       src={link} />
                   ))}
                 </Carousel>
                 <Dots
+                  className="w-48"
                   value={carousel}
                   onChange={carouselOnChange}
                   thumbnails={stateImages.map((link) => (
@@ -141,7 +142,7 @@ function Property() {
                   ))}
                 />
               </div>
-              <div className="flex flex-col w-1/2">
+              <div className="flex flex-col">
                 <div className="flex flex-col justify-between gap-4 p-4
                    bg-white dark:bg-gray-800 dark:text-white rounded-t-xl shadow-lg"
                 >
