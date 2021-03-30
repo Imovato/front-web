@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
@@ -32,6 +33,8 @@ export function NewProperty() {
   const [successMsg, setSuccessMsg] = useState<string[]>([])
   const [msgStart, setMsgStart] = useState(false)
   const msgTimeout = 2500
+
+  const [files, setFiles] = useState()
 
   const history = useHistory()
 
@@ -85,7 +88,22 @@ export function NewProperty() {
         } else {
           toSend = { ...dataBackend }
         }
-        await apiProperty.post(`/${data.Tipo}`, toSend);
+        const r = await apiProperty.post(`/${data.Tipo}`, toSend);
+
+        let formData = new FormData();
+        //@ts-ignore
+        formData.append("img1", files[0]);
+        //@ts-ignore
+        formData.append("img2", files[1]);
+        //@ts-ignore
+        formData.append("img3", files[2]);
+
+        console.log(files)
+
+        await apiProperty.post(
+          `/property/upload/${r.data.id}`,
+          formData)
+
         setSuccessMsg(['Imóvel cadastrado com sucesso.'])
         setMsgStart(true)
         setTimeout(() => {
@@ -111,6 +129,12 @@ export function NewProperty() {
       setGeneralErrors(error.errors)
       return false
     }
+  }
+
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>): void {
+    let files = e.target.files;
+    // @ts-ignore
+    setFiles({ files });
   }
 
   return (
@@ -295,6 +319,21 @@ export function NewProperty() {
                     <div className="grid col-span-1">
                       <Button type="submit">
                         Enviar
+                      </Button>
+                    </div>
+                    <div className="grid col-span-3"></div>
+                    <div className="grid col-span-2 cursor-pointer">
+                      <Button color="blue" className="relative cursor-pointer">
+                        <>
+                          <FontAwesomeIcon icon="plus" />
+                          Fotos max: (3)
+                          <input
+                            className="text-0 absolute z-10 cursor-pointer opacity-0 right-0 top-0 h-full w-full text-xs"
+                            type="file"
+                            multiple={true}
+                            onChange={(e) => handleFile(e)}
+                          />
+                        </>
                       </Button>
                     </div>
                   </form>

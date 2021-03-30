@@ -8,6 +8,10 @@
 @tailwind components;
 @tailwind utilities;
 @layer utilities {
+  .text-0 {
+    font-size: 0;
+    line-height: 0;
+  }
   .max-h-112 {
     max-height: 28rem;
   }
