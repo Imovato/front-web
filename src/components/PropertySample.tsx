@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { apiProperty } from "../services/api";
 interface SampleProps {
   id: string;
   name: string;
@@ -17,6 +19,22 @@ export function PropertySample({
   description,
   image,
 }: SampleProps) {
+  const [images, setImages] = useState<string[]>([])
+
+  useEffect(() => {
+
+    apiProperty
+      .get("property/find/".concat(id), {})
+      .then((response) => {
+        let images: any[] = []
+        for (let index = 1; index <= response.data.imageQuantity; index++) {
+          images.push(`http://localhost:8081/crudService/images/property/${id}/${index}.jpg`)
+        }
+        setImages(images)
+      });
+
+  }, []);
+
   return (
     // <div className="flex w-8/12 h-48 shadow-xl border-gray-200 border-2 rounded-xl">
     <Link
@@ -28,7 +46,7 @@ export function PropertySample({
       <div className="flex items-center rounded-sm">
         <img
           className="w-36 rounded-md"
-          src={process.env.PUBLIC_URL + "/imovel.png"}
+          src={images[0]}
           alt={name}
         />
       </div>
