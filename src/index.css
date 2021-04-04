@@ -39,3 +39,18 @@
   background: rgba(253, 242, 248);
 }
 
+.newPropertyFileButton .fa-hover-show,
+.newPropertyFileButton:hover .fa-hover-hidden {
+  display: none;
+}
+.newPropertyFileButton:hover .fa-hover-show {
+  display: inline-block;
+}
+
+.newPropertyFileButton:hover > .tooltip {
+  visibility: visible;
+}
+
+.tooltip {
+  visibility: hidden;
+}
