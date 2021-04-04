@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { FormError } from "../../components/FormError";
@@ -30,11 +29,12 @@ interface Property {
 
 export function NewProperty() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const [successMsg, setSuccessMsg] = useState<string[]>([])
+  const [msg, setMsg] = useState<string[]>([])
   const [msgStart, setMsgStart] = useState(false)
+  const [dialogStyle, setDialogStyle] = useState('success')
   const msgTimeout = 2500
 
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState<FileList | null>(null)
 
   const [data, setData] = useState({
     Área: 0,
@@ -89,11 +89,11 @@ export function NewProperty() {
         const r = await apiProperty.post(`/${data.Tipo}`, toSend);
 
         let formData = new FormData();
-        //@ts-ignore
+        //@ts-expect-error
         formData.append("img1", files[0]);
-        //@ts-ignore
+        //@ts-expect-error
         formData.append("img2", files[1]);
-        //@ts-ignore
+        //@ts-expect-error
         formData.append("img3", files[2]);
 
         await apiProperty.post(
@@ -102,10 +102,11 @@ export function NewProperty() {
           headers: { 'Content-Type': 'multipart/form-data;' }
         })
 
-        setSuccessMsg(['Imóvel cadastrado com sucesso.'])
+        setDialogStyle('success')
+        setMsg(['Imóvel cadastrado com sucesso.'])
         setMsgStart(true)
         setTimeout(() => {
-          setSuccessMsg([])
+          setMsg([])
         }, msgTimeout)
       } catch (error) {
         console.log(error)
@@ -123,11 +124,42 @@ export function NewProperty() {
     try {
       await schema.validate(data, { abortEarly: false })
       setGeneralErrors([])
+      if(!files?.item(0)) {
+        setMsg(['Deve existir ao menos 1 foto do imóvel.'])
+        setDialogStyle('error')
+        setMsgStart(true)
+        setTimeout(() => {
+          setMsg([])
+        }, msgTimeout)
+        return false
+      }
       return true
     } catch (error) {
       setGeneralErrors(error.errors)
       return false
     }
+  }
+
+  function handleFiles(e: React.ChangeEvent<HTMLInputElement>) {
+    setFiles(null)
+    if(e.target.files) {
+      let list = new DataTransfer()
+      for (let index = 0; index < e.target.files.length; index++) {
+        if (index > 2) break
+        // @ts-expect-error
+        list.items.add(e.target.files.item(index))
+      }
+      setFiles(list.files)
+    }
+  }
+
+  function updateFileList(f: FileList, toRemove: number) {
+    let list = new DataTransfer()
+    for (let index = 0; index < f.length; index++) {
+      if(index === toRemove) continue
+      list.items.add(f[index])
+    }
+    setFiles(list.files)
   }
 
   return (
@@ -152,7 +184,7 @@ export function NewProperty() {
                 </div>
               </>)}
             <div>
-              {successMsg[0] && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
+              {msg[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msg} start={msgStart} />)}
               <div className="flex max-w-3xl shadow-md rounded-xl
                 justify-around items-center gap-12 bg-white dark:bg-gray-800
                 p-5 mb-8 dark:text-white"
@@ -314,22 +346,38 @@ export function NewProperty() {
                         Enviar
                       </Button>
                     </div>
-                    <div className="grid col-span-3"></div>
-                    <div className="grid col-span-2 cursor-pointer">
-                      <Button color="blue" className="relative cursor-pointer">
+                    <div className="grid col-span-1"></div>
+                    <div className="grid col-span-1 cursor-pointer">
+                      <Button color="blue" className="relative cursor-pointer" type="button">
                         <>
                           <FontAwesomeIcon icon="plus" />
-                          Fotos max: (3)
+                          Fotos
                           <input
                             className="text-0 absolute z-10 cursor-pointer opacity-0 right-0 top-0 h-full w-full text-xs"
                             type="file"
                             multiple={true}
                             // @ts-ignore
-                            onChange={(e) => setFiles(e.target.files)}
+                            onChange={(e) => handleFiles(e)}
                           />
                         </>
                       </Button>
                     </div>
+                    {files && Array.from(files).map((file, index) => (
+                    <>
+                      <div className="grid col-span-1 cursor-pointer newPropertyFileButton relative">
+                        <div className="tooltip bg-pink-100 text-center rounded-lg text-sm p-1 max-h-14 absolute overflow-hidden -mt-16 z-10 w-36 -left-5 break-words dark:text-white dark:bg-pink-500 leading-tight">
+                          {file.name}
+                        </div>
+                        <Button color="green" hover="red" className="cursor-pointer" type="button" onClick={() => updateFileList(files, index)}>
+                          <>
+                            <FontAwesomeIcon icon="file-image" className="fa-hover-hidden" />
+                            <FontAwesomeIcon icon="trash" className="fa-hover-show" />
+                            <p className="">{file.name.substring(0, 5)}...</p>
+                          </>
+                        </Button>
+                      </div>
+                    </>
+                    ))}
                   </form>
                 </div>
               </div>

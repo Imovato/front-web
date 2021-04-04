@@ -26,7 +26,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "BROWSER=none craco start",
+    "start": "BROWSER=vivaldi-stable craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"

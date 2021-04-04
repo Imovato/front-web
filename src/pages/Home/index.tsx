@@ -7,7 +7,9 @@ import {
   faWindowMinimize,
   faPlus,
   faTimes,
-  faSearch
+  faSearch,
+  faFileImage,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import Search from "../../components/Search";
 import { PropertySample } from "../../components/PropertySample";
@@ -17,7 +19,7 @@ import { Button } from "../../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-library.add(faGreaterThan, faWindowMinimize, faPlus, faTimes, faSearch);
+library.add(faGreaterThan, faWindowMinimize, faPlus, faTimes, faSearch, faFileImage, faTrash);
 
 interface Property {
   id: string;
