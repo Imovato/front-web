@@ -4,12 +4,13 @@ import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiContact, apiProperty } from "../../services/api";
+import { apiContact, apiPayment, apiProperty, apiRent  } from "../../services/api";
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { TimedDialog } from "../../components/TimedDialog";
+import { PropertyData } from "../../components/PropertyData";
 interface Property {
   id: string;
   name: string;
@@ -93,16 +94,23 @@ function Property() {
   async function handleBuy(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await apiProperty.post("/property/buy/".concat(params.id));
+      await apiPayment.post("/save",{
+        data: new Date(),
+        property:property,
+        amountValue:property?.price
+      });
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
     }
   }
 
   async function handleHire(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
     try {
-      await apiProperty.post("/property/hire/".concat(params.id));
+      await apiRent.post("/save",{
+        data: new Date(),
+        property:property,
+        amountValue:property?.price
+      });
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
     }
@@ -119,20 +127,21 @@ function Property() {
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
           <section
-            className="flex flex-col items-center max-h-192 gap-6 max-w-6xl
-            overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
+            className="flex flex-col items-center max-h-192 gap-6 w-full
+            max-w-6xl overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-transparent"
 
             >
             <div className="flex items-center justify-around font-qsand w-full">
-              <div className="w-96">
-                <Carousel value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
+              <div className="flex flex-col justify-center items-center">
+                <Carousel className="max-w-lg max-h-96" value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
                   {stateImages.map((link) => (
-                    <img id={link.substring(50)}
+                    <img className="overflow-y-scroll" id={link.substring(50)}
                       src={link} />
                   ))}
                 </Carousel>
                 <Dots
+                  className="w-48"
                   value={carousel}
                   onChange={carouselOnChange}
                   thumbnails={stateImages.map((link) => (
@@ -141,7 +150,7 @@ function Property() {
                   ))}
                 />
               </div>
-              <div className="flex flex-col w-1/2">
+              <div className="flex flex-col">
                 <div className="flex flex-col justify-between gap-4 p-4
                    bg-white dark:bg-gray-800 dark:text-white rounded-t-xl shadow-lg"
                 >
@@ -174,26 +183,11 @@ function Property() {
             <div className="flex max-w-5xl w-full justify-around shadow-md
               rounded-xl bg-white dark:text-white dark:bg-gray-800 p-4 gap-16"
             >
-              <div>
-                <p className="text-xl">Localização</p>
-                <p className="text-lg font-light">{property?.adress}</p>
-              </div>
-              <div>
-                <p className="text-xl">Bairro</p>
-                <p className="text-lg font-light">{property?.neighborhood}</p>
-              </div>
-              <div>
-                <p className="text-xl">Número</p>
-                <p className="text-lg font-light">{property?.number}</p>
-              </div>
-              <div>
-                <p className="text-xl">Bloco</p>
-                <p className="text-lg font-light">{property?.block}</p>
-              </div>
-              <div>
-                <p className="text-xl">Quartos</p>
-                <p className="text-lg font-light">{property?.rooms}</p>
-              </div>
+              <PropertyData name="Localização" value={property?.adress}/>
+              <PropertyData name="Bairro" value={property?.neighborhood}/>
+              <PropertyData name="Número" value={property?.number}/>
+              <PropertyData name="Bloco" value={property?.block}/>
+              <PropertyData name="Quartos" value={property?.rooms}/>
             </div>
             <div className="flex max-w-3xl w-full shadow-md rounded-xl
               justify-around items-center gap-12 bg-white dark:bg-gray-800
