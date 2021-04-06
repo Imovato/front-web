@@ -4,7 +4,7 @@ import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiContact, apiPayment, apiProperty, apiRent  } from "../../services/api";
+import { apiAcquisition, apiContact, apiProperty, apiRent  } from "../../services/api";
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 
@@ -22,6 +22,7 @@ interface Property {
   description: string;
   neighborhood: string;
   number: number;
+  amount: number;
   price: number;
   state: string;
   block: string;
@@ -91,13 +92,14 @@ function Property() {
     }
   }
 
-  async function handleBuy(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function handleBuy() {
     try {
-      await apiPayment.post("/save",{
+      apiAcquisition.post("/save",{
         data: new Date(),
-        property:property,
-        amountValue:property?.price
+        value:property?.price,
+        amount:property?.amount,
+        idProperty:property?.id,
+        idUser:localStorage.getItem('userId')
       });
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
@@ -162,7 +164,7 @@ function Property() {
                 </div>
                 <div className="flex justify-between bg-opacity-0">
                   <button
-                    onClick={() => handleBuy}
+                    onClick={handleBuy}
                     className="rounded-bl-lg text-white bg-green-400 text-xl
                     w-full h-12 justify-center hover:bg-opacity-70 transition
                     duration-150 ease-in-out dark:text-black"

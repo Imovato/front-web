@@ -3,13 +3,20 @@ import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { PropertySample } from "../../components/PropertySample";
 import { SearchContext } from "../../contexts/Search";
-import { apiMock, apiProperty} from "../../services/api";
+import { apiAcquisition, apiMock, apiProperty} from "../../services/api";
 
 interface Acquisition{
     id: number;
     price: string;
-    user_id:number;
-    property_id:number;
+    user: {
+      id: number;
+      name: string;
+    }
+    property: {
+      id: number;
+      amount: number;
+      price: number;
+    };
 }
 
 interface Property {
@@ -39,7 +46,7 @@ function UserProperty() {
     apiProperty.get('/property/all', {}).then((response) => {
       setProperties(response.data)
     })
-    apiMock.get('/acquisition?user_id=3', {}).then((response) => {
+    apiAcquisition.get(`/user/find/${localStorage.getItem('userId')}`, {}).then((response) => {
       setAcquisitions(response.data)
     });
   }, []);
@@ -55,7 +62,7 @@ function UserProperty() {
           >
               <div className="flex font-qsand flex-col gap-6 justify-start h-full">
                 {properties.map((property: Property) => {
-                  if(acquisitions.find(x => x.property_id === Number(property.id))){
+                  if(acquisitions.find(x => x.property.id === Number(property.id))){
                     return <PropertySample
                     key={property.id}
                     id={property.id}
