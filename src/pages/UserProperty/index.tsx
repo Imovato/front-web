@@ -41,11 +41,12 @@ function UserProperty() {
   const [properties, setProperties] = useState<Property[]>([])
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
   
-  
+  let count= 0;
   useEffect(() => {
     apiProperty.get('/property/all', {}).then((response) => {
       setProperties(response.data)
     })
+    // alert(localStorage.getItem('userId'));
     apiAcquisition.get(`/user/find/${localStorage.getItem('userId')}`, {}).then((response) => {
       setAcquisitions(response.data)
     });
@@ -61,8 +62,10 @@ function UserProperty() {
             scrollbar-thumb-red-400 scrollbar-track-red-200 mix-w-6xl w-full content-start justify-center"
           >
               <div className="flex font-qsand flex-col gap-6 justify-start h-full">
+
                 {properties.map((property: Property) => {
                   if(acquisitions.find(x => x.property.id === Number(property.id))){
+                    count = count +1;
                     return <PropertySample
                     key={property.id}
                     id={property.id}
@@ -74,8 +77,15 @@ function UserProperty() {
                     action="Comprado"
                     ></PropertySample>
                   }
-              })} 
-                </div> 
+              })}
+              {count==0 && (
+                <div className="bg-red-200 dark:bg-red-400 p-5 rounded-lg shadow-md mx-32">
+                  <p className="text-lg font-medium dark:text-white">
+                    Ops! Você não possui nenhum imóvel.
+                  </p>
+                </div>
+              )}
+            </div> 
           </section>
         </div>
       </div>
