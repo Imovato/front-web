@@ -71,6 +71,7 @@ function UserProperty() {
                     description={property.description}
                     value={property.price}
                     image="imovel.png"
+                    action="Comprado"
                     ></PropertySample>
                   }
               })} 
