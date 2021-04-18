@@ -9,8 +9,8 @@ import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
-import { TimedDialog } from "../../components/TimedDialog";
 import { PropertyData } from "../../components/PropertyData";
+import { ToastContainer } from "react-toastify";
 interface Property {
   id: string;
   name: string;
@@ -195,7 +195,7 @@ function Property() {
             >
 
               <div>
-                  {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
+                <ToastContainer />
                 <p className="text-xl text-right mb-5"><span className="text-red-400 font-bold">FALE AGORA</span><br/> COM UM CORRETOR</p>
                 <form
                   onSubmit={handleSubmit}

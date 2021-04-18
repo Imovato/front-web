@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
 import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { FormError } from "../../components/FormError";
@@ -7,7 +8,6 @@ import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
 import Select from "../../components/Select";
-import { TimedDialog } from "../../components/TimedDialog";
 import { apiProperty } from "../../services/api";
 import { schema } from "./schema";
 
@@ -184,7 +184,7 @@ export function NewProperty() {
                 </div>
               </>)}
             <div>
-              {msg[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msg} start={msgStart} />)}
+              <ToastContainer />
               <div className="flex max-w-3xl shadow-md rounded-xl
                 justify-around items-center gap-12 bg-white dark:bg-gray-800
                 p-5 mb-8 dark:text-white"
