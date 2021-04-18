@@ -52,7 +52,11 @@ export default function Signup () {
           history.push('/')
         }, msgTimeout)
       } catch (error) {
-        toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
+        if(error.response) {
+          toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
+        } else {
+          toast('Erro ao conectar com a API.', {autoClose: msgTimeout, 'type': 'error'})
+        }
       }
   }
 
@@ -88,7 +92,7 @@ export default function Signup () {
       : document.getElementById('root')?.style.setProperty('background', 'rgba(253, 242, 248)')
 
     Inputmask("999.999.999-99", {autoUnmask: true}).mask('input[name*=cpf i]');
-    Inputmask("(99) 9999-9999", {autoUnmask: true}).mask('input[name*=phone i]');
+    Inputmask("(99) 9999-9999[9]", {autoUnmask: true}).mask('input[name*=phone i]');
   }, [])
 
   return (

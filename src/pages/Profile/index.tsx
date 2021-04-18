@@ -58,6 +58,11 @@ export function Profile() {
     }
   }
 
+  useEffect(() => {
+    Inputmask("999.999.999-99", {autoUnmask: true}).mask('input[name*=cpf i]');
+    Inputmask("(99) 9999-9999", {autoUnmask: true}).mask('input[name*=phone i]');
+  }, [])
+
   return (
     <>
       <div className="max-w-7xl m-auto h-screen">
@@ -110,7 +115,12 @@ export function Profile() {
                       <span className="text-red-700 font-bold"> *</span>
                       <Input
                         value={userPhone}
-                        onChange={e => setUserPhone(e.target.value)}
+                        onChange={e => {
+                          e.target.value.length > 10 ?
+                            Inputmask("(99) 9999[9]-9999", {autoUnmask: true}).mask('input[name*=phone i]') :
+                            Inputmask("(99) 9999-9999[9]", {autoUnmask: true, greedy: false}).mask('input[name*=phone i]')
+                          setUserPhone(e.target.value)
+                        }}
                         name="userPhone"
                         type="text"
                       />

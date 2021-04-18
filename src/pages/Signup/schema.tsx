@@ -23,7 +23,6 @@ setLocale({
 
 export const schema = yup.object().shape({
   Nome: yup.string().required().max(100),
-  // @ts-expect-error
   Email: yup.string().email().required().max(100).min(2).test('Email', 'Email já cadastrado', async function (val) {
     try {
       const res = await apiUser.post('/checkEmail', {
@@ -31,7 +30,7 @@ export const schema = yup.object().shape({
       })
       return !res.data
     } catch(err) {
-      console.log("something went wrong with the api...", err)
+      return true
     }
   }),
   CPF: yup.string().required().test('CPF', 'CPF não é válido', function (val) {

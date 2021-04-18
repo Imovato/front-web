@@ -41,7 +41,11 @@ export default function Login () {
             history.push('/')
           }, msgTimeout)
       } catch (error) {
-        toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
+        if(error.response) {
+          toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
+        } else {
+          toast('Erro ao conectar com a API.', {autoClose: msgTimeout, 'type': 'error'})
+        }
       }
   }
 
