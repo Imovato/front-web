@@ -45,7 +45,10 @@ export default function Signup () {
           ]
         })
         localStorage.setItem('token', response.data)
-        toast('Usuário cadastrado com sucesso.', {autoClose: msgTimeout, type: 'success'})
+        toast('Cadastro efetuado com sucesso.', {autoClose: msgTimeout, type: 'success'})
+        setTimeout(() => {
+          history.push('/')
+        }, msgTimeout)
       } catch (error) {
         toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
       }
