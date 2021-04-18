@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import Inputmask from "inputmask";
+
 export default function Signup () {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
   const msgTimeout = 4000
@@ -84,6 +86,9 @@ export default function Signup () {
   useEffect(() => {
     isDark ? document.getElementById('root')?.style.setProperty('background', '#374151')
       : document.getElementById('root')?.style.setProperty('background', 'rgba(253, 242, 248)')
+
+    Inputmask("999.999.999-99", {autoUnmask: true}).mask('input[name*=cpf i]');
+    Inputmask("(99) 9999-9999", {autoUnmask: true}).mask('input[name*=phone i]');
   }, [])
 
   return (
@@ -175,10 +180,16 @@ export default function Signup () {
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={data['Telefone']}
-                      onChange={e => setData({...data, ['Telefone']: e.target.value})}
+                      onChange={e => {
+                        e.target.value.length > 10 ?
+                          Inputmask("(99) 9999[9]-9999", {autoUnmask: true}).mask('input[name*=phone i]') :
+                          Inputmask("(99) 9999-9999[9]", {autoUnmask: true, greedy: false}).mask('input[name*=phone i]')
+                        setData({...data, ['Telefone']: e.target.value})
+                      }}
                       color="blue"
                       name="userPhone"
                       type="text"
+                      // onKeyUp={e => setCorrectPhoneMask(document.querySelector('input[name*=phone i]'))}
                     />
                   </div>
                 </div>
