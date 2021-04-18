@@ -127,10 +127,10 @@ export default function Signup () {
             <h1 className="text-3xl font-bold mb-8 dark:text-white">Crie sua conta</h1>
             { generalErrors[0] &&
             (<>
-              <div className="bg-blue-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
-                <h3 className="text-blue-800 dark:text-blue-400 font-bold">Campos inválidos:</h3>
+              <div className="bg-red-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
+                <h3 className="text-red-800 dark:text-red-400 font-bold">Campos inválidos:</h3>
                 {generalErrors.map((e) => (
-                  <FormError className="text-blue-500 dark:text-blue-200" key={Math.random()}>{e}</FormError>
+                  <FormError className="text-red-500 dark:text-red-200" key={Math.random()}>{e}</FormError>
                 ))}
               </div>
             </>)}

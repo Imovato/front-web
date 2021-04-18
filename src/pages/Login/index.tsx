@@ -13,13 +13,6 @@ import { apiAuth } from '../../services/api';
 import { schema } from './schema';
 
 export default function Login () {
-  const history = useHistory()
-  // useEffect(() => {
-  //   if(localStorage.getItem('token') !== undefined) {
-  //     history.push('/')
-  //   }
-  // }, [])
-
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
   const msgTimeout = 4000
 
@@ -28,6 +21,7 @@ export default function Login () {
     Senha: '',
   })
 
+  const history = useHistory()
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()

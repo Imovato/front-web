@@ -7,6 +7,8 @@ import Navbar from "../../components/Navbar";
 import { apiUser } from "../../services/api";
 
 export function Profile() {
+  // atualmente nao esta funcionando pois os dados nao estao mais sendo salvos
+  // no localstorage.
   const [userName, setUserName] = useState(localStorage.getItem('userName') ?? '')
   const [userEmail, setUserEmail] = useState(localStorage.getItem('userEmail') ?? '')
   const [userCpf, setUserCpf] = useState(localStorage.getItem('userCpf') ?? '')
