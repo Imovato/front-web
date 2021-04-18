@@ -5,17 +5,16 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
 import { FormError } from '../../components/FormError';
-import { TimedDialog } from '../../components/TimedDialog';
 
-import { apiUser } from '../../services/api';
+import { apiAuth } from '../../services/api';
 import { schema } from './schema';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Signup () {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const [successMsg, setSuccessMsg] = useState<string[]>([])
-  const [msgStart, setMsgStart] = useState(false)
-  const msgTimeout = 2500
+  const msgTimeout = 4000
 
   const [data, setData] = useState({
     Nome: '',
@@ -34,21 +33,21 @@ export default function Signup () {
 
     if (await validate())
       try {
-        await apiUser.post('/customer/add', {
-          name: data['Nome'],
+        const response = await apiAuth.post('/signup', {
+          username: data['Nome'],
           email: data['Email'],
+          password: data['Senha'],
           cpf: data['CPF'],
           phone: data['Telefone'],
           address: data['Endereço'],
-          password: data['Senha']
+          roles: [
+            'ROLE_CLIENT'
+          ]
         })
-        setSuccessMsg(['Usuário cadastrado com sucesso.', 'Redirecionando para o login...'])
-        setMsgStart(true)
-        setTimeout(() => {
-          history.push('/session/new')
-        }, msgTimeout)
+        localStorage.setItem('token', response.data)
+        toast('Usuário cadastrado com sucesso.', {autoClose: msgTimeout, type: 'success'})
       } catch (error) {
-        alert('Algo deu errado, tente novamente.')
+        toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
       }
   }
 
@@ -121,7 +120,7 @@ export default function Signup () {
         <div className="flex justify-center items-center h-full overflow-y-auto
           scrollbar-thumb-rounded-full scrollbar-thin scrollbar-thumb-blue-400 mx-5 pb-10">
           <div className="flex flex-col w-2/5">
-            {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
+            <ToastContainer />
             <h1 className="text-3xl font-bold mb-8 dark:text-white">Crie sua conta</h1>
             { generalErrors[0] &&
             (<>
