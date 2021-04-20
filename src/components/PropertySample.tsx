@@ -9,6 +9,7 @@ interface SampleProps {
   value: number;
   description: string;
   image: string;
+  action?:string;
 }
 
 export function PropertySample({
@@ -18,6 +19,7 @@ export function PropertySample({
   value,
   description,
   image,
+  action
 }: SampleProps) {
   const [images, setImages] = useState<string[]>([])
 
@@ -51,28 +53,38 @@ export function PropertySample({
         />
       </div>
       <div className="flex w-96 flex-col justify-between">
-        <div className="flex flex-col justify-around gap-5">
-          <div className="text-2xl">
-            <p>{name}</p>
+        <div className="flex w-full">
+          <div className="flex flex-col justify-around gap-5 w-9/12">
+            <div className="text-2xl">
+              <p>{name}</p>
+            </div>
+            <div className="lugar">
+              <p>{adress}</p>
+            </div>
+            <div className="descricao">
+              <p>{description}</p>
+            </div>
           </div>
-          <div className="lugar">
-            <p>{adress}</p>
-          </div>
-          <div className="descricao">
-            <p>{description}</p>
-          </div>
+          {action && (
+            <div className={`grid place-items-center w-3/12 bg-${action=="Comprado" ? "red" :"yellow"}-200 h-1/3 rounded-xl`}>
+              <p>{action}</p>
+            </div>
+          )}
+          
         </div>
-        <div className="valor">
+        <div className="valor flex justify-between w-full gap-x-">
           <p className="font-bold dark:text-green-600 text-green-800">R$ {value}</p>
+          <button className="flex w-10 h-8 p-2  shadow-xl border-red-300
+            bg-red-300 border-2 rounded-xl items-center
+            hover:border-red-400 dark:bg-red-400 dark:border-red-400
+            dark:hover:border-red-700 gap-2 text-white mt-auto"
+          >
+            <FontAwesomeIcon icon="search" className="text-lg" />
+          </button>
         </div>
+
       </div>
-      <button className="flex h-8 p-2 flex-1 shadow-xl border-red-300
-        bg-red-300 border-2 rounded-xl items-center
-        hover:border-red-400 dark:bg-red-400 dark:border-red-400
-        dark:hover:border-red-700 gap-2 text-white mt-auto"
-      >
-        <FontAwesomeIcon icon="search" className="text-lg" />
-      </button>
+      
     </Link>
     // </div>
   );

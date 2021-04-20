@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import { useHistory} from "react-router-dom"
 import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { FormError } from "../../components/FormError";
@@ -35,6 +36,8 @@ export function NewProperty() {
   const msgTimeout = 2500
 
   const [files, setFiles] = useState<FileList | null>(null)
+
+  const history = useHistory()
 
   const [data, setData] = useState({
     Área: 0,
@@ -107,6 +110,7 @@ export function NewProperty() {
         setMsgStart(true)
         setTimeout(() => {
           setMsg([])
+          history.push('/')
         }, msgTimeout)
       } catch (error) {
         console.log(error)

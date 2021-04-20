@@ -20,8 +20,8 @@ export const apiRent = axios.create({
   baseURL: "http://localhost:8083/rentService/rent",
 });
 
-export const apiPayment = axios.create({
-  baseURL: "http://localhost:8083/paymentService/",
+export const apiAcquisition = axios.create({
+  baseURL: "http://localhost:8084/acquisitionService/acquisition",
 });
 
 export const apiMock= axios.create({
