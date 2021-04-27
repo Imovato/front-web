@@ -7,6 +7,8 @@ import Navbar from "../../components/Navbar";
 import { apiUser } from "../../services/api";
 
 export function Profile() {
+  // atualmente nao esta funcionando pois os dados nao estao mais sendo salvos
+  // no localstorage.
   const [userName, setUserName] = useState(localStorage.getItem('userName') ?? '')
   const [userEmail, setUserEmail] = useState(localStorage.getItem('userEmail') ?? '')
   const [userCpf, setUserCpf] = useState(localStorage.getItem('userCpf') ?? '')
@@ -55,6 +57,11 @@ export function Profile() {
       alert('Erro ao atualizar informações do usuário.')
     }
   }
+
+  useEffect(() => {
+    Inputmask("999.999.999-99", {autoUnmask: true}).mask('input[name*=cpf i]');
+    Inputmask("(99) 9999-9999", {autoUnmask: true}).mask('input[name*=phone i]');
+  }, [])
 
   return (
     <>
@@ -108,7 +115,12 @@ export function Profile() {
                       <span className="text-red-700 font-bold"> *</span>
                       <Input
                         value={userPhone}
-                        onChange={e => setUserPhone(e.target.value)}
+                        onChange={e => {
+                          e.target.value.length > 10 ?
+                            Inputmask("(99) 9999[9]-9999", {autoUnmask: true}).mask('input[name*=phone i]') :
+                            Inputmask("(99) 9999-9999[9]", {autoUnmask: true, greedy: false}).mask('input[name*=phone i]')
+                          setUserPhone(e.target.value)
+                        }}
                         name="userPhone"
                         type="text"
                       />

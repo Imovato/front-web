@@ -1,22 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 import { ValidationError } from 'yup';
 
 import { Button } from '../../components/Button';
 import { FormError } from '../../components/FormError';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
-import { TimedDialog } from '../../components/TimedDialog';
 
-import { apiUser } from '../../services/api';
+import { apiAuth } from '../../services/api';
 import { schema } from './schema';
 
 export default function Login () {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const [successMsg, setSuccessMsg] = useState([''])
-  const [msgStart, setMsgStart] = useState(false)
-  const msgTimeout = 2500
+  const msgTimeout = 4000
 
   const [data, setData] = useState({
     Email: '',
@@ -30,33 +28,30 @@ export default function Login () {
 
     if(await validate())
       try {
-          // const response = await apiAuth.post('/session', { userEmail, userPassword })
-          const {data: user} = await apiUser.get('/customer/find/1')
+          const response = await apiAuth.post('/signin', null, {
+            params: {
+              email: data['Email'],
+              password: data['Senha']
+            }
+          })
 
-          localStorage.setItem('userId', user.id)
-          localStorage.setItem('userName', user.name)
-          localStorage.setItem('userEmail', user.email)
-          localStorage.setItem('userCpf', user.cpf)
-          localStorage.setItem('userPhone', user.phone)
-          localStorage.setItem('userAddress', user.address)
-          setSuccessMsg(['Login efetuado com sucesso.', 'Redirecionando para a página inicial...'])
-          setMsgStart(true)
+          localStorage.setItem('token', response.data)
+          toast('Login efetuado com sucesso.', {autoClose: msgTimeout, type:'success'})
           setTimeout(() => {
             history.push('/')
           }, msgTimeout)
-      } catch (err) {
-        alert('Algo deu errado, tente novamente.')
+      } catch (error) {
+        if(error.response) {
+          toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
+        } else {
+          toast('Erro ao conectar com a API.', {autoClose: msgTimeout, 'type': 'error'})
+        }
       }
   }
 
   async function validate() {
     try {
       await schema.validate(data, {abortEarly: false})
-      const {data: emailExists} = await apiUser.post('/checkEmail', {
-        email: data['Email']
-      })
-      if(!emailExists)
-        throw new ValidationError('Login não encontrado')
       setGeneralErrors([])
       return true
     } catch (error) {
@@ -122,7 +117,7 @@ export default function Login () {
         </div>
         <div className="flex justify-center items-center h-full">
           <div className="flex flex-col w-2/5">
-            {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
+            <ToastContainer />
             <h1 className="text-3xl font-bold mb-8 dark:text-white">Acesse sua conta</h1>
             { generalErrors[0] &&
             (<>

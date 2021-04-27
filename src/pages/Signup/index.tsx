@@ -5,17 +5,18 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
 import { FormError } from '../../components/FormError';
-import { TimedDialog } from '../../components/TimedDialog';
 
-import { apiUser } from '../../services/api';
+import { apiAuth } from '../../services/api';
 import { schema } from './schema';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Inputmask from "inputmask";
 
 export default function Signup () {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const [successMsg, setSuccessMsg] = useState<string[]>([])
-  const [msgStart, setMsgStart] = useState(false)
-  const msgTimeout = 2500
+  const msgTimeout = 4000
 
   const [data, setData] = useState({
     Nome: '',
@@ -34,21 +35,28 @@ export default function Signup () {
 
     if (await validate())
       try {
-        await apiUser.post('/customer/add', {
-          name: data['Nome'],
+        const response = await apiAuth.post('/signup', {
+          username: data['Nome'],
           email: data['Email'],
+          password: data['Senha'],
           cpf: data['CPF'],
           phone: data['Telefone'],
           address: data['Endereço'],
-          password: data['Senha']
+          roles: [
+            'ROLE_CLIENT'
+          ]
         })
-        setSuccessMsg(['Usuário cadastrado com sucesso.', 'Redirecionando para o login...'])
-        setMsgStart(true)
+        localStorage.setItem('token', response.data)
+        toast('Cadastro efetuado com sucesso.', {autoClose: msgTimeout, type: 'success'})
         setTimeout(() => {
-          history.push('/session/new')
+          history.push('/')
         }, msgTimeout)
       } catch (error) {
-        alert('Algo deu errado, tente novamente.')
+        if(error.response) {
+          toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
+        } else {
+          toast('Erro ao conectar com a API.', {autoClose: msgTimeout, 'type': 'error'})
+        }
       }
   }
 
@@ -82,6 +90,9 @@ export default function Signup () {
   useEffect(() => {
     isDark ? document.getElementById('root')?.style.setProperty('background', '#374151')
       : document.getElementById('root')?.style.setProperty('background', 'rgba(253, 242, 248)')
+
+    Inputmask("999.999.999-99", {autoUnmask: true}).mask('input[name*=cpf i]');
+    Inputmask("(99) 9999-9999[9]", {autoUnmask: true}).mask('input[name*=phone i]');
   }, [])
 
   return (
@@ -121,14 +132,14 @@ export default function Signup () {
         <div className="flex justify-center items-center h-full overflow-y-auto
           scrollbar-thumb-rounded-full scrollbar-thin scrollbar-thumb-blue-400 mx-5 pb-10">
           <div className="flex flex-col w-2/5">
-            {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
+            <ToastContainer />
             <h1 className="text-3xl font-bold mb-8 dark:text-white">Crie sua conta</h1>
             { generalErrors[0] &&
             (<>
-              <div className="bg-blue-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
-                <h3 className="text-blue-800 dark:text-blue-400 font-bold">Campos inválidos:</h3>
+              <div className="bg-red-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
+                <h3 className="text-red-800 dark:text-red-400 font-bold">Campos inválidos:</h3>
                 {generalErrors.map((e) => (
-                  <FormError className="text-blue-500 dark:text-blue-200" key={Math.random()}>{e}</FormError>
+                  <FormError className="text-red-500 dark:text-red-200" key={Math.random()}>{e}</FormError>
                 ))}
               </div>
             </>)}
@@ -173,10 +184,16 @@ export default function Signup () {
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={data['Telefone']}
-                      onChange={e => setData({...data, ['Telefone']: e.target.value})}
+                      onChange={e => {
+                        e.target.value.length > 10 ?
+                          Inputmask("(99) 9999[9]-9999", {autoUnmask: true}).mask('input[name*=phone i]') :
+                          Inputmask("(99) 9999-9999[9]", {autoUnmask: true, greedy: false}).mask('input[name*=phone i]')
+                        setData({...data, ['Telefone']: e.target.value})
+                      }}
                       color="blue"
                       name="userPhone"
                       type="text"
+                      // onKeyUp={e => setCorrectPhoneMask(document.querySelector('input[name*=phone i]'))}
                     />
                   </div>
                 </div>

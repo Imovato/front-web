@@ -5,13 +5,7 @@ export function Logout() {
   const history = useHistory()
 
   useEffect(() => {
-    localStorage.removeItem('userId')
-    localStorage.removeItem('userName')
-    localStorage.removeItem('userEmail')
-    localStorage.removeItem('userCpf')
-    localStorage.removeItem('userPhone')
-    localStorage.removeItem('userAddress')
-
+    localStorage.removeItem('token')
     history.push('/')
   }, [])
 
