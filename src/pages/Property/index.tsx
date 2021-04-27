@@ -4,7 +4,7 @@ import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiContact, apiPayment, apiProperty, apiRent  } from "../../services/api";
+import { apiAcquisition, apiContact, apiProperty, apiRent  } from "../../services/api";
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 
@@ -22,6 +22,7 @@ interface Property {
   description: string;
   neighborhood: string;
   number: number;
+  amount: number;
   price: number;
   state: string;
   block: string;
@@ -42,10 +43,13 @@ interface CustomerData {
 
 function Property() {
   const [property, setProperty] = useState<Property>();
+  const [acquisition, setAcquisition] = useState(false);
   const [stateImages, setStateImages] = useState<string[]>([])
   const [carousel, setCarousel] = useState(0)
-  const [successMsg, setSuccessMsg] = useState([''])
+  const [msg, setMsg] = useState<string[]>([])
+  const [msgActions, setMsgActions] = useState<string[]>([])
   const [msgStart, setMsgStart] = useState(false)
+  const [dialogStyle, setDialogStyle] = useState('success')
   const msgTimeout = 2500
 
   let params = useParams<RouteParams>();
@@ -53,7 +57,7 @@ function Property() {
   const history = useHistory()
 
   useEffect(() => {
-
+    
     apiProperty
       .get("property/find/".concat(params.id), {})
       .then((response) => {
@@ -64,7 +68,11 @@ function Property() {
         }
         setStateImages(images)
       });
-
+    apiAcquisition.get(`/property/find/${params.id}`, {}).then((response) => {
+        if(response.data!=""){
+          setAcquisition(true);
+        }
+      });
     setData({
       ...data, message: `Olá, tenho interesse neste imóvel: ${property?.name},
         ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`
@@ -81,24 +89,33 @@ function Property() {
     e.preventDefault();
     try {
       await apiContact.post("/contact", data);
-      setSuccessMsg(['Mensagem enviada, entraremos em contato em breve.', 'Redirecionando...'])
-        setMsgStart(true)
-        setTimeout(() => {
-          history.push('/')
-        }, msgTimeout)
+      setDialogStyle('success')
+      setMsg(['Mensagem enviada, entraremos em contato em breve.'])
+      setMsgStart(true)
+      setTimeout(() => {
+        setMsg([])
+      }, msgTimeout)
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
     }
   }
 
-  async function handleBuy(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function handleBuy() {
     try {
-      await apiPayment.post("/save",{
+      apiAcquisition.post("/save",{
         data: new Date(),
-        property:property,
-        amountValue:property?.price
+        value:property?.price,
+        amount:property?.amount,
+        idProperty:property?.id,
+        idUser:localStorage.getItem('userId')
       });
+      setDialogStyle('success')
+      setMsgActions(['Imóvel comprado com sucesso.'])
+      setMsgStart(true)
+      setTimeout(() => {
+        setMsgActions([])
+        history.push('/property/user')
+      }, msgTimeout)
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
     }
@@ -132,6 +149,7 @@ function Property() {
             scrollbar-thumb-red-400 scrollbar-track-transparent"
 
             >
+            {msgActions[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msgActions} start={msgStart} />)}
             <div className="flex items-center justify-around font-qsand w-full">
               <div className="flex flex-col justify-center items-center">
                 <Carousel className="max-w-lg max-h-96" value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
@@ -160,24 +178,31 @@ function Property() {
                     <p className="text-xl text-green-800 dark:text-green-400">R$ {property?.price}</p>
                   </div>
                 </div>
-                <div className="flex justify-between bg-opacity-0">
-                  <button
-                    onClick={() => handleBuy}
-                    className="rounded-bl-lg text-white bg-green-400 text-xl
-                    w-full h-12 justify-center hover:bg-opacity-70 transition
-                    duration-150 ease-in-out dark:text-black"
-                  >
-                    Comprar
-                  </button>
-                  <button
-                    onClick={() => handleHire}
-                    className="rounded-br-lg text-white bg-yellow-400 text-xl
-                    w-full h-12 justify-center hover:bg-opacity-70 transition
-                    duration-150 ease-in-out dark:text-black"
-                  >
-                    Alugar
-                  </button>
-                </div>
+                {!acquisition ? (
+                  <div className="flex justify-between bg-opacity-0">
+                    <button
+                      onClick={handleBuy}
+                      className="rounded-bl-lg text-white bg-green-400 text-xl
+                      w-full h-12 justify-center hover:bg-opacity-70 transition
+                      duration-150 ease-in-out dark:text-black"
+                    >
+                      Comprar
+                    </button>
+                    <button
+                      onClick={() => handleHire}
+                      className="rounded-br-lg text-white bg-yellow-400 text-xl
+                      w-full h-12 justify-center hover:bg-opacity-70 transition
+                      duration-150 ease-in-out dark:text-black"
+                    >
+                      Alugar
+                    </button>
+                  </div>
+                ):(
+                  <div className="grid place-items-center bg-red-400 h-12 text-lg text-white">
+                    <p>Já comprado</p>
+                  </div>
+                )}
+                
               </div>
             </div>
             <div className="flex max-w-5xl w-full justify-around shadow-md
