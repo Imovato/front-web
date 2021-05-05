@@ -12,7 +12,7 @@ import { Label } from '../../components/Label';
 import { apiAuth } from '../../services/api';
 import { schema } from './schema';
 
-export default function Login () {
+export default function Login() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
   const msgTimeout = 4000
 
@@ -26,32 +26,33 @@ export default function Login () {
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    if(await validate())
+    if (await validate())
       try {
-          const response = await apiAuth.post('/signin', null, {
-            params: {
-              email: data['Email'],
-              password: data['Senha']
-            }
-          })
+        const response = await apiAuth.post('/signin', null, {
+          params: {
+            email: data['Email'],
+            password: data['Senha']
+          }
+        })
 
-          localStorage.setItem('token', response.data)
-          toast('Login efetuado com sucesso.', {autoClose: msgTimeout, type:'success'})
-          setTimeout(() => {
-            history.push('/')
-          }, msgTimeout)
+        localStorage.setItem('token', response.data)
+        localStorage.setItem('email', data['Email'])
+        toast('Login efetuado com sucesso.', { autoClose: msgTimeout, type: 'success' })
+        setTimeout(() => {
+          history.push('/')
+        }, msgTimeout)
       } catch (error) {
-        if(error.response) {
-          toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
+        if (error.response) {
+          toast(error.response.data, { autoClose: msgTimeout, type: 'error' })
         } else {
-          toast('Erro ao conectar com a API.', {autoClose: msgTimeout, 'type': 'error'})
+          toast('Erro ao conectar com a API.', { autoClose: msgTimeout, 'type': 'error' })
         }
       }
   }
 
   async function validate() {
     try {
-      await schema.validate(data, {abortEarly: false})
+      await schema.validate(data, { abortEarly: false })
       setGeneralErrors([])
       return true
     } catch (error) {
@@ -86,10 +87,10 @@ export default function Login () {
       <div className="flex flex-col items-end flex-initial h-full bg-red-200 dark:bg-gray-800 justify-end">
         <div className="flex-auto m-16">
           <h1 className="text-5xl mb-8 text-left font-bold text-red-700 dark:text-red-300">
-              <Link to="/">Imobiliária</Link>
+            <Link to="/">Imobiliária</Link>
           </h1>
           <h1 className="text-2xl text-left font-bold text-red-700 dark:text-red-300">
-              Descubra imóveis para compra e aluguel na sua área
+            Descubra imóveis para compra e aluguel na sua área
           </h1>
         </div>
         <div className="flex items-end p-2">
@@ -119,40 +120,40 @@ export default function Login () {
           <div className="flex flex-col w-2/5">
             <ToastContainer />
             <h1 className="text-3xl font-bold mb-8 dark:text-white">Acesse sua conta</h1>
-            { generalErrors[0] &&
-            (<>
-              <div className="bg-red-100 dark:bg-gray-900 p-3 rounded-lg mb-3">
-                <h3 className="text-red-800 dark:text-red-500 font-bold">Campos inválidos:</h3>
-                {generalErrors.map((e) => (
-                  <FormError key={Math.random()}>{e}</FormError>
-                ))}
-              </div>
-            </>)}
+            {generalErrors[0] &&
+              (<>
+                <div className="bg-red-100 dark:bg-gray-900 p-3 rounded-lg mb-3">
+                  <h3 className="text-red-800 dark:text-red-500 font-bold">Campos inválidos:</h3>
+                  {generalErrors.map((e) => (
+                    <FormError key={Math.random()}>{e}</FormError>
+                  ))}
+                </div>
+              </>)}
             <form onSubmit={handleLogin}>
-                <fieldset>
-                    <Label for="userEmail">Endereço de Email</Label>
-                    <Input
-                      name="userEmail"
-                      type="email"
-                      value={data['Email']}
-                      onChange={e => setData({...data, 'Email': e.target.value})}
-                    />
-                </fieldset>
-                <fieldset className="my-6">
-                    <div className="flex justify-between">
-                        <Label for="userPassword">Senha</Label>
-                        <Link
+              <fieldset>
+                <Label for="userEmail">Endereço de Email</Label>
+                <Input
+                  name="userEmail"
+                  type="email"
+                  value={data['Email']}
+                  onChange={e => setData({ ...data, 'Email': e.target.value })}
+                />
+              </fieldset>
+              <fieldset className="my-6">
+                <div className="flex justify-between">
+                  <Label for="userPassword">Senha</Label>
+                  <Link
                     className="text-red-700 dark:text-red-500"
-                          to="/passwords_reset/new">Esqueceu a senha?</Link>
-                    </div>
-                    <Input
-                      name="userPassword"
-                      type="password"
-                      value={data['Senha']}
-                      onChange={e => setData({...data, 'Senha': e.target.value})}
-                    />
-                </fieldset>
-                <Button type="submit">Enviar</Button>
+                    to="/passwords_reset/new">Esqueceu a senha?</Link>
+                </div>
+                <Input
+                  name="userPassword"
+                  type="password"
+                  value={data['Senha']}
+                  onChange={e => setData({ ...data, 'Senha': e.target.value })}
+                />
+              </fieldset>
+              <Button type="submit">Enviar</Button>
             </form>
           </div>
         </div>

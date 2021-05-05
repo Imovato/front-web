@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Inputmask from "inputmask";
 
-export default function Signup () {
+export default function Signup() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
   const msgTimeout = 4000
 
@@ -47,22 +47,23 @@ export default function Signup () {
           ]
         })
         localStorage.setItem('token', response.data)
-        toast('Cadastro efetuado com sucesso.', {autoClose: msgTimeout, type: 'success'})
+        localStorage.setItem('email', data['Email'])
+        toast('Cadastro efetuado com sucesso.', { autoClose: msgTimeout, type: 'success' })
         setTimeout(() => {
           history.push('/')
         }, msgTimeout)
       } catch (error) {
-        if(error.response) {
-          toast(error.response.data, {autoClose: msgTimeout, type: 'error'})
+        if (error.response) {
+          toast(error.response.data, { autoClose: msgTimeout, type: 'error' })
         } else {
-          toast('Erro ao conectar com a API.', {autoClose: msgTimeout, 'type': 'error'})
+          toast('Erro ao conectar com a API.', { autoClose: msgTimeout, 'type': 'error' })
         }
       }
   }
 
   async function validate() {
     try {
-      await schema.validate(data, {abortEarly: false})
+      await schema.validate(data, { abortEarly: false })
       setGeneralErrors([])
       return true
     } catch (error) {
@@ -91,8 +92,8 @@ export default function Signup () {
     isDark ? document.getElementById('root')?.style.setProperty('background', '#374151')
       : document.getElementById('root')?.style.setProperty('background', 'rgba(253, 242, 248)')
 
-    Inputmask("999.999.999-99", {autoUnmask: true}).mask('input[name*=cpf i]');
-    Inputmask("(99) 9999-9999[9]", {autoUnmask: true}).mask('input[name*=phone i]');
+    Inputmask("999.999.999-99", { autoUnmask: true }).mask('input[name*=cpf i]');
+    Inputmask("(99) 9999-9999[9]", { autoUnmask: true }).mask('input[name*=phone i]');
   }, [])
 
   return (
@@ -134,22 +135,22 @@ export default function Signup () {
           <div className="flex flex-col w-2/5">
             <ToastContainer />
             <h1 className="text-3xl font-bold mb-8 dark:text-white">Crie sua conta</h1>
-            { generalErrors[0] &&
-            (<>
-              <div className="bg-red-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
-                <h3 className="text-red-800 dark:text-red-400 font-bold">Campos inválidos:</h3>
-                {generalErrors.map((e) => (
-                  <FormError className="text-red-500 dark:text-red-200" key={Math.random()}>{e}</FormError>
-                ))}
-              </div>
-            </>)}
+            {generalErrors[0] &&
+              (<>
+                <div className="bg-red-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
+                  <h3 className="text-red-800 dark:text-red-400 font-bold">Campos inválidos:</h3>
+                  {generalErrors.map((e) => (
+                    <FormError className="text-red-500 dark:text-red-200" key={Math.random()}>{e}</FormError>
+                  ))}
+                </div>
+              </>)}
             <form onSubmit={handleSubmit}>
               <fieldset>
                 <Label className="dark:text-blue-200" for="userName">Nome</Label>
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
                   value={data['Nome']}
-                  onChange={e => setData({...data, 'Nome': e.target.value})}
+                  onChange={e => setData({ ...data, 'Nome': e.target.value })}
                   color="blue"
                   name="userName"
                   type="text"
@@ -160,7 +161,7 @@ export default function Signup () {
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
                   value={data['Email']}
-                  onChange={e => setData({...data, 'Email': e.target.value})}
+                  onChange={e => setData({ ...data, 'Email': e.target.value })}
                   color="blue"
                   name="userEmail"
                   type="email"
@@ -173,7 +174,7 @@ export default function Signup () {
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={data['CPF']}
-                      onChange={e => setData({...data, ['CPF']: e.target.value})}
+                      onChange={e => setData({ ...data, ['CPF']: e.target.value })}
                       color="blue"
                       name="userCpf"
                       type="text"
@@ -186,14 +187,14 @@ export default function Signup () {
                       value={data['Telefone']}
                       onChange={e => {
                         e.target.value.length > 10 ?
-                          Inputmask("(99) 9999[9]-9999", {autoUnmask: true}).mask('input[name*=phone i]') :
-                          Inputmask("(99) 9999-9999[9]", {autoUnmask: true, greedy: false}).mask('input[name*=phone i]')
-                        setData({...data, ['Telefone']: e.target.value})
+                          Inputmask("(99) 9999[9]-9999", { autoUnmask: true }).mask('input[name*=phone i]') :
+                          Inputmask("(99) 9999-9999[9]", { autoUnmask: true, greedy: false }).mask('input[name*=phone i]')
+                        setData({ ...data, ['Telefone']: e.target.value })
                       }}
                       color="blue"
                       name="userPhone"
                       type="text"
-                      // onKeyUp={e => setCorrectPhoneMask(document.querySelector('input[name*=phone i]'))}
+                    // onKeyUp={e => setCorrectPhoneMask(document.querySelector('input[name*=phone i]'))}
                     />
                   </div>
                 </div>
@@ -203,7 +204,7 @@ export default function Signup () {
                 <span className="text-blue-700 font-bold"> *</span>
                 <Input
                   value={data['Endereço']}
-                  onChange={e => setData({...data, ['Endereço']: e.target.value})}
+                  onChange={e => setData({ ...data, ['Endereço']: e.target.value })}
                   color="blue"
                   name="userAddress"
                   type="text"
@@ -216,7 +217,7 @@ export default function Signup () {
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={data['Senha']}
-                      onChange={e => setData({...data, ['Senha']: e.target.value})}
+                      onChange={e => setData({ ...data, ['Senha']: e.target.value })}
                       color="blue"
                       name="userPassword"
                       type="password"
@@ -227,11 +228,11 @@ export default function Signup () {
                     <span className="text-blue-700 font-bold"> *</span>
                     <Input
                       value={data['Repita a senha']}
-                      onChange={e => setData({...data, ['Repita a senha']: e.target.value})}
+                      onChange={e => setData({ ...data, ['Repita a senha']: e.target.value })}
                       color="blue"
                       name="userPasswordRepeat"
                       type="password"
-                  />
+                    />
                   </div>
                 </div>
               </fieldset>
