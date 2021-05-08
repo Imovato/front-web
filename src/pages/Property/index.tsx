@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory} from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiAcquisition, apiContact, apiProperty, apiRent  } from "../../services/api";
+import { apiAcquisition, apiContact, apiProperty, apiRent } from "../../services/api";
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { TimedDialog } from "../../components/TimedDialog";
 import { PropertyData } from "../../components/PropertyData";
-import quarto from '../../assets/quarto.jpg';
 import quartoNet from '../../assets/quartoNet.jpg';
-import quarto2 from '../../assets/quarto2.jpg';
-import sala from '../../assets/sala.jpg';
+import salaNet from '../../assets/salaNet.jpg';
 import net1 from '../../assets/net1.jpg';
-import { Pannellum} from "pannellum-react";
+import sala2 from '../../assets/sala2.png';
+import { Pannellum } from "pannellum-react";
 
 interface Property {
   id: string;
@@ -60,14 +59,14 @@ function Property() {
   const [dialogStyle, setDialogStyle] = useState('success')
   const [imagesPan, setImagesPan] = useState([''])
   const [imagePan, setImagePan] = useState(0)
-  const [vaov, setVaov] = useState(65)
+  const [vaov, setVaov] = useState(180)
   const msgTimeout = 2500
 
   let params = useParams<RouteParams>();
 
   const history = useHistory()
   useEffect(() => {
-    setImagesPan([quarto,sala,quarto2, net1,quartoNet])
+    setImagesPan([salaNet, sala2, net1, quartoNet])
     apiProperty
       .get("property/find/".concat(params.id), {})
       .then((response) => {
@@ -79,14 +78,14 @@ function Property() {
         setStateImages(images)
       });
     apiAcquisition.get(`/property/find/${params.id}`, {}).then((response) => {
-        if(response.data!=""){
-          setAcquisition(true);
-        }
-      });
+      if (response.data != "") {
+        setAcquisition(true);
+      }
+    });
     setData({
       ...data, message: `Olá, tenho interesse neste imóvel: ${property?.name},
         ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`
-      })
+    })
   }, [params.id]);
 
   const [data, setData] = useState({
@@ -95,17 +94,11 @@ function Property() {
     phone: "",
   } as CustomerData);
 
-  function changePan(){
-    if(imagePan==imagesPan.length-1){
+  function changePan() {
+    if (imagePan == imagesPan.length - 1) {
       setImagePan(0)
-      setVaov(65)
-    }else{
-      setImagePan(imagePan+1)
-    }
-    if(imagePan==2 || imagePan==3){
-      setVaov(180)
-    }else{
-      setVaov(65)
+    } else {
+      setImagePan(imagePan + 1)
     }
   }
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -125,12 +118,12 @@ function Property() {
 
   function handleBuy() {
     try {
-      apiAcquisition.post("/save",{
+      apiAcquisition.post("/save", {
         data: new Date(),
-        value:property?.price,
-        amount:property?.amount,
-        idProperty:property?.id,
-        idUser:localStorage.getItem('userId')
+        value: property?.price,
+        amount: property?.amount,
+        idProperty: property?.id,
+        idUser: localStorage.getItem('userId')
       });
       setDialogStyle('success')
       setMsgActions(['Imóvel comprado com sucesso.'])
@@ -146,10 +139,10 @@ function Property() {
 
   async function handleHire(e: React.FormEvent<HTMLFormElement>) {
     try {
-      await apiRent.post("/save",{
+      await apiRent.post("/save", {
         data: new Date(),
-        property:property,
-        amountValue:property?.price
+        property: property,
+        amountValue: property?.price
       });
     } catch (error) {
       alert("Algo deu errado, tente novamente.");
@@ -166,13 +159,13 @@ function Property() {
       <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
-          
+
           <section
             className="flex flex-col items-center max-h-192 gap-6 w-full
             max-w-6xl overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-transparent"
 
-            >
+          >
             {msgActions[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msgActions} start={msgStart} />)}
             <div className="flex items-center justify-around font-qsand w-full">
               <div className="flex flex-col justify-center items-center">
@@ -221,14 +214,14 @@ function Property() {
                       Alugar
                     </button>
                   </div>
-                ):(
+                ) : (
                   <div className="grid place-items-center bg-red-400 h-12 text-lg text-white">
                     <p>Já comprado</p>
                   </div>
                 )}
                 <a href="#visitaVirtual" className="grid place-items-center bg-blue-400 h-12 text-lg text-white">
-                  <button  
-                    onClick={function(e) {
+                  <button
+                    onClick={function (e) {
                       changePan(); //can pass arguments this.btnTapped(foo, bar);          
                     }}>
                     <p>Visita Virtual</p>
@@ -236,17 +229,17 @@ function Property() {
                 </a>
               </div>
             </div>
-            
-            
-                  
+
+
+
             <div className="flex max-w-5xl w-full justify-around shadow-md
               rounded-xl bg-white dark:text-white dark:bg-gray-800 p-4 gap-16"
             >
-              <PropertyData name="Localização" value={property?.adress }/>
-              <PropertyData name="Bairro" value={property?.neighborhood}/>
-              <PropertyData name="Número" value={property?.number ? property?.number : "N/A"}/>
-              <PropertyData name="Bloco" value={property?.block ? property?.block : "N/A"}/>
-              <PropertyData name="Quartos" value={property?.rooms ? property?.rooms : "N/A"}/>
+              <PropertyData name="Localização" value={property?.adress} />
+              <PropertyData name="Bairro" value={property?.neighborhood} />
+              <PropertyData name="Número" value={property?.number ? property?.number : "N/A"} />
+              <PropertyData name="Bloco" value={property?.block ? property?.block : "N/A"} />
+              <PropertyData name="Quartos" value={property?.rooms ? property?.rooms : "N/A"} />
             </div>
             <div className="flex max-w-3xl w-full shadow-md rounded-xl
               justify-around items-center gap-12 bg-white dark:bg-gray-800
@@ -254,8 +247,8 @@ function Property() {
             >
 
               <div>
-              {msg[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msg} start={msgStart} />)}
-                <p className="text-xl text-right mb-5"><span className="text-red-400 font-bold">FALE AGORA</span><br/> COM UM CORRETOR</p>
+                {msg[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msg} start={msgStart} />)}
+                <p className="text-xl text-right mb-5"><span className="text-red-400 font-bold">FALE AGORA</span><br /> COM UM CORRETOR</p>
                 <form
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-3"
@@ -265,7 +258,7 @@ function Property() {
                     <textarea
                       placeholder={`Olá, tenho interesse neste imóvel: ${property?.name}, ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`}
                       onChange={(e) =>
-                        setData({ ...data, message: e.target.value!='' ? e.target.value : `Olá, tenho interesse neste imóvel: ${property?.name}, ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.`})
+                        setData({ ...data, message: e.target.value != '' ? e.target.value : `Olá, tenho interesse neste imóvel: ${property?.name}, ${property?.adress}. Gostaria de marcar uma visita presencial, aguardo contato.` })
                       }
                       className="focus:ring focus:ring-red-200 px-3 rounded-lg
                       bg-gray-200 dark:bg-gray-600 resize-y max-h-44 h-36"
@@ -321,32 +314,32 @@ function Property() {
                 </form>
               </div>
               <div className="flex flex-1 p-8">
-                <img src={ContactUsSvg} alt="Entre em contato"/>
+                <img src={ContactUsSvg} alt="Entre em contato" />
               </div>
             </div>
             <div className="grid place-items-center gap-5 w-full h-full p-5 shadow-md
               rounded-xl bg-white dark:text-white dark:bg-gray-800">
               <p className="text-xl">Visita Virtual</p>
               <button className="grid place-items-center bg-green-400 h-12 text-lg text-white p-3"
-                onClick={function(e) {
+                onClick={function (e) {
                   changePan(); //can pass arguments this.btnTapped(foo, bar);          
                 }}>
                 <p>Proxima imagem</p>
               </button>
               <div id="visitaVirtual" className="grid place-items-center w-full h-full">
                 <Pannellum
-                width="90%"
-                height="500px"
-                image={imagesPan[imagePan]}
-                pitch={10}
-                vaov={vaov}
-                yaw={180}
-                hfov={110}
-                autoLoad
-                onLoad={() => {
+                  width="90%"
+                  height="500px"
+                  image={imagesPan[imagePan]}
+                  pitch={10}
+                  vaov={vaov}
+                  yaw={180}
+                  hfov={110}
+                  autoLoad
+                  onLoad={() => {
                     console.log("panorama loaded");
-                }}
-              >
+                  }}
+                >
                 </Pannellum>
               </div>
             </div>
