@@ -76,7 +76,7 @@ export default function Navbar() {
           <p>Início</p>
         </Link>
         <div className="flex gap-6 justify-between">
-          {localStorage.getItem("userId") && (
+          {localStorage.getItem("token") && (
             <Link className="flex items-center gap-1" to="/account/profile">
               <FontAwesomeIcon icon="cog" />
               <p>Configurações</p>
@@ -84,7 +84,7 @@ export default function Navbar() {
           )}
         </div>
         <div className="flex gap-6 justify-between">
-          {localStorage.getItem("userId") ? (
+          {localStorage.getItem("token") ? (
             <Link className="flex items-center gap-1" to="/session">
               <FontAwesomeIcon icon="sign-out-alt" />
               <p>Log out</p>
@@ -99,8 +99,8 @@ export default function Navbar() {
       </div>
       <div className="flex gap-1 flex-col items-center justify-between p-3">
         <div className="flex gap-6 justify-between">
-          {localStorage.getItem("userId") ? (
-            
+          {localStorage.getItem("token") ? (
+
             <Link className="flex flex-col items-center gap-1" to="/property/user">
               <FontAwesomeIcon className="text-xl" icon="building" />
               <p className="text-center">Meus<br/>Imóveis</p>

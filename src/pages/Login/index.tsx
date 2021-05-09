@@ -1,22 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 import { ValidationError } from 'yup';
 
 import { Button } from '../../components/Button';
 import { FormError } from '../../components/FormError';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
-import { TimedDialog } from '../../components/TimedDialog';
 
-import { apiUser } from '../../services/api';
+import { apiAuth } from '../../services/api';
 import { schema } from './schema';
 
-export default function Login () {
+export default function Login() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const [successMsg, setSuccessMsg] = useState([''])
-  const [msgStart, setMsgStart] = useState(false)
-  const msgTimeout = 2500
+  const msgTimeout = 4000
 
   const [data, setData] = useState({
     Email: '',
@@ -28,35 +26,33 @@ export default function Login () {
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    if(await validate())
+    if (await validate())
       try {
-          // const response = await apiAuth.post('/session', { userEmail, userPassword })
-          const {data: user} = await apiUser.get('/customer/find/1')
+        const response = await apiAuth.post('/signin', null, {
+          params: {
+            email: data['Email'],
+            password: data['Senha']
+          }
+        })
 
-          localStorage.setItem('userId', user.id)
-          localStorage.setItem('userName', user.name)
-          localStorage.setItem('userEmail', user.email)
-          localStorage.setItem('userCpf', user.cpf)
-          localStorage.setItem('userPhone', user.phone)
-          localStorage.setItem('userAddress', user.address)
-          setSuccessMsg(['Login efetuado com sucesso.', 'Redirecionando para a página inicial...'])
-          setMsgStart(true)
-          setTimeout(() => {
-            history.push('/')
-          }, msgTimeout)
-      } catch (err) {
-        alert('Algo deu errado, tente novamente.')
+        localStorage.setItem('token', response.data)
+        localStorage.setItem('email', data['Email'])
+        toast('Login efetuado com sucesso.', { autoClose: msgTimeout, type: 'success' })
+        setTimeout(() => {
+          history.push('/')
+        }, msgTimeout)
+      } catch (error) {
+        if (error.response) {
+          toast(error.response.data, { autoClose: msgTimeout, type: 'error' })
+        } else {
+          toast('Erro ao conectar com a API.', { autoClose: msgTimeout, 'type': 'error' })
+        }
       }
   }
 
   async function validate() {
     try {
-      await schema.validate(data, {abortEarly: false})
-      const {data: emailExists} = await apiUser.post('/checkEmail', {
-        email: data['Email']
-      })
-      if(!emailExists)
-        throw new ValidationError('Login não encontrado')
+      await schema.validate(data, { abortEarly: false })
       setGeneralErrors([])
       return true
     } catch (error) {
@@ -91,10 +87,10 @@ export default function Login () {
       <div className="flex flex-col items-end flex-initial h-full bg-red-200 dark:bg-gray-800 justify-end">
         <div className="flex-auto m-16">
           <h1 className="text-5xl mb-8 text-left font-bold text-red-700 dark:text-red-300">
-              <Link to="/">Imobiliária</Link>
+            <Link to="/">Imobiliária</Link>
           </h1>
           <h1 className="text-2xl text-left font-bold text-red-700 dark:text-red-300">
-              Descubra imóveis para compra e aluguel na sua área
+            Descubra imóveis para compra e aluguel na sua área
           </h1>
         </div>
         <div className="flex items-end p-2">
@@ -122,42 +118,42 @@ export default function Login () {
         </div>
         <div className="flex justify-center items-center h-full">
           <div className="flex flex-col w-2/5">
-            {successMsg && (<TimedDialog timeout={msgTimeout} msg={successMsg} start={msgStart} />)}
+            <ToastContainer />
             <h1 className="text-3xl font-bold mb-8 dark:text-white">Acesse sua conta</h1>
-            { generalErrors[0] &&
-            (<>
-              <div className="bg-red-100 dark:bg-gray-900 p-3 rounded-lg mb-3">
-                <h3 className="text-red-800 dark:text-red-500 font-bold">Campos inválidos:</h3>
-                {generalErrors.map((e) => (
-                  <FormError key={Math.random()}>{e}</FormError>
-                ))}
-              </div>
-            </>)}
+            {generalErrors[0] &&
+              (<>
+                <div className="bg-red-100 dark:bg-gray-900 p-3 rounded-lg mb-3">
+                  <h3 className="text-red-800 dark:text-red-500 font-bold">Campos inválidos:</h3>
+                  {generalErrors.map((e) => (
+                    <FormError key={Math.random()}>{e}</FormError>
+                  ))}
+                </div>
+              </>)}
             <form onSubmit={handleLogin}>
-                <fieldset>
-                    <Label for="userEmail">Endereço de Email</Label>
-                    <Input
-                      name="userEmail"
-                      type="email"
-                      value={data['Email']}
-                      onChange={e => setData({...data, 'Email': e.target.value})}
-                    />
-                </fieldset>
-                <fieldset className="my-6">
-                    <div className="flex justify-between">
-                        <Label for="userPassword">Senha</Label>
-                        <Link
+              <fieldset>
+                <Label for="userEmail">Endereço de Email</Label>
+                <Input
+                  name="userEmail"
+                  type="email"
+                  value={data['Email']}
+                  onChange={e => setData({ ...data, 'Email': e.target.value })}
+                />
+              </fieldset>
+              <fieldset className="my-6">
+                <div className="flex justify-between">
+                  <Label for="userPassword">Senha</Label>
+                  <Link
                     className="text-red-700 dark:text-red-500"
-                          to="/passwords_reset/new">Esqueceu a senha?</Link>
-                    </div>
-                    <Input
-                      name="userPassword"
-                      type="password"
-                      value={data['Senha']}
-                      onChange={e => setData({...data, 'Senha': e.target.value})}
-                    />
-                </fieldset>
-                <Button type="submit">Enviar</Button>
+                    to="/passwords_reset/new">Esqueceu a senha?</Link>
+                </div>
+                <Input
+                  name="userPassword"
+                  type="password"
+                  value={data['Senha']}
+                  onChange={e => setData({ ...data, 'Senha': e.target.value })}
+                />
+              </fieldset>
+              <Button type="submit">Enviar</Button>
             </form>
           </div>
         </div>

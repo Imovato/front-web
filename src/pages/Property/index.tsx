@@ -9,14 +9,13 @@ import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
-import { TimedDialog } from "../../components/TimedDialog";
 import { PropertyData } from "../../components/PropertyData";
 import quartoNet from '../../assets/quartoNet.jpg';
 import salaNet from '../../assets/salaNet.jpg';
 import net1 from '../../assets/net1.jpg';
 import sala2 from '../../assets/sala2.png';
 import { Pannellum } from "pannellum-react";
-
+import { toast, ToastContainer } from "react-toastify";
 interface Property {
   id: string;
   name: string;
@@ -67,6 +66,7 @@ function Property() {
   const history = useHistory()
   useEffect(() => {
     setImagesPan([salaNet, sala2, net1, quartoNet])
+
     apiProperty
       .get("property/find/".concat(params.id), {})
       .then((response) => {
@@ -105,14 +105,9 @@ function Property() {
     e.preventDefault();
     try {
       await apiContact.post("/contact", data);
-      setDialogStyle('success')
-      setMsg(['Mensagem enviada, entraremos em contato em breve.'])
-      setMsgStart(true)
-      setTimeout(() => {
-        setMsg([])
-      }, msgTimeout)
+      toast('Mensagem enviada, entraremos em contato em breve.', { autoClose: msgTimeout, type: 'success' })
     } catch (error) {
-      alert("Algo deu errado, tente novamente.");
+      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeout, type: 'error' })
     }
   }
 
@@ -125,15 +120,12 @@ function Property() {
         idProperty: property?.id,
         idUser: localStorage.getItem('userId')
       });
-      setDialogStyle('success')
-      setMsgActions(['Imóvel comprado com sucesso.'])
-      setMsgStart(true)
+      toast('Imóvel comprado com sucesso.', { autoClose: msgTimeout, type: 'success' })
       setTimeout(() => {
-        setMsgActions([])
         history.push('/property/user')
       }, msgTimeout)
     } catch (error) {
-      alert("Algo deu errado, tente novamente.");
+      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeout, type: 'error' })
     }
   }
 
@@ -145,7 +137,7 @@ function Property() {
         amountValue: property?.price
       });
     } catch (error) {
-      alert("Algo deu errado, tente novamente.");
+      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeout, type: 'error' })
     }
   }
 
@@ -166,7 +158,8 @@ function Property() {
             scrollbar-thumb-red-400 scrollbar-track-transparent"
 
           >
-            {msgActions[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msgActions} start={msgStart} />)}
+            // {msgActions[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msgActions} start={msgStart} />)}
+            <ToastContainer />
             <div className="flex items-center justify-around font-qsand w-full">
               <div className="flex flex-col justify-center items-center">
                 <Carousel className="max-w-lg max-h-96" value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
@@ -247,7 +240,8 @@ function Property() {
             >
 
               <div>
-                {msg[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msg} start={msgStart} />)}
+                //{msg[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msg} start={msgStart} />)}
+                <ToastContainer />
                 <p className="text-xl text-right mb-5"><span className="text-red-400 font-bold">FALE AGORA</span><br /> COM UM CORRETOR</p>
                 <form
                   onSubmit={handleSubmit}

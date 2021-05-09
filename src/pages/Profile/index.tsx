@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiUser } from "../../services/api";
+import { apiAuth, apiUser } from "../../services/api";
 
 export function Profile() {
-  const [userName, setUserName] = useState(localStorage.getItem('userName') ?? '')
-  const [userEmail, setUserEmail] = useState(localStorage.getItem('userEmail') ?? '')
-  const [userCpf, setUserCpf] = useState(localStorage.getItem('userCpf') ?? '')
-  const [userPhone, setUserPhone] = useState(localStorage.getItem('userPhone') ?? '')
-  const [userAddress, setUserAddress] = useState(localStorage.getItem('userAddress') ?? '')
-
-  const userId = localStorage.getItem('userId')
+  // atualmente nao esta funcionando pois os dados nao estao mais sendo salvos
+  // no localstorage.
+  const [userName, setUserName] = useState('')
+  const [userPassword, setUserPassword] = useState('')
+  const [userEmail, setUserEmail] = useState('')
+  const [userCpf, setUserCpf] = useState('')
+  const [userPhone, setUserPhone] = useState('')
+  const [userAddress, setUserAddress] = useState('')
+  let userId = ''
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -28,36 +31,38 @@ export function Profile() {
       "address": userAddress
     }
 
-    // issues a new request to retrieve user password because
-    // we're using put instead of patch in the back-end, so I have to
-    // rebuild an entire user here then send it over for them to update it
-
-    // could've saved the user password locally, but not the best idea
     try {
-      const response = await apiUser.get(`/user/customer/find/${userId}`)
-      data.password = response.data.password
+      await apiUser.put('/customer/update', data)
+      toast('Usuário atualizado com sucesso.', { autoClose: 4000, 'type': 'success' })
     } catch (error) {
-      alert('Erro ao recuperar dados vitais do usuário.')
-    }
-
-    try {
-      const response = await apiUser.put('/customer/update', data)
-
-      localStorage.setItem('userId', response.data.id)
-      localStorage.setItem('userName', response.data.name)
-      localStorage.setItem('userEmail', response.data.email)
-      localStorage.setItem('userCpf', response.data.cpf)
-      localStorage.setItem('userPhone', response.data.phone)
-      localStorage.setItem('userAddress', response.data.address)
-
-      alert('Usuário atualizado com sucesso.')
-    } catch (error) {
-      alert('Erro ao atualizar informações do usuário.')
+      toast('Erro ao atualizar informações do usuário.', { autoClose: 4000, 'type': 'error' })
     }
   }
 
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const response = await apiUser.get(`/customer/find/${localStorage.getItem('email')}`)
+        console.log(response)
+        userId = response.data.id
+        setUserAddress(response.data.address)
+        setUserEmail(response.data.email)
+        setUserName(response.data.name)
+        setUserCpf(response.data.cpf)
+        setUserPhone(response.data.phone)
+        setUserPassword(response.data.password)
+      } catch (error) {
+        toast('Erro ao recuperar dados vitais do usuário.', { autoClose: 4000, 'type': 'error' })
+      }
+    }
+    fetch()
+    Inputmask("999.999.999-99", { autoUnmask: true }).mask('input[name*=cpf i]');
+    Inputmask("(99) 9999-9999", { autoUnmask: true }).mask('input[name*=phone i]');
+  }, [])
+
   return (
     <>
+      <ToastContainer />
       <div className="max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar />
@@ -108,7 +113,12 @@ export function Profile() {
                       <span className="text-red-700 font-bold"> *</span>
                       <Input
                         value={userPhone}
-                        onChange={e => setUserPhone(e.target.value)}
+                        onChange={e => {
+                          e.target.value.length > 10 ?
+                            Inputmask("(99) 9999[9]-9999", { autoUnmask: true }).mask('input[name*=phone i]') :
+                            Inputmask("(99) 9999-9999[9]", { autoUnmask: true, greedy: false }).mask('input[name*=phone i]')
+                          setUserPhone(e.target.value)
+                        }}
                         name="userPhone"
                         type="text"
                       />
@@ -146,50 +156,57 @@ export function ChangePw() {
     e.preventDefault()
     let actualPassword = ''
 
-    try {
-      const response = await apiUser.get(`/user/customer/find/${userId}`)
-      actualPassword = response.data.password
-    } catch (error) {
-      alert('Erro ao recuperar dados vitais do usuário.')
-    }
-
-    if(!newPassword || !newPasswordRepeat || !password) {
-      alert('Preencha os campos vazios.')
-      return
-    }
-
-    if(password !== actualPassword) {
-      alert('A senha atual está incorreta.')
-      return
-    }
-
-
-    if(newPassword !== newPasswordRepeat) {
-      alert('As senhas não são iguais.')
-      return
-    }
-
     const data = {
-      "id": userId,
-      "email": localStorage.getItem('userEmail'),
-      "name": localStorage.getItem('userName'),
+      "id": '',
+      "email": '',
+      "name": '',
       "password": newPassword,
-      "cpf": localStorage.getItem('userCpf'),
-      "phone": localStorage.getItem('userPhone'),
-      "address": localStorage.getItem('userAddress')
+      "cpf": '',
+      "phone": '',
+      "address": '',
     }
 
+    try {
+      const response = await apiUser.get(`/customer/find/${localStorage.getItem('email')}`)
+      actualPassword = response.data.password
+      data['id'] = response.data.id
+      data['email'] = response.data.email
+      data['name'] = response.data.name
+      data['cpf'] = response.data.cpf
+      data['phone'] = response.data.phone
+      data['address'] = response.data.address
+    } catch (error) {
+      toast('Erro ao recuperar dados vitais do usuário.', { autoClose: 4000, 'type': 'error' })
+      return
+    }
+
+    if (!newPassword || !newPasswordRepeat || !password) {
+      toast('Preencha os campos vazios.', { autoClose: 4000, 'type': 'error' })
+      return
+    }
+
+    if (password !== actualPassword) {
+      toast('A senha atual está incorreta.', { autoClose: 4000, 'type': 'error' })
+      return
+    }
+
+
+    if (newPassword !== newPasswordRepeat) {
+      toast('As senhas não são iguais.', { autoClose: 4000, 'type': 'error' })
+      return
+    }
 
     try {
       await apiUser.put('/customer/update', data)
-      alert('Senha atualizada com sucesso.')
+      toast('Senha atualizada com sucesso.', { autoClose: 4000, 'type': 'success' })
     } catch (error) {
-      alert('Erro ao atualizar a senha.')
+      toast('Erro ao atualizar a senha.', { autoClose: 4000, 'type': 'success' })
     }
   }
 
   return (
     <>
+      <ToastContainer />
       <div className="max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar />
