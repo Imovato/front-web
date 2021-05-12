@@ -9,12 +9,12 @@ import { FormError } from '../../components/FormError';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
 
-import { apiAuth } from '../../services/api';
+import { apiAuth, apiUser } from '../../services/api';
 import { schema } from './schema';
 
 export default function Login() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const msgTimeout = 4000
+  const msgTimeout = 2500
 
   const [data, setData] = useState({
     Email: '',
@@ -37,10 +37,14 @@ export default function Login() {
 
         localStorage.setItem('token', response.data)
         localStorage.setItem('email', data['Email'])
-        toast('Login efetuado com sucesso.', { autoClose: msgTimeout, type: 'success' })
+        apiUser.get(`/customer/find/${localStorage.getItem('email')}`).then((response) => {
+          localStorage.setItem('userId', response.data.id)
+        })
+        console.log(response.data)
+        toast('Login efetuado com sucesso.', { autoClose: 1000, type: 'success' })
         setTimeout(() => {
           history.push('/')
-        }, msgTimeout)
+        }, 1000)
       } catch (error) {
         if (error.response) {
           toast(error.response.data, { autoClose: msgTimeout, type: 'error' })
@@ -142,9 +146,6 @@ export default function Login() {
               <fieldset className="my-6">
                 <div className="flex justify-between">
                   <Label for="userPassword">Senha</Label>
-                  <Link
-                    className="text-red-700 dark:text-red-500"
-                    to="/passwords_reset/new">Esqueceu a senha?</Link>
                 </div>
                 <Input
                   name="userPassword"

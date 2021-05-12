@@ -6,7 +6,7 @@ import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
 import { FormError } from '../../components/FormError';
 
-import { apiAuth } from '../../services/api';
+import { apiAuth, apiUser } from '../../services/api';
 import { schema } from './schema';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ToastContainer, toast } from 'react-toastify';
@@ -16,7 +16,7 @@ import Inputmask from "inputmask";
 
 export default function Signup() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const msgTimeout = 4000
+  const msgTimeout = 2500
 
   const [data, setData] = useState({
     Nome: '',
@@ -48,10 +48,13 @@ export default function Signup() {
         })
         localStorage.setItem('token', response.data)
         localStorage.setItem('email', data['Email'])
-        toast('Cadastro efetuado com sucesso.', { autoClose: msgTimeout, type: 'success' })
+        apiUser.get(`/customer/find/${localStorage.getItem('email')}`).then((response) => {
+          localStorage.setItem('userId', response.data.id)
+        })
+        toast('Cadastro efetuado com sucesso.', { autoClose: 1000, type: 'success' })
         setTimeout(() => {
           history.push('/')
-        }, msgTimeout)
+        }, 1000)
       } catch (error) {
         if (error.response) {
           toast(error.response.data, { autoClose: msgTimeout, type: 'error' })

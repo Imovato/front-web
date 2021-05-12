@@ -8,15 +8,13 @@ import Navbar from "../../components/Navbar";
 import { apiAuth, apiUser } from "../../services/api";
 
 export function Profile() {
-  // atualmente nao esta funcionando pois os dados nao estao mais sendo salvos
-  // no localstorage.
   const [userName, setUserName] = useState('')
   const [userPassword, setUserPassword] = useState('')
   const [userEmail, setUserEmail] = useState('')
   const [userCpf, setUserCpf] = useState('')
   const [userPhone, setUserPhone] = useState('')
   const [userAddress, setUserAddress] = useState('')
-  let userId = ''
+  const [userId, setUserId] = useState(-1)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -25,7 +23,7 @@ export function Profile() {
       "id": userId,
       "email": userEmail,
       "name": userName,
-      "password": '',
+      "password": userPassword,
       "cpf": userCpf,
       "phone": userPhone,
       "address": userAddress
@@ -33,9 +31,9 @@ export function Profile() {
 
     try {
       await apiUser.put('/customer/update', data)
-      toast('Usuário atualizado com sucesso.', { autoClose: 4000, 'type': 'success' })
+      toast('Usuário atualizado com sucesso.', { autoClose: 2500, 'type': 'success' })
     } catch (error) {
-      toast('Erro ao atualizar informações do usuário.', { autoClose: 4000, 'type': 'error' })
+      toast('Erro ao atualizar informações do usuário.', { autoClose: 2500, 'type': 'error' })
     }
   }
 
@@ -43,8 +41,7 @@ export function Profile() {
     async function fetch() {
       try {
         const response = await apiUser.get(`/customer/find/${localStorage.getItem('email')}`)
-        console.log(response)
-        userId = response.data.id
+        setUserId(response.data.id)
         setUserAddress(response.data.address)
         setUserEmail(response.data.email)
         setUserName(response.data.name)
@@ -52,7 +49,7 @@ export function Profile() {
         setUserPhone(response.data.phone)
         setUserPassword(response.data.password)
       } catch (error) {
-        toast('Erro ao recuperar dados vitais do usuário.', { autoClose: 4000, 'type': 'error' })
+        toast('Erro ao recuperar dados vitais do usuário.', { autoClose: 2500, 'type': 'error' })
       }
     }
     fetch()
@@ -176,31 +173,31 @@ export function ChangePw() {
       data['phone'] = response.data.phone
       data['address'] = response.data.address
     } catch (error) {
-      toast('Erro ao recuperar dados vitais do usuário.', { autoClose: 4000, 'type': 'error' })
+      toast('Erro ao recuperar dados vitais do usuário.', { autoClose: 2500, 'type': 'error' })
       return
     }
 
     if (!newPassword || !newPasswordRepeat || !password) {
-      toast('Preencha os campos vazios.', { autoClose: 4000, 'type': 'error' })
+      toast('Preencha os campos vazios.', { autoClose: 2500, 'type': 'error' })
       return
     }
 
     if (password !== actualPassword) {
-      toast('A senha atual está incorreta.', { autoClose: 4000, 'type': 'error' })
+      toast('A senha atual está incorreta.', { autoClose: 2500, 'type': 'error' })
       return
     }
 
 
     if (newPassword !== newPasswordRepeat) {
-      toast('As senhas não são iguais.', { autoClose: 4000, 'type': 'error' })
+      toast('As senhas não são iguais.', { autoClose: 2500, 'type': 'error' })
       return
     }
 
     try {
       await apiUser.put('/customer/update', data)
-      toast('Senha atualizada com sucesso.', { autoClose: 4000, 'type': 'success' })
+      toast('Senha atualizada com sucesso.', { autoClose: 2500, 'type': 'success' })
     } catch (error) {
-      toast('Erro ao atualizar a senha.', { autoClose: 4000, 'type': 'success' })
+      toast('Erro ao atualizar a senha.', { autoClose: 2500, 'type': 'success' })
     }
   }
 

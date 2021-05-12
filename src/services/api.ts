@@ -21,13 +21,13 @@ export const apiContact = axios.create({
 });
 
 export const apiRent = axios.create({
-  baseURL: "http://localhost:8083/rentService/rent",
+  baseURL: "http://localhost:8085/rentService/rent",
 });
 
 export const apiAcquisition = axios.create({
   baseURL: "http://localhost:8084/acquisitionService/acquisition",
 });
 
-export const apiMock= axios.create({
+export const apiMock = axios.create({
   baseURL: "http://localhost:3003/",
 });

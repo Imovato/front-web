@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { ToastContainer } from "react-toastify";
-import { useHistory} from "react-router-dom"
+import { toast, ToastContainer } from "react-toastify";
+import { useHistory } from "react-router-dom"
 import { Button } from "../../components/Button";
 import Chat from "../../components/Chat";
 import { FormError } from "../../components/FormError";
@@ -105,22 +105,13 @@ export function NewProperty() {
           headers: { 'Content-Type': 'multipart/form-data;' }
         })
 
-        setDialogStyle('success')
-        setMsg(['Imóvel cadastrado com sucesso.'])
-        setMsgStart(true)
+        toast('Imóvel cadastrado com sucesso.', { autoClose: 2500, type: 'success' })
         setTimeout(() => {
-          setMsg([])
           history.push('/')
-        }, msgTimeout)
+        }, 2500)
       } catch (error) {
-        console.log(error)
-        alert('Algo deu errado, tente novamente.')
+        toast('Algo deu errado, tente novamente.', { autoClose: 2500, type: 'error' })
       }
-    }
-
-    try {
-    } catch (error) {
-      alert("Algo deu errado, tente novamente.");
     }
   }
 
@@ -128,13 +119,8 @@ export function NewProperty() {
     try {
       await schema.validate(data, { abortEarly: false })
       setGeneralErrors([])
-      if(!files?.item(0)) {
-        setMsg(['Deve existir ao menos 1 foto do imóvel.'])
-        setDialogStyle('error')
-        setMsgStart(true)
-        setTimeout(() => {
-          setMsg([])
-        }, msgTimeout)
+      if (!files?.item(0)) {
+        toast('Deve existir ao menos 1 foto do imóvel.', { autoClose: 2500, type: 'error' })
         return false
       }
       return true
@@ -146,7 +132,7 @@ export function NewProperty() {
 
   function handleFiles(e: React.ChangeEvent<HTMLInputElement>) {
     setFiles(null)
-    if(e.target.files) {
+    if (e.target.files) {
       let list = new DataTransfer()
       for (let index = 0; index < e.target.files.length; index++) {
         if (index > 2) break
@@ -160,7 +146,7 @@ export function NewProperty() {
   function updateFileList(f: FileList, toRemove: number) {
     let list = new DataTransfer()
     for (let index = 0; index < f.length; index++) {
-      if(index === toRemove) continue
+      if (index === toRemove) continue
       list.items.add(f[index])
     }
     setFiles(list.files)
@@ -367,20 +353,20 @@ export function NewProperty() {
                       </Button>
                     </div>
                     {files && Array.from(files).map((file, index) => (
-                    <>
-                      <div className="grid col-span-1 cursor-pointer newPropertyFileButton relative">
-                        <div className="tooltip bg-pink-100 text-center rounded-lg text-sm p-1 max-h-14 absolute overflow-hidden -mt-16 z-10 w-36 -left-5 break-words dark:text-white dark:bg-pink-500 leading-tight">
-                          {file.name}
+                      <>
+                        <div className="grid col-span-1 cursor-pointer newPropertyFileButton relative">
+                          <div className="tooltip bg-pink-100 text-center rounded-lg text-sm p-1 max-h-14 absolute overflow-hidden -mt-16 z-10 w-36 -left-5 break-words dark:text-white dark:bg-pink-500 leading-tight">
+                            {file.name}
+                          </div>
+                          <Button color="green" hover="red" className="cursor-pointer" type="button" onClick={() => updateFileList(files, index)}>
+                            <>
+                              <FontAwesomeIcon icon="file-image" className="fa-hover-hidden" />
+                              <FontAwesomeIcon icon="trash" className="fa-hover-show" />
+                              <p className="">{file.name.substring(0, 5)}...</p>
+                            </>
+                          </Button>
                         </div>
-                        <Button color="green" hover="red" className="cursor-pointer" type="button" onClick={() => updateFileList(files, index)}>
-                          <>
-                            <FontAwesomeIcon icon="file-image" className="fa-hover-hidden" />
-                            <FontAwesomeIcon icon="trash" className="fa-hover-show" />
-                            <p className="">{file.name.substring(0, 5)}...</p>
-                          </>
-                        </Button>
-                      </div>
-                    </>
+                      </>
                     ))}
                   </form>
                 </div>

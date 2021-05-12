@@ -129,13 +129,18 @@ function Property() {
     }
   }
 
-  async function handleHire(e: React.FormEvent<HTMLFormElement>) {
+  function handleHire() {
     try {
-      await apiRent.post("/save", {
-        data: new Date(),
-        property: property,
-        amountValue: property?.price
+      apiRent.post("/save", {
+        value: property?.price,
+        amount: property?.amount,
+        idProperty: property?.id,
+        idUser: localStorage.getItem('userId')
       });
+      toast('Imóvel alugado com sucesso.', { autoClose: msgTimeout, type: 'success' })
+      setTimeout(() => {
+        history.push('/property/user')
+      }, msgTimeout)
     } catch (error) {
       toast('Algo deu errado, tente novamente.', { autoClose: msgTimeout, type: 'error' })
     }
@@ -158,7 +163,6 @@ function Property() {
             scrollbar-thumb-red-400 scrollbar-track-transparent"
 
           >
-            // {msgActions[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msgActions} start={msgStart} />)}
             <ToastContainer />
             <div className="flex items-center justify-around font-qsand w-full">
               <div className="flex flex-col justify-center items-center">
@@ -199,7 +203,7 @@ function Property() {
                       Comprar
                     </button>
                     <button
-                      onClick={() => handleHire}
+                      onClick={handleHire}
                       className="rounded-br-lg text-white bg-yellow-400 text-xl
                       w-full h-12 justify-center hover:bg-opacity-70 transition
                       duration-150 ease-in-out dark:text-black"
@@ -215,7 +219,7 @@ function Property() {
                 <a href="#visitaVirtual" className="grid place-items-center bg-blue-400 h-12 text-lg text-white">
                   <button
                     onClick={function (e) {
-                      changePan(); //can pass arguments this.btnTapped(foo, bar);          
+                      changePan(); //can pass arguments this.btnTapped(foo, bar);
                     }}>
                     <p>Visita Virtual</p>
                   </button>
@@ -240,7 +244,6 @@ function Property() {
             >
 
               <div>
-                //{msg[0] && (<TimedDialog dialogStyle={dialogStyle} timeout={msgTimeout} msg={msg} start={msgStart} />)}
                 <ToastContainer />
                 <p className="text-xl text-right mb-5"><span className="text-red-400 font-bold">FALE AGORA</span><br /> COM UM CORRETOR</p>
                 <form
@@ -316,7 +319,7 @@ function Property() {
               <p className="text-xl">Visita Virtual</p>
               <button className="grid place-items-center bg-green-400 h-12 text-lg text-white p-3"
                 onClick={function (e) {
-                  changePan(); //can pass arguments this.btnTapped(foo, bar);          
+                  changePan(); //can pass arguments this.btnTapped(foo, bar);
                 }}>
                 <p>Proxima imagem</p>
               </button>
