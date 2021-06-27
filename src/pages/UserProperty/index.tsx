@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { PropertySample } from "../../components/PropertySample";
-import { SearchContext } from "../../contexts/Search";
 import { apiAcquisition, apiMock, apiProperty } from "../../services/api";
 
 interface Acquisition {

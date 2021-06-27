@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Interface } from "readline";
+import { useContext, useEffect, useState } from "react";
 import { SearchContext } from "../contexts/Search";
 import { Label } from "./Label";
 import Select from "./Select";
@@ -19,52 +17,52 @@ interface Property {
   price: number;
   state: string;
   block: string;
-  rooms:number;
+  rooms: number;
 }
 
 export default function Search() {
-  const {search,searchUpdate,properties,propertiesUpdate,propertiesBackup} = useContext(SearchContext)
+  const { search, searchUpdate, properties, propertiesUpdate, propertiesBackup } = useContext(SearchContext)
 
   const [currentFilter, setCurrentFilter] = useState({
-    city:"",
-    neighborhood:"",
+    city: "",
+    neighborhood: "",
     priceRange: "",
-    minPrice:0,
-    maxPrice:0,
-    rooms:0
+    minPrice: 0,
+    maxPrice: 0,
+    rooms: 0
   })
 
   useEffect(() => {
-    const newProperties:Property[] = []
+    const newProperties: Property[] = []
     propertiesBackup.forEach(element => {
       const formattedPrice = Number(element.price.toString().replace('.', ''))
       let allMatches = 1
-      if(currentFilter.city!=""){
-        if(element.city != currentFilter.city){
-          allMatches=0
+      if (currentFilter.city != "") {
+        if (element.city != currentFilter.city) {
+          allMatches = 0
         }
       }
-      if(currentFilter.neighborhood!=""){
-        if(element.neighborhood != currentFilter.neighborhood){
-          allMatches=0
+      if (currentFilter.neighborhood != "") {
+        if (element.neighborhood != currentFilter.neighborhood) {
+          allMatches = 0
         }
       }
-      if(currentFilter.rooms!=0){
-        if(element.rooms != currentFilter.rooms){
-          allMatches=0
+      if (currentFilter.rooms != 0) {
+        if (element.rooms != currentFilter.rooms) {
+          allMatches = 0
         }
       }
-      if(currentFilter.maxPrice!=0){
-        if(currentFilter.maxPrice==-1){
+      if (currentFilter.maxPrice != 0) {
+        if (currentFilter.maxPrice == -1) {
           if (formattedPrice < currentFilter.minPrice) {
-            allMatches=0
+            allMatches = 0
           }
         } else if (formattedPrice > currentFilter.maxPrice || formattedPrice < currentFilter.minPrice) {
-          allMatches=0
+          allMatches = 0
         }
 
       }
-      if (allMatches==1) {
+      if (allMatches == 1) {
         newProperties.push(element)
       }
     });

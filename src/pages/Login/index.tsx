@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
-import { ValidationError } from 'yup';
 
 import { Button } from '../../components/Button';
 import { FormError } from '../../components/FormError';

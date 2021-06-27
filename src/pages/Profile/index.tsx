@@ -5,7 +5,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiAuth, apiUser } from "../../services/api";
+import { apiUser } from "../../services/api";
 
 export function Profile() {
   const [userName, setUserName] = useState('')
