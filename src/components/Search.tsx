@@ -21,7 +21,7 @@ interface Property {
 }
 
 export default function Search() {
-  const { search, searchUpdate, properties, propertiesUpdate, propertiesBackup } = useContext(SearchContext)
+  const { search, searchUpdate, propertiesUpdate, propertiesBackup } = useContext(SearchContext)
 
   const [currentFilter, setCurrentFilter] = useState({
     city: "",
