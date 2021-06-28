@@ -147,8 +147,6 @@ export function ChangePw() {
   const [newPassword, setNewPassword] = useState('')
   const [newPasswordRepeat, setNewPasswordRepeat] = useState('')
 
-  const userId = localStorage.getItem('userId')
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     let actualPassword = ''
