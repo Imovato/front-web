@@ -13,8 +13,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Inputmask from "inputmask";
+import { isDark, toggleDarkMode, updateRootElementColor } from '../../utils/darkMode';
 
 export default function Signup() {
+  const [darkSwitch, setDarkSwitch] = useState(isDark)
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
   const msgTimeout = 2500
 
@@ -75,26 +77,8 @@ export default function Signup() {
     }
   }
 
-  const [isDark, setIsDark] = useState(localStorage.getItem('theme') ? true : false);
-
-  function toggleDarkMode() {
-    if (isDark) {
-      setIsDark(false)
-      localStorage.removeItem('theme')
-      document.documentElement.classList.remove('dark')
-      document.getElementById('root')?.style.setProperty('background', 'rgba(253, 242, 248)')
-    } else {
-      setIsDark(true)
-      localStorage.setItem('theme', 'dark')
-      document.documentElement.classList.add('dark')
-      document.getElementById('root')?.style.setProperty('background', '#374151')
-    }
-  }
-
   useEffect(() => {
-    isDark ? document.getElementById('root')?.style.setProperty('background', '#374151')
-      : document.getElementById('root')?.style.setProperty('background', 'rgba(253, 242, 248)')
-
+    updateRootElementColor()
     Inputmask("999.999.999-99", { autoUnmask: true }).mask('input[name*=cpf i]');
     Inputmask("(99) 9999-9999[9]", { autoUnmask: true }).mask('input[name*=phone i]');
   }, [])
@@ -113,12 +97,12 @@ export default function Signup() {
         <div className="flex items-end p-2">
           <div className="flex items-center gap-2 dark:text-white">
             <FontAwesomeIcon className="text-lg" icon="sun" />
-            <div onClick={toggleDarkMode} className="cursor-pointer">
+            <div onClick={() => { toggleDarkMode(); setDarkSwitch(!darkSwitch) }} className="cursor-pointer">
               <span className="relative">
-                <span className={`block w-12 h-6 ${isDark ? 'bg-blue-400' : 'bg-gray-100'} rounded-full shadow-inner`}></span>
+                <span className={`block w-12 h-6 ${darkSwitch ? 'bg-blue-400' : 'bg-gray-100'} rounded-full shadow-inner`}></span>
                 <span className={`absolute block w-5 h-5 mt-0.5 ml-0.5 rounded-full
                   shadow inset-y-0 left-0 focus-within:shadow-outline
-                  transition-transform duration-300 bg-white ease-in-out ${isDark ? 'transform translate-x-6' : ''}`}
+                  transition-transform duration-300 bg-white ease-in-out ${darkSwitch ? 'transform translate-x-6' : ''}`}
                 >
                   <input id="unchecked" type="checkbox" className="absolute opacity-0 w-0 h-0" />
                 </span>
