@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const apiAuth = axios.create({
-  baseURL: "http://localhost:8083/users",
+  baseURL: "http://localhost:8083/authService/users",
 });
 
 export const apiUser = axios.create({

@@ -30,10 +30,6 @@ interface Property {
 
 export function NewProperty() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const [msg, setMsg] = useState<string[]>([])
-  const [msgStart, setMsgStart] = useState(false)
-  const [dialogStyle, setDialogStyle] = useState('success')
-  const msgTimeout = 2500
 
   const [files, setFiles] = useState<FileList | null>(null)
 
@@ -168,8 +164,8 @@ export function NewProperty() {
                 <div className="bg-red-100 dark:bg-gray-800 p-3 rounded-lg mb-3 max-h-112 overflow-y-auto
                 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-red-400">
                   <h3 className="text-red-800 dark:text-red-400 font-bold">Campos inválidos:</h3>
-                  {generalErrors.map((e) => (
-                    <FormError className="text-red-500 dark:text-red-200" key={Math.random()}>{e}</FormError>
+                  {generalErrors.map((e, index) => (
+                    <FormError className="text-red-500 dark:text-red-200" key={index}>{e}</FormError>
                   ))}
                 </div>
               </>)}

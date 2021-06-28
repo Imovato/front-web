@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
-import { ValidationError } from 'yup';
 
 import { Button } from '../../components/Button';
 import { FormError } from '../../components/FormError';
@@ -10,9 +9,11 @@ import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
 
 import { apiAuth, apiUser } from '../../services/api';
+import { isDark, toggleDarkMode, updateRootElementColor } from '../../utils/darkMode';
 import { schema } from './schema';
 
 export default function Login() {
+  const [darkSwitch, setDarkSwitch] = useState(isDark)
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
   const msgTimeout = 2500
 
@@ -28,7 +29,7 @@ export default function Login() {
 
     if (await validate())
       try {
-        const response = await apiAuth.post('/signin', null, {
+        var response = await apiAuth.post('/signin', null, {
           params: {
             email: data['Email'],
             password: data['Senha']
@@ -37,10 +38,10 @@ export default function Login() {
 
         localStorage.setItem('token', response.data)
         localStorage.setItem('email', data['Email'])
-        apiUser.get(`/customer/find/${localStorage.getItem('email')}`).then((response) => {
-          localStorage.setItem('userId', response.data.id)
-        })
-        console.log(response.data)
+
+        response = await apiUser.get(`/customer/find/${localStorage.getItem('email')}`)
+        localStorage.setItem('userId', response.data.id)
+
         toast('Login efetuado com sucesso.', { autoClose: 1000, type: 'success' })
         setTimeout(() => {
           history.push('/')
@@ -65,26 +66,7 @@ export default function Login() {
     }
   }
 
-  const [isDark, setIsDark] = useState(localStorage.getItem('theme') ? true : false);
-
-  function toggleDarkMode() {
-    if (isDark) {
-      setIsDark(false)
-      localStorage.removeItem('theme')
-      document.documentElement.classList.remove('dark')
-      document.getElementById('root')?.style.setProperty('background', 'rgba(253, 242, 248)')
-    } else {
-      setIsDark(true)
-      localStorage.setItem('theme', 'dark')
-      document.documentElement.classList.add('dark')
-      document.getElementById('root')?.style.setProperty('background', '#374151')
-    }
-  }
-
-  useEffect(() => {
-    isDark ? document.getElementById('root')?.style.setProperty('background', '#374151')
-      : document.getElementById('root')?.style.setProperty('background', 'rgba(253, 242, 248)')
-  }, [])
+  useEffect(() => { updateRootElementColor() }, [])
 
   return (
     <div className="flex w-auto h-screen bg-white dark:bg-gray-700">
@@ -100,12 +82,12 @@ export default function Login() {
         <div className="flex items-end p-2">
           <div className="flex items-center gap-2 dark:text-white">
             <FontAwesomeIcon className="text-lg" icon="sun" />
-            <div onClick={toggleDarkMode} className="cursor-pointer">
+            <div onClick={() => { toggleDarkMode(); setDarkSwitch(!darkSwitch) }} className="cursor-pointer">
               <span className="relative">
-                <span className={`block w-12 h-6 ${isDark ? 'bg-red-400' : 'bg-red-100'} rounded-full shadow-inner`}></span>
+                <span className={`block w-12 h-6 ${darkSwitch ? 'bg-red-400' : 'bg-red-100'} rounded-full shadow-inner`}></span>
                 <span className={`absolute block w-5 h-5 mt-0.5 ml-0.5 rounded-full
                   shadow inset-y-0 left-0 focus-within:shadow-outline
-                  transition-transform duration-300 bg-white ease-in-out ${isDark ? 'transform translate-x-6' : ''}`}
+                  transition-transform duration-300 bg-white ease-in-out ${darkSwitch ? 'transform translate-x-6' : ''}`}
                 >
                   <input id="unchecked" type="checkbox" className="absolute opacity-0 w-0 h-0" />
                 </span>
@@ -128,8 +110,8 @@ export default function Login() {
               (<>
                 <div className="bg-red-100 dark:bg-gray-900 p-3 rounded-lg mb-3">
                   <h3 className="text-red-800 dark:text-red-500 font-bold">Campos inválidos:</h3>
-                  {generalErrors.map((e) => (
-                    <FormError key={Math.random()}>{e}</FormError>
+                  {generalErrors.map((e, index) => (
+                    <FormError key={index}>{e}</FormError>
                   ))}
                 </div>
               </>)}

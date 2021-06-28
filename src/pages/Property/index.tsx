@@ -47,18 +47,12 @@ interface CustomerData {
 }
 
 function Property() {
-  // const photoSphere = require('photo-sphere-viewer');
   const [property, setProperty] = useState<Property>();
   const [acquisition, setAcquisition] = useState(false);
   const [stateImages, setStateImages] = useState<string[]>([])
   const [carousel, setCarousel] = useState(0)
-  const [msg, setMsg] = useState<string[]>([])
-  const [msgActions, setMsgActions] = useState<string[]>([])
-  const [msgStart, setMsgStart] = useState(false)
-  const [dialogStyle, setDialogStyle] = useState('success')
   const [imagesPan, setImagesPan] = useState([''])
   const [imagePan, setImagePan] = useState(0)
-  const [vaov, setVaov] = useState(180)
   const msgTimeout = 2500
 
   let params = useParams<RouteParams>();
@@ -329,7 +323,7 @@ function Property() {
                   height="500px"
                   image={imagesPan[imagePan]}
                   pitch={10}
-                  vaov={vaov}
+                  vaov={180}
                   yaw={180}
                   hfov={110}
                   autoLoad

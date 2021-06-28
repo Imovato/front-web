@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -39,7 +39,7 @@ interface Property {
 }
 
 function Home() {
-  const {search, properties, propertiesUpdate, propertiesSetBackup} = useContext(SearchContext)
+  const { search, properties, propertiesUpdate, propertiesSetBackup } = useContext(SearchContext)
 
 
   useEffect(() => {

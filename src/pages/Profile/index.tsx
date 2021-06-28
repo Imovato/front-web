@@ -5,7 +5,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
-import { apiAuth, apiUser } from "../../services/api";
+import { apiUser } from "../../services/api";
 
 export function Profile() {
   const [userName, setUserName] = useState('')
@@ -146,8 +146,6 @@ export function ChangePw() {
   const [password, setPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [newPasswordRepeat, setNewPasswordRepeat] = useState('')
-
-  const userId = localStorage.getItem('userId')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
