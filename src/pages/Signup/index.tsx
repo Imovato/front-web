@@ -37,7 +37,7 @@ export default function Signup() {
 
     if (await validate())
       try {
-        const response = await apiAuth.post('/signup', {
+        var response = await apiAuth.post('/signup', {
           username: data['Nome'],
           email: data['Email'],
           password: data['Senha'],
@@ -50,9 +50,10 @@ export default function Signup() {
         })
         localStorage.setItem('token', response.data)
         localStorage.setItem('email', data['Email'])
-        apiUser.get(`/customer/find/${localStorage.getItem('email')}`).then((response) => {
-          localStorage.setItem('userId', response.data.id)
-        })
+
+        response = await apiUser.get(`/customer/find/${localStorage.getItem('email')}`)
+        localStorage.setItem('userId', response.data.id)
+
         toast('Cadastro efetuado com sucesso.', { autoClose: 1000, type: 'success' })
         setTimeout(() => {
           history.push('/')
@@ -126,8 +127,8 @@ export default function Signup() {
               (<>
                 <div className="bg-red-100 dark:bg-gray-800 p-3 rounded-lg mb-3">
                   <h3 className="text-red-800 dark:text-red-400 font-bold">Campos inválidos:</h3>
-                  {generalErrors.map((e) => (
-                    <FormError className="text-red-500 dark:text-red-200" key={Math.random()}>{e}</FormError>
+                  {generalErrors.map((e, index) => (
+                    <FormError className="text-red-500 dark:text-red-200" key={index}>{e}</FormError>
                   ))}
                 </div>
               </>)}

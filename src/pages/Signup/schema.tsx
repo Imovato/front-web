@@ -1,11 +1,9 @@
 import * as yup from 'yup'
-import { setLocale } from 'yup';
 import { apiUser } from '../../services/api';
-
 import { validarCPF } from '../../utils/validarCpf';
 
 // form validation (yup) locale
-setLocale({
+yup.setLocale({
   mixed: {
     required: '${path} é um campo obrigatório',
   },
@@ -29,7 +27,7 @@ export const schema = yup.object().shape({
         email: val
       })
       return !res.data
-    } catch(err) {
+    } catch (err) {
       return true
     }
   }),
@@ -39,7 +37,7 @@ export const schema = yup.object().shape({
   Telefone: yup.string().required().matches(new RegExp('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')),
   Endereço: yup.string().required(),
   Senha: yup.string().required().min(8).max(30),
-  'Repita a senha': yup.string().test('Repita a senha', 'As senhas devem ser iguais', function(value) {
+  'Repita a senha': yup.string().test('Repita a senha', 'As senhas devem ser iguais', function (value) {
     return this.parent['Senha'] === value
   })
 })

@@ -110,8 +110,8 @@ export default function Login() {
               (<>
                 <div className="bg-red-100 dark:bg-gray-900 p-3 rounded-lg mb-3">
                   <h3 className="text-red-800 dark:text-red-500 font-bold">Campos inválidos:</h3>
-                  {generalErrors.map((e) => (
-                    <FormError key={Math.random()}>{e}</FormError>
+                  {generalErrors.map((e, index) => (
+                    <FormError key={index}>{e}</FormError>
                   ))}
                 </div>
               </>)}
