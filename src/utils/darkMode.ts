@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export var isDark = localStorage.getItem('theme') ? true : false;
 export const root = document.getElementById('root')
 

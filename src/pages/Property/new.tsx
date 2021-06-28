@@ -30,10 +30,6 @@ interface Property {
 
 export function NewProperty() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
-  const [msg, setMsg] = useState<string[]>([])
-  const [msgStart, setMsgStart] = useState(false)
-  const [dialogStyle, setDialogStyle] = useState('success')
-  const msgTimeout = 2500
 
   const [files, setFiles] = useState<FileList | null>(null)
 
