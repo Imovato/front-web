@@ -10,9 +10,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isDark, toggleDarkMode, updateRootElementColor } from "../utils/darkMode";
-import { useState } from "react";
 
 library.add(faSignOutAlt, faSignInAlt, faHome, faCog, faSun, faMoon, faBuilding);
 

@@ -29,7 +29,7 @@ export default function Login() {
 
     if (await validate())
       try {
-        const response = await apiAuth.post('/signin', null, {
+        var response = await apiAuth.post('/signin', null, {
           params: {
             email: data['Email'],
             password: data['Senha']
@@ -38,10 +38,10 @@ export default function Login() {
 
         localStorage.setItem('token', response.data)
         localStorage.setItem('email', data['Email'])
-        apiUser.get(`/customer/find/${localStorage.getItem('email')}`).then((response) => {
-          localStorage.setItem('userId', response.data.id)
-        })
-        console.log(response.data)
+
+        response = await apiUser.get(`/customer/find/${localStorage.getItem('email')}`)
+        localStorage.setItem('userId', response.data.id)
+
         toast('Login efetuado com sucesso.', { autoClose: 1000, type: 'success' })
         setTimeout(() => {
           history.push('/')
