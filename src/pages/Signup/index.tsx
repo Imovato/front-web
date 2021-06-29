@@ -54,10 +54,10 @@ export default function Signup() {
         response = await apiUser.get(`/customer/find/${localStorage.getItem('email')}`)
         localStorage.setItem('userId', response.data.id)
 
-        toast('Cadastro efetuado com sucesso.', { autoClose: 1000, type: 'success' })
+        toast('Cadastro efetuado com sucesso.', { autoClose: 2000, type: 'success' })
         setTimeout(() => {
           history.push('/')
-        }, 1000)
+        }, 2000)
       } catch (error) {
         if (error.response) {
           toast(error.response.data, { autoClose: msgTimeout, type: 'error' })
