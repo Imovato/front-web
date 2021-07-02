@@ -26,47 +26,43 @@ export default function Search() {
   const [currentFilter, setCurrentFilter] = useState({
     city: "",
     neighborhood: "",
-    priceRange: "",
-    minPrice: 0,
-    maxPrice: 0,
+    price: "0:0",
     rooms: 0
   })
 
-  useEffect(() => {
-    const newProperties: Property[] = []
-    propertiesBackup.forEach(element => {
-      const formattedPrice = Number(element.price.toString().replace('.', ''))
-      let allMatches = 1
-      if (currentFilter.city != "") {
-        if (element.city != currentFilter.city) {
-          allMatches = 0
-        }
-      }
-      if (currentFilter.neighborhood != "") {
-        if (element.neighborhood != currentFilter.neighborhood) {
-          allMatches = 0
-        }
-      }
-      if (currentFilter.rooms != 0) {
-        if (element.rooms != currentFilter.rooms) {
-          allMatches = 0
-        }
-      }
-      if (currentFilter.maxPrice != 0) {
-        if (currentFilter.maxPrice == -1) {
-          if (formattedPrice < currentFilter.minPrice) {
-            allMatches = 0
-          }
-        } else if (formattedPrice > currentFilter.maxPrice || formattedPrice < currentFilter.minPrice) {
-          allMatches = 0
-        }
+  function checkRooms(filter: Number, actual: Number) {
+    return filter !== actual
+  }
 
+  function checkCity(filter: string, actual: string) {
+    return filter !== actual
+  }
+
+  function applyFilter(): Property[] {
+    return propertiesBackup.filter(element => {
+      var allMatches = true
+      for (const key in currentFilter) {
+        if (key === 'price')
+          allMatches = checkPrice(currentFilter[key], element[`${key}`])
       }
-      if (allMatches == 1) {
-        newProperties.push(element)
+      return allMatches
+    })
+  }
+
+  function checkPrice(range: string, actual: Number) {
+    if (range !== '0:0') {
+      const [min, max] = range.split(':').map(e => Number(e))
+      if (max === -1) {
+        return (actual > min)
       }
-    });
-    propertiesUpdate(newProperties)
+      return (actual > min && actual < max)
+    }
+    return true
+  }
+
+  useEffect(() => {
+    const filteredProperties = applyFilter()
+    propertiesUpdate(filteredProperties)
   }, [currentFilter]);
 
   return (
@@ -129,19 +125,17 @@ export default function Search() {
           <div className="flex flex-col w-full">
             <Label color="red-700 dark:text-gray-400">Valor</Label>
             <Select
-              value={currentFilter.priceRange}
+              value={currentFilter.price}
               onChange={(e) => setCurrentFilter({
                 ...currentFilter,
-                priceRange: e.target.value,
-                minPrice: Number(e.target.value.split(':')[0]),
-                maxPrice: Number(e.target.value.split(':')[1])
+                price: e.target.value,
               })}
             >
               <option value="0:0">Todos</option>
               <option value="0:50000">R$ 0 a R$ 50 mil</option>
-              <option value="50001:150000">R$ 50 a R$ 150 mil</option>
-              <option value="150001:300000">R$ 150 a R$ 300 mil</option>
-              <option value="300001:600000">R$ 300 a R$ 600 mil</option>
+              <option value="50001:150000">R$ 50 mil a R$ 150 mil</option>
+              <option value="150001:300000">R$ 150 mil a R$ 300 mil</option>
+              <option value="300001:600000">R$ 300 mil a R$ 600 mil</option>
               <option value="600001:-1">Acima de R$ 600 mil</option>
             </Select>
           </div>
