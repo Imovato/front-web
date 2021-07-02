@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {

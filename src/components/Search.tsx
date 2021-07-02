@@ -41,7 +41,7 @@ export default function Search() {
     })
   }
 
-  function checkPrice(range: string, actual: Number) {
+  function checkPrice(range: string, actual: number) {
     const [min, max] = range.split(':').map(e => Number(e))
     if (max === -1)
       return (actual > min)

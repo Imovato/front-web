@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useHistory } from "react-router-dom"
 import { Button } from "../../components/Button";
-import Chat from "../../components/Chat";
 import { FormError } from "../../components/FormError";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";

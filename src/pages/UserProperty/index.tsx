@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { PropertySample } from "../../components/PropertySample";
 import { apiAcquisition, apiProperty } from "../../services/api";

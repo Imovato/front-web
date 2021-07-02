@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
-import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
 import { apiAcquisition, apiContact, apiProperty, apiRent } from "../../services/api";
