@@ -30,37 +30,26 @@ export default function Search() {
     rooms: 0
   })
 
-  function checkCity(filter: string, actual: string) {
-    return filter !== actual
-  }
-
   function applyFilter(): Property[] {
     return propertiesBackup.filter(element => {
-      var allMatches = true
-      for (const key in currentFilter) {
-        if (key === 'price')
-          allMatches = checkPrice(currentFilter[key], element[`${key}`])
-        if (key === 'rooms')
-          allMatches = currentFilter[key] === element[`${key}`] || currentFilter[key] === 0
-      }
-      return allMatches
+      return (
+        (currentFilter.city ? element.city.includes(currentFilter.city) : true) &&
+        (currentFilter.neighborhood ? element.neighborhood.includes(currentFilter.neighborhood) : true) &&
+        (currentFilter.rooms ? element.rooms === currentFilter.rooms : true) &&
+        (currentFilter.price !== '0:0' ? checkPrice(currentFilter.price, element.price) : true)
+      )
     })
   }
 
   function checkPrice(range: string, actual: Number) {
-    if (range !== '0:0') {
-      const [min, max] = range.split(':').map(e => Number(e))
-      if (max === -1) {
-        return (actual > min)
-      }
-      return (actual > min && actual < max)
-    }
-    return true
+    const [min, max] = range.split(':').map(e => Number(e))
+    if (max === -1)
+      return (actual > min)
+    return (actual > min && actual < max)
   }
 
   useEffect(() => {
-    const filteredProperties = applyFilter()
-    propertiesUpdate(filteredProperties)
+    propertiesUpdate(applyFilter())
   }, [currentFilter]);
 
   return (
