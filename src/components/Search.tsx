@@ -30,10 +30,6 @@ export default function Search() {
     rooms: 0
   })
 
-  function checkRooms(filter: Number, actual: Number) {
-    return filter !== actual
-  }
-
   function checkCity(filter: string, actual: string) {
     return filter !== actual
   }
@@ -44,6 +40,8 @@ export default function Search() {
       for (const key in currentFilter) {
         if (key === 'price')
           allMatches = checkPrice(currentFilter[key], element[`${key}`])
+        if (key === 'rooms')
+          allMatches = currentFilter[key] === element[`${key}`] || currentFilter[key] === 0
       }
       return allMatches
     })
