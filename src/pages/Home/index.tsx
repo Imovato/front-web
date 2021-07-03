@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -51,7 +50,6 @@ function Home() {
 
   return (
     <>
-      <Chat></Chat>
       <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Chat from "../../components/Chat";
 import Navbar from "../../components/Navbar";
 import { PropertySample } from "../../components/PropertySample";
 import { apiAcquisition, apiProperty } from "../../services/api";
@@ -50,7 +49,6 @@ function UserProperty() {
   }, []);
   return (
     <>
-      <Chat></Chat>
       <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>

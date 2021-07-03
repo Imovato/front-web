@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Button } from "../../components/Button";
-import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
 import { apiAcquisition, apiContact, apiProperty, apiRent } from "../../services/api";
@@ -146,7 +145,6 @@ function Property() {
 
   return (
     <>
-      <Chat></Chat>
       <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useHistory } from "react-router-dom"
 import { Button } from "../../components/Button";
-import Chat from "../../components/Chat";
 import { FormError } from "../../components/FormError";
 import { Input } from "../../components/Input";
 import { Label } from "../../components/Label";
@@ -150,7 +149,6 @@ export function NewProperty() {
 
   return (
     <>
-      <Chat></Chat>
       <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
