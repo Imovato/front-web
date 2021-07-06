@@ -32,6 +32,8 @@ export function NewProperty() {
 
   const [files, setFiles] = useState<FileList | null>(null)
 
+  const [virtualFiles, setVirtualFiles] = useState<FileList | null>(null)
+
   const history = useHistory()
 
   const [data, setData] = useState({
@@ -85,8 +87,9 @@ export function NewProperty() {
           toSend = { ...dataBackend }
         }
         const r = await apiProperty.post(`/${data.Tipo}`, toSend);
-
+        console.log(r.data);
         let formData = new FormData();
+        let formDataVirtual = new FormData();
         //@ts-expect-error
         formData.append("img1", files[0]);
         //@ts-expect-error
@@ -94,9 +97,22 @@ export function NewProperty() {
         //@ts-expect-error
         formData.append("img3", files[2]);
 
+        //@ts-expect-error
+        formDataVirtual.append("img1", virtualFiles[0]);
+        //@ts-expect-error
+        formDataVirtual.append("img2", virtualFiles[1]);
+        //@ts-expect-error
+        formDataVirtual.append("img3", virtualFiles[2]);
+
         await apiProperty.post(
           `/property/upload/${r.data.id}`,
           formData, {
+          headers: { 'Content-Type': 'multipart/form-data;' }
+        })
+
+        await apiProperty.post(
+          `/property/upload/virtual/${r.data.id}`,
+          formDataVirtual, {
           headers: { 'Content-Type': 'multipart/form-data;' }
         })
 
@@ -125,8 +141,8 @@ export function NewProperty() {
     }
   }
 
-  function handleFiles(e: React.ChangeEvent<HTMLInputElement>) {
-    setFiles(null)
+  function handleFiles(e: React.ChangeEvent<HTMLInputElement>, isVirtual = false) {
+    isVirtual ? setVirtualFiles(null) : setFiles(null);
     if (e.target.files) {
       let list = new DataTransfer()
       for (let index = 0; index < e.target.files.length; index++) {
@@ -134,17 +150,17 @@ export function NewProperty() {
         // @ts-expect-error
         list.items.add(e.target.files.item(index))
       }
-      setFiles(list.files)
+      isVirtual ? setVirtualFiles(list.files) : setFiles(list.files);
     }
   }
 
-  function updateFileList(f: FileList, toRemove: number) {
+  function updateFileList(f: FileList, toRemove: number, isVirtual = false) {
     let list = new DataTransfer()
     for (let index = 0; index < f.length; index++) {
       if (index === toRemove) continue
       list.items.add(f[index])
     }
-    setFiles(list.files)
+    isVirtual ? setVirtualFiles(list.files) : setFiles(list.files);
   }
 
   return (
@@ -331,8 +347,8 @@ export function NewProperty() {
                       </Button>
                     </div>
                     <div className="grid col-span-1"></div>
-                    <div className="grid col-span-1 cursor-pointer">
-                      <Button color="blue" className="relative cursor-pointer" type="button">
+                    <div className="grid col-span-2 cursor-pointer">
+                      <Button color="green" className="relative cursor-pointer" type="button">
                         <>
                           <FontAwesomeIcon icon="plus" />
                           Fotos
@@ -346,22 +362,56 @@ export function NewProperty() {
                         </>
                       </Button>
                     </div>
-                    {files && Array.from(files).map((file, index) => (
-                      <>
-                        <div className="grid col-span-1 cursor-pointer newPropertyFileButton relative">
-                          <div className="tooltip bg-pink-100 text-center rounded-lg text-sm p-1 max-h-14 absolute overflow-hidden -mt-16 z-10 w-36 -left-5 break-words dark:text-white dark:bg-pink-500 leading-tight">
-                            {file.name}
+                    <div className="grid col-span-2 cursor-pointer">
+                      <Button color="blue" className="relative cursor-pointer" type="button">
+                        <>
+                          <FontAwesomeIcon icon="plus" />
+                          Visita Virtual
+                          <input
+                            className="text-0 absolute z-10 cursor-pointer opacity-0 right-0 top-0 h-full w-full text-xs"
+                            type="file"
+                            multiple={true}
+                            // @ts-ignore
+                            onChange={(e) => handleFiles(e, true)}
+                          />
+                        </>
+                      </Button>
+                    </div>
+                    <div className="flex col-span-6 w-full gap-2">
+                      {files && Array.from(files).map((file, index) => (
+                        <>
+                          <div className="grid col-span-1 cursor-pointer newPropertyFileButton relative">
+                            <div className="tooltip bg-pink-100 text-center rounded-lg text-sm p-1 max-h-14 absolute overflow-hidden -mt-16 z-10 w-36 -left-5 break-words dark:text-white dark:bg-pink-500 leading-tight">
+                              {file.name}
+                            </div>
+                            <Button color="green" hover="red" className="cursor-pointer" type="button" onClick={() => updateFileList(files, index)}>
+                              <>
+                                <FontAwesomeIcon icon="file-image" className="fa-hover-hidden" />
+                                <FontAwesomeIcon icon="trash" className="fa-hover-show" />
+                                <p className="">{file.name.substring(0, 5)}...</p>
+                              </>
+                            </Button>
                           </div>
-                          <Button color="green" hover="red" className="cursor-pointer" type="button" onClick={() => updateFileList(files, index)}>
-                            <>
-                              <FontAwesomeIcon icon="file-image" className="fa-hover-hidden" />
-                              <FontAwesomeIcon icon="trash" className="fa-hover-show" />
-                              <p className="">{file.name.substring(0, 5)}...</p>
-                            </>
-                          </Button>
-                        </div>
-                      </>
-                    ))}
+                        </>
+                      ))}
+                      <br />
+                      {virtualFiles && Array.from(virtualFiles).map((virtualFile, index) => (
+                        <>
+                          <div className="grid col-span-1 cursor-pointer newPropertyFileButton relative">
+                            <div className="tooltip bg-pink-100 text-center rounded-lg text-sm p-1 max-h-14 absolute overflow-hidden -mt-16 z-10 w-36 -left-5 break-words dark:text-white dark:bg-pink-500 leading-tight">
+                              {virtualFile.name}
+                            </div>
+                            <Button color="blue" hover="red" className="cursor-pointer" type="button" onClick={() => updateFileList(virtualFiles, index, true)}>
+                              <>
+                                <FontAwesomeIcon icon="file-image" className="fa-hover-hidden" />
+                                <FontAwesomeIcon icon="trash" className="fa-hover-show" />
+                                <p className="">{virtualFile.name.substring(0, 5)}...</p>
+                              </>
+                            </Button>
+                          </div>
+                        </>
+                      ))}
+                    </div>
                   </form>
                 </div>
               </div>

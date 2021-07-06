@@ -58,8 +58,17 @@ function Property() {
 
   const history = useHistory()
   useEffect(() => {
-    setImagesPan([salaNet, sala2, net1, quartoNet])
 
+    apiProperty
+      .get("property/find/".concat(params.id), {})
+      .then((response) => {
+        let images: any[] = []
+        setProperty(response.data);
+        for (let index = 1; index <= response.data.imageQuantity; index++) {
+          images.push(`http://localhost:8081/crudService/images/property/${params.id}/virtual/${index}.jpg`)
+        }
+        setImagesPan(images)
+      });
     apiProperty
       .get("property/find/".concat(params.id), {})
       .then((response) => {
