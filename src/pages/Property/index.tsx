@@ -9,10 +9,6 @@ import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { PropertyData } from "../../components/PropertyData";
-import quartoNet from '../../assets/quartoNet.jpg';
-import salaNet from '../../assets/salaNet.jpg';
-import net1 from '../../assets/net1.jpg';
-import sala2 from '../../assets/sala2.png';
 import { Pannellum } from "pannellum-react";
 import { toast, ToastContainer } from "react-toastify";
 interface Property {
