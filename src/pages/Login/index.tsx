@@ -35,7 +35,6 @@ export default function Login() {
             password: data['Senha']
           }
         })
-
         localStorage.setItem('token', response.data)
         localStorage.setItem('email', data['Email'])
 
@@ -47,7 +46,9 @@ export default function Login() {
           history.push('/')
         }, 2000)
       } catch (error) {
+        // @ts-expect-error
         if (error.response) {
+          // @ts-expect-error
           toast(error.response.data, { autoClose: msgTimeout, type: 'error' })
         } else {
           toast('Erro ao conectar com a API.', { autoClose: msgTimeout, 'type': 'error' })
@@ -61,6 +62,7 @@ export default function Login() {
       setGeneralErrors([])
       return true
     } catch (error) {
+      // @ts-expect-error
       setGeneralErrors(error.errors)
       return false
     }

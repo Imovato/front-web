@@ -59,7 +59,9 @@ export default function Signup() {
           history.push('/')
         }, 2000)
       } catch (error) {
+        // @ts-expect-error
         if (error.response) {
+          // @ts-expect-error
           toast(error.response.data, { autoClose: msgTimeout, type: 'error' })
         } else {
           toast('Erro ao conectar com a API.', { autoClose: msgTimeout, 'type': 'error' })
@@ -73,6 +75,7 @@ export default function Signup() {
       setGeneralErrors([])
       return true
     } catch (error) {
+      // @ts-expect-error
       setGeneralErrors(error.errors)
       return false
     }

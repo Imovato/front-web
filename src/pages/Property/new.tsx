@@ -136,6 +136,7 @@ export function NewProperty() {
       }
       return true
     } catch (error) {
+      // @ts-expect-error
       setGeneralErrors(error.errors)
       return false
     }

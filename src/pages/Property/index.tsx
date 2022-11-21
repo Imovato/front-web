@@ -9,7 +9,7 @@ import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { PropertyData } from "../../components/PropertyData";
-import { Pannellum } from "pannellum-react";
+//import { Pannellum } from "pannellum-react";
 import { toast, ToastContainer } from "react-toastify";
 interface Property {
   id: string;
@@ -321,7 +321,7 @@ function Property() {
                 <p>Proxima imagem</p>
               </button>
               <div id="visitaVirtual" className="grid place-items-center w-full h-full">
-                <Pannellum
+                {/* <Pannellum
                   width="90%"
                   height="500px"
                   image={imagesPan[imagePan]}
@@ -334,7 +334,7 @@ function Property() {
                     console.log("panorama loaded");
                   }}
                 >
-                </Pannellum>
+                </Pannellum> */}
               </div>
             </div>
           </section>
