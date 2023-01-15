@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
@@ -191,14 +191,16 @@ function Property() {
                 </div>
                 {!acquisition ? (
                   <div className="flex justify-between bg-opacity-0">
-                    <button
-                      onClick={handleBuy}
-                      className="rounded-bl-lg text-white bg-green-400 text-xl
-                      w-full h-12 justify-center hover:bg-opacity-70 transition
-                      duration-150 ease-in-out dark:text-black"
-                    >
-                      Comprar
-                    </button>
+                    <Link to="/acquisition/save">
+                      <button
+                        //onClick={handleBuy}
+                        className="rounded-bl-lg text-white bg-green-400 text-xl
+                        w-full h-12 justify-center hover:bg-opacity-70 transition
+                        duration-150 ease-in-out dark:text-black"
+                      >
+                        Comprar
+                      </button>
+                    </Link>
                     <button
                       onClick={handleHire}
                       className="rounded-br-lg text-white bg-yellow-400 text-xl
