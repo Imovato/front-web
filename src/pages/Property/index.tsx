@@ -9,7 +9,6 @@ import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { PropertyData } from "../../components/PropertyData";
-//import { Pannellum } from "pannellum-react";
 import { toast, ToastContainer } from "react-toastify";
 interface Property {
   id: string;
@@ -43,7 +42,7 @@ interface CustomerData {
 
 function Property() {
   const [property, setProperty] = useState<Property>();
-  const [acquisition, setAcquisition] = useState(false);
+  const [acquisition, setAcquisition] = useState(true);
   const [stateImages, setStateImages] = useState<string[]>([])
   const [carousel, setCarousel] = useState(0)
   const [imagesPan, setImagesPan] = useState([''])
@@ -189,7 +188,7 @@ function Property() {
                     <p className="text-xl text-green-800 dark:text-green-400">R$ {property?.price}</p>
                   </div>
                 </div>
-                {!acquisition ? (
+                {acquisition ? (
                   <div className="flex justify-between bg-opacity-0">
                     <Link to="/acquisition/save">
                       <button

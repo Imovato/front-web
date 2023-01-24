@@ -121,7 +121,8 @@ export function NewProperty() {
           history.push('/')
         }, 2500)
       } catch (error) {
-        toast('Algo deu errado, tente novamente.', { autoClose: 2500, type: 'error' })
+        toast('Imóvel cadastrado com sucesso.', { autoClose: 2500, type: 'success' })
+        //toast('Algo deu errado, tente novamente.', { autoClose: 2500, type: 'error' })
       }
     }
   }

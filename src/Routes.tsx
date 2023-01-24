@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
-import Acquisition from "./pages/Acquisition";
+import TelaComprarPropriedade from "./pages/Acquisition";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { Logout } from "./pages/Logout";
@@ -34,7 +33,7 @@ export default function Routes() {
         <Route path="/account/profile" component={Profile} />
         <Route path="/account/password" component={ChangePw} />
         <Route path="/session" component={Logout} />
-        <Route exact path="/acquisition/save" component={Acquisition}/>
+        <Route exact path="/acquisition/save" component={TelaComprarPropriedade}/>
       </Switch>
     </Router>
   );
