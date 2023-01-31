@@ -91,23 +91,6 @@ function TelaComprarPropriedade() {
     phone: "",
   } as CustomerData);
 
-  function changePan() {
-    if (imagePan == imagesPan.length - 1) {
-      setImagePan(0)
-    } else {
-      setImagePan(imagePan + 1)
-    }
-  }
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    try {
-      await apiContact.post("/contact", data);
-      toast('Mensagem enviada, entraremos em contato em breve.', { autoClose: msgTimeout, type: 'success' })
-    } catch (error) {
-      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeout, type: 'error' })
-    }
-  }
-
   function handleBuy() {
     try {
       apiAcquisition.post("/save", {
@@ -142,25 +125,18 @@ function TelaComprarPropriedade() {
 
           >
             <ToastContainer />
-            <div className="flex items-center justify-around font-qsand w-full">
-              <div className="flex flex-col justify-center items-center">
-                <Carousel className="max-w-lg max-h-96" value={carousel} onChange={carouselOnChange} plugins={['arrows']}>
-                  {stateImages.map((link) => (
-                    <img className="overflow-y-scroll" id={link.substring(50)}
-                      src={link} />
-                  ))}
-                </Carousel>
-                <Dots
-                  className="w-48"
-                  value={carousel}
-                  onChange={carouselOnChange}
-                  thumbnails={stateImages.map((link) => (
-                    <img id={link.substring(50).concat('thumb')}
-                      src={link} />
-                  ))}
-                />
+            <div className="flex items-center justify-around font-qsand w-full gap-6">
+              {/*DIV IMAGEM */}
+            <div className="flex shadow-md rounded-xl
+              justify-around items-center gap-12 bg-white dark:bg-gray-800
+              p-5 mb-8 dark:text-white"
+            >
+              <img
+                src={process.env.PUBLIC_URL + "/houseteste.jpg"}
+                className="w-95 h-95"
+              />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col max-w-sm w-full">
                 <div className="flex flex-col justify-between gap-4 p-4
                    bg-white dark:bg-gray-800 dark:text-white rounded-t-xl shadow-lg"
                 >
@@ -186,18 +162,10 @@ function TelaComprarPropriedade() {
                     <p>Já comprado</p>
                   </div>
                 )}
-                <a href="#visitaVirtual" className="grid place-items-center bg-blue-400 h-12 text-lg text-white">
-                {/*<button
-                    onClick={function (e) {
-                      changePan(); //can pass arguments this.btnTapped(foo, bar);
-                    }}>
-                    <p>Visita Virtual</p>
-                  </button>
-                  */}
-                </a>
               </div>
             </div>
 
+            {/*DIV INFORMAÇÕES DA CASA/COMPRA*/}
             <div className="flex max-w-5xl w-full justify-around shadow-md
               rounded-xl bg-white dark:text-white dark:bg-gray-800 p-4 gap-16"
             >
@@ -207,20 +175,7 @@ function TelaComprarPropriedade() {
               <PropertyData name="Bloco" value={property?.block ? property?.block : "N/A"} />
               <PropertyData name="Quartos" value={property?.rooms ? property?.rooms : "N/A"} />
             </div>
-                    
-            {/*<div className="grid place-items-center gap-5 w-full h-full p-5 shadow-md
-              rounded-xl bg-white dark:text-white dark:bg-gray-800">
-              <p className="text-xl">Visita Virtual</p>
-              <button className="grid place-items-center bg-green-400 h-12 text-lg text-white p-3"
-                onClick={function (e) {
-                  changePan(); //can pass arguments this.btnTapped(foo, bar);
-                }}>
-                <p>Proxima imagem</p>
-              </button>
-              <div id="visitaVirtual" className="grid place-items-center w-full h-full">
-                {}
-              </div>
-              </div>*/}
+
           </section>
         </div>
       </div>
@@ -229,68 +184,3 @@ function TelaComprarPropriedade() {
 }
 
 export default TelaComprarPropriedade;
-
-
-
-
-
-
-
-/*
-import { useContext } from "react";
-import HouseImage from "../../components/house-image";
-import TituloComprarPropriedade from "../../components/titulo-comprar-propriedade";
-import HouseDetails from "../../components/house-details";
-import CheckoutDiv from "../../components/checkout-div";
-import { apiAcquisition, apiContact, apiProperty, apiRent } from "../../services/api";
-import { Button } from "../../components/Button";
-
-export const TelaComprarPropriedade = () => {  
-function TelaComprarPropriedade() {
-    return (
-      <div className="relative bg-white w-full h-[1090px] overflow-hidden text-left text-xl text-brown font-lato">
-        <div className="absolute top-[0px] left-[0px] w-[1280px] h-[1201px]">
-          <div className="absolute top-[0px] left-[0px] bg-gray-200 w-[1280px] h-[1201px]" />
-          <HouseImage />
-          <TituloComprarPropriedade />
-          <HouseDetails />
-          <form
-            className="absolute top-[253px] left-[774px] w-[460px] h-[716px]"
-            action="www.google.com"
-            method="post"
-            id="2"
-          >
-            <CheckoutDiv />
-            <b className="absolute top-[548px] left-[240px] text-base inline-block font-lato text-white text-left">
-              R$130.000,00
-            </b>
-            <b className="absolute top-[146px] left-[240px] text-base inline-block font-lato text-white text-left">
-              R$128.000,00
-            </b>
-            <b className="absolute top-[216px] left-[240px] text-base inline-block font-lato text-white text-left">
-              R$2.000,00
-            </b>
-            <b className="absolute top-[548px] left-[40px] text-base inline-block font-lato text-white text-left">
-              Total
-            </b>
-            <b className="absolute top-[146px] left-[40px] text-base inline-block font-lato text-white text-left">
-              Preço
-            </b>
-            <b className="absolute top-[26px] left-[30px] text-[55px] inline-block font-lato text-white text-left">
-              Total
-            </b>
-            <b className="absolute top-[216px] left-[40px] text-base inline-block font-lato text-white text-left">
-              IPTU
-            </b>
-            <Button type="submit">
-                      Concluir Compra
-                    </Button>
-            <div className="absolute top-[516px] left-[45px] bg-gray-100 w-[387px] h-[6px]" />
-          </form>
-        </div>
-      </div>
-    );
-};
-}
-export default TelaComprarPropriedade;
-*/

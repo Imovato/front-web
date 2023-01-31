@@ -33,7 +33,7 @@ export default function Routes() {
         <Route path="/account/profile" component={Profile} />
         <Route path="/account/password" component={ChangePw} />
         <Route path="/session" component={Logout} />
-        <Route exact path="/acquisition/save" component={TelaComprarPropriedade}/>
+        <Route path="/acquisition/save/:id" component={TelaComprarPropriedade}/>
       </Switch>
     </Router>
   );

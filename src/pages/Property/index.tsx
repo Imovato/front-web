@@ -6,10 +6,11 @@ import Navbar from "../../components/Navbar";
 import { apiAcquisition, apiContact, apiProperty, apiRent } from "../../services/api";
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
-
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { PropertyData } from "../../components/PropertyData";
 import { toast, ToastContainer } from "react-toastify";
+import { PropertySample } from "../../components/PropertySample";
+
 interface Property {
   id: string;
   name: string;
@@ -149,7 +150,7 @@ function Property() {
 
   return (
     <>
-      <div className="pb-10 max-w-7xl m-auto h-screen">
+      <div className="pb-10 max-w-7xl m-auto">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
 
@@ -178,7 +179,7 @@ function Property() {
                   ))}
                 />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col max-w-sm w-full">
                 <div className="flex flex-col justify-between gap-4 p-4
                    bg-white dark:bg-gray-800 dark:text-white rounded-t-xl shadow-lg"
                 >
@@ -189,17 +190,17 @@ function Property() {
                   </div>
                 </div>
                 {acquisition ? (
-                  <div className="flex justify-between bg-opacity-0">
-                    <Link to="/acquisition/save">
+                  <div className="flex justify-between bg-opacity-0 ">
                       <button
                         //onClick={handleBuy}
                         className="rounded-bl-lg text-white bg-green-400 text-xl
                         w-full h-12 justify-center hover:bg-opacity-70 transition
                         duration-150 ease-in-out dark:text-black"
                       >
+                        <Link to={`/acquisition/save/${property?.id}`} >
                         Comprar
+                        </Link>
                       </button>
-                    </Link>
                     <button
                       onClick={handleHire}
                       className="rounded-br-lg text-white bg-yellow-400 text-xl
