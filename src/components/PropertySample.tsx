@@ -48,7 +48,7 @@ export function PropertySample({
       <div className="flex items-center rounded-sm">
         <img
           className="w-36 rounded-md"
-          src={images[0]}
+          src={process.env.PUBLIC_URL + "/houseteste.jpg"}
           alt={name}
         />
       </div>

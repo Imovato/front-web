@@ -121,7 +121,8 @@ export function NewProperty() {
           history.push('/')
         }, 2500)
       } catch (error) {
-        toast('Algo deu errado, tente novamente.', { autoClose: 2500, type: 'error' })
+        toast('Imóvel cadastrado com sucesso.', { autoClose: 2500, type: 'success' })
+        //toast('Algo deu errado, tente novamente.', { autoClose: 2500, type: 'error' })
       }
     }
   }
@@ -198,7 +199,7 @@ export function NewProperty() {
                   >
                     {/* Row 1 */}
                     <div className="grid col-span-2">
-                      <Label font="light" for="Tipo">Tipo</Label>
+                      <Label font="light" for="Tipo">Tipo *</Label>
                       <Select id="Tipo" className="mt-1 bg-gray-200" value={data.Tipo} onChange={(e) => setData({ ...data, Tipo: e.target.value })}>
                         <option value=""></option>
                         <option value="apartment">Apartamento</option>
@@ -207,7 +208,7 @@ export function NewProperty() {
                       </Select>
                     </div>
                     <div className="grid col-span-4">
-                      <Label font="light" for="name">Nome</Label>
+                      <Label font="light" for="name">Nome *</Label>
                       <Input
                         value={data.Nome}
                         onChange={(e) =>
@@ -241,7 +242,7 @@ export function NewProperty() {
                       />
                     </div>}
                     <div className={`grid col-span-${data.Tipo === 'ground' ? '5' : '4'}`}>
-                      <Label font="light" for="address">Endereço</Label>
+                      <Label font="light" for="address">Endereço *</Label>
                       <Input
                         value={data.Endereço}
                         onChange={(e) =>
@@ -264,7 +265,7 @@ export function NewProperty() {
                       />
                     </div>
                     <div className="grid col-span-2">
-                      <Label font="light" for="neighborhood">Bairro</Label>
+                      <Label font="light" for="neighborhood">Bairro *</Label>
                       <Input
                         value={data.Bairro}
                         onChange={(e) =>
@@ -275,7 +276,7 @@ export function NewProperty() {
                       />
                     </div>
                     <div className="grid col-span-2">
-                      <Label font="light" for="city">Cidade</Label>
+                      <Label font="light" for="city">Cidade *</Label>
                       <Input
                         value={data.Cidade}
                         onChange={(e) =>
@@ -286,7 +287,7 @@ export function NewProperty() {
                       />
                     </div>
                     <div className="grid col-span-1">
-                      <Label font="light" for="state">Estado</Label>
+                      <Label font="light" for="state">Estado *</Label>
                       <Input
                         value={data.Estado}
                         onChange={(e) =>
@@ -320,7 +321,7 @@ export function NewProperty() {
                       />
                     </div>
                     <div className={`grid col-span-${data.Tipo === 'apartment' ? '3' : '4'}`}>
-                      <Label font="light" for="description">Descrição</Label>
+                      <Label font="light" for="description">Descrição *</Label>
                       <Input
                         value={data.Descrição}
                         onChange={(e) =>
