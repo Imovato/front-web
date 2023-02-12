@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useHistory, Link} from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
@@ -49,6 +49,7 @@ function Property() {
   const [imagesPan, setImagesPan] = useState([''])
   const [imagePan, setImagePan] = useState(0)
   const msgTimeout = 2500
+  const msgTimeOut2 = 1000000
 
   let params = useParams<RouteParams>();
 
@@ -128,6 +129,7 @@ function Property() {
   }
 
   function handleHire() {
+    
     try {
       apiRent.post("/save", {
         value: property?.price,
@@ -135,12 +137,12 @@ function Property() {
         idProperty: property?.id,
         idUser: localStorage.getItem('userId')
       });
-      toast('Imóvel alugado com sucesso.', { autoClose: msgTimeout, type: 'success' })
+      toast('Imóvel alugado com sucesso.', { autoClose: msgTimeOut2, type: 'success' })
       setTimeout(() => {
         history.push('/property/user')
-      }, msgTimeout)
+      }, msgTimeOut2)
     } catch (error) {
-      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeout, type: 'error' })
+      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeOut2, type: 'error' })
     }
   }
 
