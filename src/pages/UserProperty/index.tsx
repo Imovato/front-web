@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import Chat from "../../components/Chat";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { PropertySample } from "../../components/PropertySample";
-import { SearchContext } from "../../contexts/Search";
-import { apiAcquisition, apiMock, apiProperty } from "../../services/api";
+import { apiAcquisition, apiProperty } from "../../services/api";
 
 interface Acquisition {
   id: number;
@@ -39,21 +37,18 @@ interface Property {
 function UserProperty() {
   const [acquisitions, setAcquisitions] = useState<Acquisition[]>([])
   const [properties, setProperties] = useState<Property[]>([])
-  const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
 
   let count = 0;
   useEffect(() => {
     apiProperty.get('/property/all', {}).then((response) => {
       setProperties(response.data)
     })
-    // alert(localStorage.getItem('userId'));
     apiAcquisition.get(`/user/find/${localStorage.getItem('userId')}`, {}).then((response) => {
       setAcquisitions(response.data)
     });
   }, []);
   return (
     <>
-      <Chat></Chat>
       <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>

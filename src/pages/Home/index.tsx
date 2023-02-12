@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import Chat from "../../components/Chat";
+import { useContext, useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -39,7 +38,7 @@ interface Property {
 }
 
 function Home() {
-  const {search, properties, propertiesUpdate, propertiesSetBackup} = useContext(SearchContext)
+  const { search, properties, propertiesUpdate, propertiesSetBackup } = useContext(SearchContext)
 
 
   useEffect(() => {
@@ -51,7 +50,6 @@ function Home() {
 
   return (
     <>
-      <Chat></Chat>
       <div className="pb-10 max-w-7xl m-auto h-screen">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>

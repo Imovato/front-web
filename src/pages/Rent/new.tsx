@@ -9,161 +9,150 @@ import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
 import Select from "../../components/Select";
 import { apiProperty } from "../../services/api";
-import { schema } from "./schema";
 
-interface Property {
-  Tipo: string
-  Área: number
-  Nome: string
-  Bairro: string
-  Endereço: string
-  Cidade: string
-  Descrição: string
-  Estado: string
-  Preço: number
-  Número: number
-  Bloco?: string
-  Quartos?: number
-  Quantidade: number
+interface Rent {
+  Customer: string
+  Property: string
+  StartDate: string
+  EndDate: string
+  Value: number
+  Amount: number
+  ExpirationDay: number
+  Iptu: number
+  Description: string
 }
 
-export function NewProperty() {
+export function NewRent() {
   const [generalErrors, setGeneralErrors] = useState<string[]>([])
 
-  const [files, setFiles] = useState<FileList | null>(null)
+  //const [files, setFiles] = useState<FileList | null>(null)
 
-  const [virtualFiles, setVirtualFiles] = useState<FileList | null>(null)
+ // const [virtualFiles, setVirtualFiles] = useState<FileList | null>(null)
 
   const history = useHistory()
 
   const [data, setData] = useState({
-    Área: 0,
-    Nome: "",
-    Bairro: "",
-    Endereço: "",
-    Cidade: "",
-    Descrição: "",
-    Estado: "",
-    Preço: 0,
-    Número: 0,
-    Bloco: "",
-    Quartos: 2,
-    Quantidade: 1,
-    Tipo: "",
-  } as Property);
+    Customer: "",
+    Property: "",
+    StartDate: "",
+    EndDate: "",
+    Value: 0,
+    Amount: 0,
+    ExpirationDay: 0,
+    Iptu: 0,
+    Description: ""
+  } as Rent);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  //async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    //e.preventDefault();
     // trimming data specific for each type
-    if (data.Tipo === 'house') {
-      const { Bloco, ...houseData } = data
-      setData(houseData)
-    } else if (data.Tipo === 'ground') {
-      const { Bloco, Quartos, ...groundData } = data
-      setData(groundData)
-    }
+    // if (data === 'house') {
+    //alert('It works!')
+    // } else if (data.Tipo === 'ground') {
+    //   const { Bloco, Quartos, ...groundData } = data
+    //   setData(groundData)
+   // }
 
-    if (await validate()) {
-      try {
-        const dataBackend = {
-          area: data['Área'],
-          name: data['Nome'],
-          neighborhood: data['Bairro'],
-          adress: data['Endereço'],
-          codAddress: 0,
-          city: data['Cidade'],
-          description: data['Descrição'],
-          state: data['Estado'],
-          price: data['Preço'],
-          number: data['Número'],
-          amount: data['Quantidade'],
-        }
-        let toSend = {}
-        if (data.Tipo === 'house') {
-          toSend = { ...dataBackend, rooms: data['Quartos'] }
-        } else if (data.Tipo === 'apartment') {
-          toSend = { ...dataBackend, rooms: data['Quartos'], block: data['Bloco'] }
-        } else {
-          toSend = { ...dataBackend }
-        }
-        const r = await apiProperty.post(`/${data.Tipo}`, toSend);
-        console.log(r.data);
-        let formData = new FormData();
-        let formDataVirtual = new FormData();
-        //@ts-expect-error
-        formData.append("img1", files[0]);
-        //@ts-expect-error
-        formData.append("img2", files[1]);
-        //@ts-expect-error
-        formData.append("img3", files[2]);
+  //   if (await validate()) {
+  //     try {
+  //       const dataBackend = {
+  //         area: data['Área'],
+  //         name: data['Nome'],
+  //         neighborhood: data['Bairro'],
+  //         adress: data['Endereço'],
+  //         codAddress: 0,
+  //         city: data['Cidade'],
+  //         description: data['Descrição'],
+  //         state: data['Estado'],
+  //         price: data['Preço'],
+  //         number: data['Número'],
+  //         amount: data['Quantidade'],
+  //       }
+  //       let toSend = {}
+  //       if (data.Tipo === 'house') {
+  //         toSend = { ...dataBackend, rooms: data['Quartos'] }
+  //       } else if (data.Tipo === 'apartment') {
+  //         toSend = { ...dataBackend, rooms: data['Quartos'], block: data['Bloco'] }
+  //       } else {
+  //         toSend = { ...dataBackend }
+  //       }
+  //       const r = await apiProperty.post(`/${data.Tipo}`, toSend);
+  //       console.log(r.data);
+  //       let formData = new FormData();
+  //       let formDataVirtual = new FormData();
+  //       //@ts-expect-error
+  //       formData.append("img1", files[0]);
+  //       //@ts-expect-error
+  //       formData.append("img2", files[1]);
+  //       //@ts-expect-error
+  //       formData.append("img3", files[2]);
 
-        //@ts-expect-error
-        formDataVirtual.append("img1", virtualFiles[0]);
-        //@ts-expect-error
-        formDataVirtual.append("img2", virtualFiles[1]);
-        //@ts-expect-error
-        formDataVirtual.append("img3", virtualFiles[2]);
+  //       //@ts-expect-error
+  //       formDataVirtual.append("img1", virtualFiles[0]);
+  //       //@ts-expect-error
+  //       formDataVirtual.append("img2", virtualFiles[1]);
+  //       //@ts-expect-error
+  //       formDataVirtual.append("img3", virtualFiles[2]);
 
-        await apiProperty.post(
-          `/property/upload/${r.data.id}`,
-          formData, {
-          headers: { 'Content-Type': 'multipart/form-data;' }
-        })
+  //       await apiProperty.post(
+  //         `/property/upload/${r.data.id}`,
+  //         formData, {
+  //         headers: { 'Content-Type': 'multipart/form-data;' }
+  //       })
 
-        await apiProperty.post(
-          `/property/upload/virtual/${r.data.id}`,
-          formDataVirtual, {
-          headers: { 'Content-Type': 'multipart/form-data;' }
-        })
+  //       await apiProperty.post(
+  //         `/property/upload/virtual/${r.data.id}`,
+  //         formDataVirtual, {
+  //         headers: { 'Content-Type': 'multipart/form-data;' }
+  //       })
 
-        toast('Imóvel cadastrado com sucesso.', { autoClose: 2500, type: 'success' })
-        setTimeout(() => {
-          history.push('/')
-        }, 2500)
-      } catch (error) {
-        toast('Imóvel cadastrado com sucesso.', { autoClose: 2500, type: 'success' })
-        //toast('Algo deu errado, tente novamente.', { autoClose: 2500, type: 'error' })
-      }
-    }
-  }
+  //       toast('Imóvel cadastrado com sucesso.', { autoClose: 2500, type: 'success' })
+  //       setTimeout(() => {
+  //         history.push('/')
+  //       }, 2500)
+  //     } catch (error) {
+  //       toast('Algo deu errado, tente novamente.', { autoClose: 2500, type: 'error' })
+  //     }
+  //   }
+  // }
 
-  async function validate() {
-    try {
-      await schema.validate(data, { abortEarly: false })
-      setGeneralErrors([])
-      if (!files?.item(0)) {
-        toast('Deve existir ao menos 1 foto do imóvel.', { autoClose: 2500, type: 'error' })
-        return false
-      }
-      return true
-    } catch (error) {
-      // @ts-expect-error
-      setGeneralErrors(error.errors)
-      return false
-    }
-  }
+  // async function validate() {
+  //   try {
+  //     await schema.validate(data, { abortEarly: false })
+  //     setGeneralErrors([])
+  //     if (!files?.item(0)) {
+  //       toast('Deve existir ao menos 1 foto do imóvel.', { autoClose: 2500, type: 'error' })
+  //       return false
+  //     }
+  //     return true
+  //   } catch (error) {
+  //     // @ts-expect-error
+  //     setGeneralErrors(error.errors)
+  //     return false
+  //   }
+  // }
 
-  function handleFiles(e: React.ChangeEvent<HTMLInputElement>, isVirtual = false) {
-    isVirtual ? setVirtualFiles(null) : setFiles(null);
-    if (e.target.files) {
-      let list = new DataTransfer()
-      for (let index = 0; index < e.target.files.length; index++) {
-        if (index > 2) break
-        // @ts-expect-error
-        list.items.add(e.target.files.item(index))
-      }
-      isVirtual ? setVirtualFiles(list.files) : setFiles(list.files);
-    }
-  }
+  // function handleFiles(e: React.ChangeEvent<HTMLInputElement>, isVirtual = false) {
+  //   isVirtual ? setVirtualFiles(null) : setFiles(null);
+  //   if (e.target.files) {
+  //     let list = new DataTransfer()
+  //     for (let index = 0; index < e.target.files.length; index++) {
+  //       if (index > 2) break
+  //       // @ts-expect-error
+  //       list.items.add(e.target.files.item(index))
+  //     }
+  //     isVirtual ? setVirtualFiles(list.files) : setFiles(list.files);
+  //   }
+  // }
 
-  function updateFileList(f: FileList, toRemove: number, isVirtual = false) {
-    let list = new DataTransfer()
-    for (let index = 0; index < f.length; index++) {
-      if (index === toRemove) continue
-      list.items.add(f[index])
-    }
-    isVirtual ? setVirtualFiles(list.files) : setFiles(list.files);
-  }
+  // function updateFileList(f: FileList, toRemove: number, isVirtual = false) {
+  //   let list = new DataTransfer()
+  //   for (let index = 0; index < f.length; index++) {
+  //     if (index === toRemove) continue
+  //     list.items.add(f[index])
+  //   }
+  //   isVirtual ? setVirtualFiles(list.files) : setFiles(list.files);
+  // }
 
   return (
     <>
@@ -175,7 +164,7 @@ export function NewProperty() {
             overflow-y-auto scrollbar-thumb-rounded-full scrollbar-thin
             scrollbar-thumb-red-400 scrollbar-track-transparent"
           >
-            {generalErrors[0] &&
+            {/* {generalErrors[0] &&
               (<>
                 <div className="bg-red-100 dark:bg-gray-800 p-3 rounded-lg mb-3 max-h-112 overflow-y-auto
                 scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-red-400">
@@ -184,7 +173,7 @@ export function NewProperty() {
                     <FormError className="text-red-500 dark:text-red-200" key={index}>{e}</FormError>
                   ))}
                 </div>
-              </>)}
+              </>)} */}
             <div>
               <ToastContainer />
               <div className="flex max-w-3xl shadow-md rounded-xl
@@ -192,124 +181,125 @@ export function NewProperty() {
                 p-5 mb-8 dark:text-white"
               >
                 <div className="flex flex-col">
-                  <p className="text-xl text-center mb-5">Novo imóvel</p>
+                  <p className="text-xl text-center mb-5">Novo Aluguel</p>
                   <form
-                    onSubmit={handleSubmit}
+                    //onSubmit={handleSubmit}
                     className="grid grid-cols-6 items-start gap-3 px-5"
                   >
                     {/* Row 1 */}
-                    <div className="grid col-span-2">
-                      <Label font="light" for="Tipo">Tipo *</Label>
-                      <Select id="Tipo" className="mt-1 bg-gray-200" value={data.Tipo} onChange={(e) => setData({ ...data, Tipo: e.target.value })}>
-                        <option value=""></option>
-                        <option value="apartment">Apartamento</option>
-                        <option value="house">Casa</option>
-                        <option value="ground">Terreno</option>
-                      </Select>
+                    <div className="grid col-span-3">
+                      <Label font="light" for="customer">Cliente</Label>
+                      <input 
+                        value={data.Customer} 
+                        onChange={(e) => 
+                        setData({ ...data, Customer: e.target.value })}
+                        id="customer"
+                        type="text"
+                      />
                     </div>
-                    <div className="grid col-span-4">
-                      <Label font="light" for="name">Nome *</Label>
+                    <div className="grid col-span-3">
+                      <Label font="light" for="property">Propriedade</Label>
                       <Input
-                        value={data.Nome}
+                        value={data.Property}
                         onChange={(e) =>
-                          setData({ ...data, Nome: e.target.value })
+                          setData({ ...data, Property: e.target.value })
                         }
-                        id="name"
+                        id="property"
                         type="text"
                       />
                     </div>
                     {/* Row 2 */}
-                    <div className="grid col-span-1">
-                      <Label font="light" for="area">Área (m²)</Label>
+                    <div className="grid col-span-2">
+                      <Label font="light" for="startDate">Data de Início</Label>
                       <Input
-                        value={data.Área}
+                        value={data.StartDate}
                         onChange={(e) =>
-                          setData({ ...data, Área: Number(e.target.value) })
+                          setData({ ...data, StartDate: e.target.value })
                         }
-                        id="area"
-                        type="number"
+                        id="startDate"
+                        type="date"
                       />
                     </div>
-                    {data.Tipo !== 'ground' && <div className="grid col-span-1">
-                      <Label font="light" for="rooms">Quartos</Label>
+                    <div className="grid col-span-2">
+                      <Label font="light" for="endDate">Data de Fim</Label>
                       <Input
-                        value={data.Quartos}
+                        value={data.EndDate}
                         onChange={(e) =>
-                          setData({ ...data, Quartos: Number(e.target.value) })
+                          setData({ ...data, EndDate: e.target.value })
                         }
-                        id="rooms"
-                        type="number"
+                        id="endDate"
+                        type="date"
                       />
-                    </div>}
-                    <div className={`grid col-span-${data.Tipo === 'ground' ? '5' : '4'}`}>
-                      <Label font="light" for="address">Endereço *</Label>
+                    </div>
+                    <div className="grid col-span-2">
+                      <Label font="light" for="value">Preço</Label>
                       <Input
-                        value={data.Endereço}
+                        value={data.Value}
                         onChange={(e) =>
-                          setData({ ...data, Endereço: e.target.value })
+                          setData({ ...data, Value: Number(e.target.value) })
                         }
-                        id="address"
-                        type="text"
+                        id="value"
+                        type="number"
                       />
                     </div>
                     {/* Row 3 */}
-                    <div className="grid col-span-1">
-                      <Label font="light" for="number">Número</Label>
+                    <div className="grid col-span-2">
+                      <Label font="light" for="amount">Quantidade</Label>
                       <Input
-                        value={data.Número}
+                        value={data.Amount}
                         onChange={(e) =>
-                          setData({ ...data, Número: Number(e.target.value) })
+                          setData({ ...data, Amount: Number(e.target.value) })
                         }
-                        id="number"
+                        id="amount"
                         type="number"
                       />
                     </div>
                     <div className="grid col-span-2">
-                      <Label font="light" for="neighborhood">Bairro *</Label>
+                      <Label font="light" for="expirationDay">Dia de vencimento</Label>
                       <Input
-                        value={data.Bairro}
+                        value={data.ExpirationDay}
                         onChange={(e) =>
-                          setData({ ...data, Bairro: e.target.value })
+                          setData({ ...data, ExpirationDay: Number(e.target.value) })
                         }
-                        id="neighborhood"
-                        type="text"
+                        id="expirationDay"
+                        type="number"
                       />
                     </div>
                     <div className="grid col-span-2">
-                      <Label font="light" for="city">Cidade *</Label>
+                      <Label font="light" for="iptu">IPTU</Label>
                       <Input
-                        value={data.Cidade}
+                        value={data.Iptu}
                         onChange={(e) =>
-                          setData({ ...data, Cidade: e.target.value })
+                          setData({ ...data, Iptu: Number(e.target.value) })
                         }
-                        id="city"
+                        id="iptu"
                         type="text"
                       />
                     </div>
-                    <div className="grid col-span-1">
-                      <Label font="light" for="state">Estado *</Label>
-                      <Input
-                        value={data.Estado}
-                        onChange={(e) =>
-                          setData({ ...data, Estado: e.target.value })
-                        }
-                        id="state"
-                        type="text"
-                      />
-                    </div>
+                    {/* // <div className="grid col-span-1">
+                    //   <Label font="light" for="state">Estado</Label>
+                    //   <Input 
+                    //     value={data.Estado}
+                    //     onChange={(e) =>
+                    //       setData({ ...data, Estado: e.target.value })
+                    //     }
+                    //     id="state"
+                    //     type="text"
+                    //   />
+                    // </div> */}
                     {/* Row 4 */}
-                    {data.Tipo === 'apartment' && <div className="grid col-span-1">
-                      <Label font="light" for="block">Bloco</Label>
+                    <div className="grid col-span-6">
+                      <Label font="light" for="description">Descrição</Label>
                       <Input
-                        value={data.Bloco}
+                        value={data.Description}
                         onChange={(e) =>
-                          setData({ ...data, Bloco: e.target.value })
+                          setData({ ...data, Description: e.target.value })
                         }
-                        id="block"
+                        id="description"
                         type="text"
                       />
-                    </div>}
-                    <div className="grid col-span-1">
+                    </div>
+                    {/* <div className="grid col-span-1">
                       <Label font="light" for="price">Preço</Label>
                       <Input
                         value={data.Preço}
@@ -321,7 +311,7 @@ export function NewProperty() {
                       />
                     </div>
                     <div className={`grid col-span-${data.Tipo === 'apartment' ? '3' : '4'}`}>
-                      <Label font="light" for="description">Descrição *</Label>
+                      <Label font="light" for="description">Descrição</Label>
                       <Input
                         value={data.Descrição}
                         onChange={(e) =>
@@ -341,14 +331,14 @@ export function NewProperty() {
                         id="quantity"
                         type="number"
                       />
-                    </div>
+                    </div> */}
                     {/* Row 5 */}
-                    <div className="grid col-span-1">
+                    <div className="grid col-span-2">
                       <Button type="submit">
-                        Enviar
+                        Alugar
                       </Button>
                     </div>
-                    <div className="grid col-span-1"></div>
+                    {/* <div className="grid col-span-1"></div>
                     <div className="grid col-span-2 cursor-pointer">
                       <Button color="green" className="relative cursor-pointer" type="button">
                         <>
@@ -363,8 +353,8 @@ export function NewProperty() {
                           />
                         </>
                       </Button>
-                    </div>
-                    <div className="grid col-span-2 cursor-pointer">
+                    </div> */}
+                    {/* <div className="grid col-span-2 cursor-pointer">
                       <Button color="blue" className="relative cursor-pointer" type="button">
                         <>
                           <FontAwesomeIcon icon="plus" />
@@ -378,8 +368,8 @@ export function NewProperty() {
                           />
                         </>
                       </Button>
-                    </div>
-                    <div className="flex col-span-6 w-full gap-2">
+                    </div> */}
+                    {/* <div className="flex col-span-6 w-full gap-2">
                       {files && Array.from(files).map((file, index) => (
                         <>
                           <div className="grid col-span-1 cursor-pointer newPropertyFileButton relative">
@@ -412,8 +402,8 @@ export function NewProperty() {
                             </Button>
                           </div>
                         </>
-                      ))}
-                    </div>
+                      ))} 
+                    </div>*/}
                   </form>
                 </div>
               </div>

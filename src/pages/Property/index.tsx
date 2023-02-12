@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link} from "react-router-dom";
 import { Button } from "../../components/Button";
-import Chat from "../../components/Chat";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
 import { apiAcquisition, apiContact, apiProperty, apiRent } from "../../services/api";
 import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
-
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { PropertyData } from "../../components/PropertyData";
-import quartoNet from '../../assets/quartoNet.jpg';
-import salaNet from '../../assets/salaNet.jpg';
-import net1 from '../../assets/net1.jpg';
-import sala2 from '../../assets/sala2.png';
-import { Pannellum } from "pannellum-react";
 import { toast, ToastContainer } from "react-toastify";
+import { PropertySample } from "../../components/PropertySample";
+
 interface Property {
   id: string;
   name: string;
@@ -47,26 +42,30 @@ interface CustomerData {
 }
 
 function Property() {
-  // const photoSphere = require('photo-sphere-viewer');
   const [property, setProperty] = useState<Property>();
-  const [acquisition, setAcquisition] = useState(false);
+  const [acquisition, setAcquisition] = useState(true);
   const [stateImages, setStateImages] = useState<string[]>([])
   const [carousel, setCarousel] = useState(0)
-  const [msg, setMsg] = useState<string[]>([])
-  const [msgActions, setMsgActions] = useState<string[]>([])
-  const [msgStart, setMsgStart] = useState(false)
-  const [dialogStyle, setDialogStyle] = useState('success')
   const [imagesPan, setImagesPan] = useState([''])
   const [imagePan, setImagePan] = useState(0)
-  const [vaov, setVaov] = useState(180)
   const msgTimeout = 2500
+  const msgTimeOut2 = 1000000
 
   let params = useParams<RouteParams>();
 
   const history = useHistory()
   useEffect(() => {
-    setImagesPan([salaNet, sala2, net1, quartoNet])
 
+    apiProperty
+      .get("property/find/".concat(params.id), {})
+      .then((response) => {
+        let images: any[] = []
+        setProperty(response.data);
+        for (let index = 1; index <= response.data.imageQuantity; index++) {
+          images.push(`http://localhost:8081/crudService/images/property/${params.id}/virtual/${index}.jpg`)
+        }
+        setImagesPan(images)
+      });
     apiProperty
       .get("property/find/".concat(params.id), {})
       .then((response) => {
@@ -130,6 +129,7 @@ function Property() {
   }
 
   function handleHire() {
+    
     try {
       apiRent.post("/save", {
         value: property?.price,
@@ -137,12 +137,12 @@ function Property() {
         idProperty: property?.id,
         idUser: localStorage.getItem('userId')
       });
-      toast('Imóvel alugado com sucesso.', { autoClose: msgTimeout, type: 'success' })
+      toast('Imóvel alugado com sucesso.', { autoClose: msgTimeOut2, type: 'success' })
       setTimeout(() => {
         history.push('/property/user')
-      }, msgTimeout)
+      }, msgTimeOut2)
     } catch (error) {
-      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeout, type: 'error' })
+      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeOut2, type: 'error' })
     }
   }
 
@@ -152,8 +152,7 @@ function Property() {
 
   return (
     <>
-      <Chat></Chat>
-      <div className="pb-10 max-w-7xl m-auto h-screen">
+      <div className="pb-10 max-w-7xl m-auto">
         <div className="flex flex-col gap-12 items-center">
           <Navbar></Navbar>
 
@@ -182,7 +181,7 @@ function Property() {
                   ))}
                 />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col max-w-sm w-full">
                 <div className="flex flex-col justify-between gap-4 p-4
                    bg-white dark:bg-gray-800 dark:text-white rounded-t-xl shadow-lg"
                 >
@@ -192,16 +191,18 @@ function Property() {
                     <p className="text-xl text-green-800 dark:text-green-400">R$ {property?.price}</p>
                   </div>
                 </div>
-                {!acquisition ? (
-                  <div className="flex justify-between bg-opacity-0">
-                    <button
-                      onClick={handleBuy}
-                      className="rounded-bl-lg text-white bg-green-400 text-xl
-                      w-full h-12 justify-center hover:bg-opacity-70 transition
-                      duration-150 ease-in-out dark:text-black"
-                    >
-                      Comprar
-                    </button>
+                {acquisition ? (
+                  <div className="flex justify-between bg-opacity-0 ">
+                      <button
+                        //onClick={handleBuy}
+                        className="rounded-bl-lg text-white bg-green-400 text-xl
+                        w-full h-12 justify-center hover:bg-opacity-70 transition
+                        duration-150 ease-in-out dark:text-black"
+                      >
+                        <Link to={`/acquisition/save/${property?.id}`} >
+                        Comprar
+                        </Link>
+                      </button>
                     <button
                       onClick={handleHire}
                       className="rounded-br-lg text-white bg-yellow-400 text-xl
@@ -324,12 +325,12 @@ function Property() {
                 <p>Proxima imagem</p>
               </button>
               <div id="visitaVirtual" className="grid place-items-center w-full h-full">
-                <Pannellum
+                {/* <Pannellum
                   width="90%"
                   height="500px"
                   image={imagesPan[imagePan]}
                   pitch={10}
-                  vaov={vaov}
+                  vaov={180}
                   yaw={180}
                   hfov={110}
                   autoLoad
@@ -337,7 +338,7 @@ function Property() {
                     console.log("panorama loaded");
                   }}
                 >
-                </Pannellum>
+                </Pannellum> */}
               </div>
             </div>
           </section>

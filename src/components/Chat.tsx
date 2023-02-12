@@ -3,26 +3,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Chat() {
   function minimize() {
-    var e = document.getElementById("min");
-    e!.style.display = "none";
-    var e = document.getElementById("max");
-    e!.style.display = "block";
-    var e = document.getElementById("chatBox");
-    e!.style.margin = "0 0 -270px 0";
-    e!.style.transitionDuration = "1.3s";
-    e!.style.transitionProperty = 'margin'
+    document.getElementById('min')!.style.display = 'none';
+    document.getElementById('max')!.style.display = 'block';
+    var chatBox = document.getElementById("chatBox");
+    chatBox!.style.margin = '0 0 -270px 0';
+    chatBox!.style.transitionDuration = '1.3s';
+    chatBox!.style.transitionProperty = 'margin'
   }
 
   function maximize() {
-    var e = document.getElementById("min");
-    e!.style.display = "block";
-    var e = document.getElementById("max");
-    e!.style.display = "none";
-    var e = document.getElementById("chatBox");
-    e!.style.margin = "0 0 0 0";
-    e!.style.transitionDuration = "1.3s";
-    e!.style.transitionProperty = 'margin'
+    document.getElementById('min')!.style.display = 'block';
+    document.getElementById('max')!.style.display = 'none';
+    const chatBox = document.getElementById('chatBox');
+    chatBox!.style.margin = '0 0 0 0';
+    chatBox!.style.transitionDuration = '1.3s';
+    chatBox!.style.transitionProperty = 'margin'
   }
+
   return (
     <div
       id="chatBox"

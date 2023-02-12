@@ -9,7 +9,7 @@ interface SampleProps {
   value: number;
   description: string;
   image: string;
-  action?:string;
+  action?: string;
 }
 
 export function PropertySample({
@@ -28,11 +28,11 @@ export function PropertySample({
     apiProperty
       .get("property/find/".concat(id), {})
       .then((response) => {
-        let images: any[] = []
+        let tmpImages: any[] = []
         for (let index = 1; index <= response.data.imageQuantity; index++) {
-          images.push(`http://localhost:8081/crudService/images/property/${id}/${index}.jpg`)
+          tmpImages.push(`http://localhost:8081/crudService/images/property/${id}/${index}.jpg`)
         }
-        setImages(images)
+        setImages(tmpImages)
       });
 
   }, []);
@@ -48,7 +48,7 @@ export function PropertySample({
       <div className="flex items-center rounded-sm">
         <img
           className="w-36 rounded-md"
-          src={images[0]}
+          src={process.env.PUBLIC_URL + "/houseteste.jpg"}
           alt={name}
         />
       </div>
@@ -66,11 +66,11 @@ export function PropertySample({
             </div>
           </div>
           {action && (
-            <div className={`grid place-items-center w-3/12 bg-${action=="Comprado" ? "red" :"yellow"}-200 h-1/3 rounded-xl`}>
+            <div className={`grid place-items-center w-3/12 bg-${action == "Comprado" ? "red" : "yellow"}-200 h-1/3 rounded-xl`}>
               <p>{action}</p>
             </div>
           )}
-          
+
         </div>
         <div className="valor flex justify-between w-full gap-x-">
           <p className="font-bold dark:text-green-600 text-green-800">R$ {value}</p>
@@ -84,7 +84,7 @@ export function PropertySample({
         </div>
 
       </div>
-      
+
     </Link>
     // </div>
   );

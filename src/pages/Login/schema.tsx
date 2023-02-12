@@ -1,9 +1,7 @@
 import * as yup from 'yup'
-import { setLocale } from 'yup';
-import { apiUser } from '../../services/api';
 
 // form validation (yup) locale
-setLocale({
+yup.setLocale({
   mixed: {
     required: '${path} é um campo obrigatório',
   },

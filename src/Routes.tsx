@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+import TelaComprarPropriedade from "./pages/Acquisition";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { Logout } from "./pages/Logout";
 import { ChangePw, Profile } from "./pages/Profile";
 import Property from "./pages/Property";
 import { NewProperty } from "./pages/Property/new";
+import {NewRent} from "./pages/Rent/new" 
 import Signup from "./pages/Signup";
 import UserProperty from "./pages/UserProperty";
 
@@ -28,11 +29,13 @@ export default function Routes() {
         <Route path="/session/new" component={Login} />
         <Route path="/signup/new" component={Signup} />
         <Route path="/property/new" component={NewProperty} />
+        <Route path="/rent/new" component={NewRent} />
         <Route path="/property/user" component={UserProperty} />
         <Route path="/property/:id" component={Property} />
         <Route path="/account/profile" component={Profile} />
         <Route path="/account/password" component={ChangePw} />
         <Route path="/session" component={Logout} />
+        <Route path="/acquisition/save/:id" component={TelaComprarPropriedade}/>
       </Switch>
     </Router>
   );
