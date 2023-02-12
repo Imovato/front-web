@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link} from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Label } from "../../components/Label";
 import Navbar from "../../components/Navbar";
@@ -9,7 +9,7 @@ import '@brainhubeu/react-carousel/lib/style.css';
 
 import ContactUsSvg from '../../assets/phone-call.svg'
 import { PropertyData } from "../../components/PropertyData";
-import { Pannellum } from "pannellum-react";
+//import { Pannellum } from "pannellum-react";
 import { toast, ToastContainer } from "react-toastify";
 interface Property {
   id: string;
@@ -49,6 +49,7 @@ function Property() {
   const [imagesPan, setImagesPan] = useState([''])
   const [imagePan, setImagePan] = useState(0)
   const msgTimeout = 2500
+  const msgTimeOut2 = 1000000
 
   let params = useParams<RouteParams>();
 
@@ -128,6 +129,7 @@ function Property() {
   }
 
   function handleHire() {
+    
     try {
       apiRent.post("/save", {
         value: property?.price,
@@ -135,12 +137,12 @@ function Property() {
         idProperty: property?.id,
         idUser: localStorage.getItem('userId')
       });
-      toast('Imóvel alugado com sucesso.', { autoClose: msgTimeout, type: 'success' })
+      toast('Imóvel alugado com sucesso.', { autoClose: msgTimeOut2, type: 'success' })
       setTimeout(() => {
         history.push('/property/user')
-      }, msgTimeout)
+      }, msgTimeOut2)
     } catch (error) {
-      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeout, type: 'error' })
+      toast('Algo deu errado, tente novamente.', { autoClose: msgTimeOut2, type: 'error' })
     }
   }
 
@@ -199,14 +201,16 @@ function Property() {
                     >
                       Comprar
                     </button>
-                    <button
-                      onClick={handleHire}
-                      className="rounded-br-lg text-white bg-yellow-400 text-xl
-                      w-full h-12 justify-center hover:bg-opacity-70 transition
-                      duration-150 ease-in-out dark:text-black"
-                    >
-                      Alugar
-                    </button>
+                    <Link to="/rent/new">
+                      <button
+                        onClick={handleHire}
+                        className="rounded-br-lg text-white bg-yellow-400 text-xl
+                        w-full h-12 justify-center hover:bg-opacity-70 transition
+                        duration-150 ease-in-out dark:text-black"
+                      >
+                        Alugar
+                      </button >
+                    </Link>
                   </div>
                 ) : (
                   <div className="grid place-items-center bg-red-400 h-12 text-lg text-white">
@@ -321,7 +325,7 @@ function Property() {
                 <p>Proxima imagem</p>
               </button>
               <div id="visitaVirtual" className="grid place-items-center w-full h-full">
-                <Pannellum
+                {/* <Pannellum
                   width="90%"
                   height="500px"
                   image={imagesPan[imagePan]}
@@ -334,7 +338,7 @@ function Property() {
                     console.log("panorama loaded");
                   }}
                 >
-                </Pannellum>
+                </Pannellum> */}
               </div>
             </div>
           </section>
